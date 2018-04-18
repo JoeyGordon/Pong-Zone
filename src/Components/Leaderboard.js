@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LandingPage = (props, { authUser }) => (
+const Leaderboard = (props, { authUser }) => (
   <div>
     { authUser && <div>What</div> }
-    <h1>Landing Page</h1>
+    <h1>Leaderboard</h1>
   </div>
 )
 
-LandingPage.contextTypes = {
+Leaderboard.contextTypes = {
     authUser: PropTypes.object,
 };
 
-export default LandingPage;
+export default Leaderboard;

@@ -5,7 +5,8 @@ import styled from 'styled-components';
 
 import * as routes from '../../Constants/routes';
 
-import LandingPage from '../Landing';
+import Leaderboard from '../Leaderboard';
+import SignIn from '../SignIn';
 
 const MainLayoutWrapper = styled.div`
   display: flex;
@@ -69,17 +70,17 @@ const MainLayoutWrapper = styled.div`
 const MainLayout = props => (
     <MainLayoutWrapper>
         <div className="sidebar">
-            <h1>Pong Stuff</h1>
+            <h1>Pong Zone</h1>
 
             <ul className="primary-menu">
                 <li>
                     <NavLink to="/" exact activeClassName="active">
-                        Log Games
+                        Leaderboard
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/leaderboard" exact activeClassName="active">
-                        Leaderboard
+                    <NavLink to="/game" exact activeClassName="active">
+                        Log Games
                     </NavLink>
                 </li>
                 <li>
@@ -93,7 +94,7 @@ const MainLayout = props => (
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/login" exact activeClassName="active">
+                    <NavLink to="/signin" exact activeClassName="active">
                         Login
                     </NavLink>
                 </li>
@@ -101,7 +102,8 @@ const MainLayout = props => (
         </div>
 
         <div className="main-content">
-            <Route exact path={routes.LANDING} component={() => <LandingPage />} />
+            <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
+            <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
             {/* <Route
                 path="/"
                 exact
