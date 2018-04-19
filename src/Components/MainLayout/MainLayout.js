@@ -89,7 +89,7 @@ const MainLayout = (props, {authUser}) => {
 
     const photoBlock = authUser ?
         (
-            <img src={authUser.photoURL} />
+            <img src={authUser.photoURL} alt="" />
         ) :
         null
 
@@ -127,87 +127,6 @@ const MainLayout = (props, {authUser}) => {
             <div className="main-content">
                 <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
                 <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
-                {/* <Route
-                    path="/"
-                    exact
-                    render={() => (
-                        <PrintQueuePage
-                            db={props.db}
-                            apiQueue={props.apiQueue}
-                            apiQueueLoaded={props.apiQueueLoaded}
-                            testing={props.testing}
-                        />
-                    )}
-                />
-                <Route
-                    path="/products"
-                    exact
-                    render={() => (
-                        <ItemsPage
-                            db={props.db}
-                            items={props.items}
-                            formats={props.formats}
-                            sizes={props.sizes}
-                            sizesArray={props.sizesArray}
-                            itemsLoaded={props.itemsLoaded}
-                        />
-                    )}
-                />
-                <Route
-                    path="/boxsets"
-                    exact
-                    render={() => (
-                        <BoxSetsPage
-                            db={props.db}
-                            items={props.items}
-                            boxSets={props.boxSets}
-                            formats={props.formats}
-                            sizes={props.sizes}
-                            sizesArray={props.sizesArray}
-                            boxSetsLoaded={props.boxSetsLoaded}
-                        />
-                    )}
-                />
-                <Route
-                    path="/sizes"
-                    exact
-                    render={
-                        () => (<SizesPage
-                            db={props.db}
-                            sizes={props.sizesArray}
-                            sizesLoaded={props.sizesLoaded}
-                        />)
-                    }
-                />
-                <Route
-                    path="/formats"
-                    exact
-                    render={
-                        () => (<FormatsPage
-                            db={props.db}
-                            formats={props.formats}
-                            formatsLoaded={props.formatsLoaded}
-                        />)
-                    }
-                />
-                <Route
-                    path="/manual"
-                    exact
-                    render={() => (
-                        <ManualEntryPage
-                            db={props.db}
-                            items={props.items}
-                            boxSets={props.boxSets}
-                            formats={props.formats}
-                            sizes={props.sizes}
-                            itemsLoaded={props.itemsLoaded}
-                            sizesLoaded={props.sizesLoaded}
-                            formatsLoaded={props.formatsLoaded}
-                            boxSetsLoaded={props.boxSetsLoaded}
-                            testing={props.testing}
-                        />
-                    )}
-                /> */}
             </div>
         </MainLayoutWrapper>
     )

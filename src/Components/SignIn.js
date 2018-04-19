@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 
 import {firebase, db, provider} from '../firebase';
 import * as auth from '../auth';
@@ -15,7 +14,7 @@ class SignInForm extends Component {
     }
 
     createUserRecord(user) {
-        console.log("HEY", user)
+        // console.log("HEY", user)
         db.collection('users').add(user)
             .then(function (docRef) {
                 console.log("Document written with ID: ", docRef.id);
@@ -27,11 +26,11 @@ class SignInForm extends Component {
 
     componentWillMount() {
         console.log("HEY THERE")
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                console.log("User signed in: ", user);
-            }
-        });
+        // firebase.auth().onAuthStateChanged(user => {
+        //     if (user) {
+        //         console.log("User signed in: ", user);
+        //     }
+        // });
 
         // auth.getRedirectResult()
         // .then(result => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore } from 'redux';
-import * as firebase from 'firebase';
 import App from './app';
 import registerServiceWorker from './registerServiceWorker';
 
