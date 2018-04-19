@@ -7,6 +7,7 @@ import * as routes from '../constants/routes';
 import * as auth from '../auth';
 
 import Leaderboard from './leaderboard';
+import SubmitMatch from './submitMatch';
 import SignIn from './signIn';
 
 const MainLayoutWrapper = styled.div`
@@ -81,7 +82,7 @@ const MainLayout = (props, {authUser}) => {
         ) :
         (
             <li>
-                <NavLink to="/signin" exact activeClassName="active">
+                <NavLink to="/SignIn" exact activeClassName="active">
                     Login
                 </NavLink>
             </li>
@@ -105,8 +106,8 @@ const MainLayout = (props, {authUser}) => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/game" exact activeClassName="active">
-                            Log Games
+                        <NavLink to="/SubmitMatch" exact activeClassName="active">
+                            Submit Match
                         </NavLink>
                     </li>
                     <li>
@@ -126,6 +127,7 @@ const MainLayout = (props, {authUser}) => {
 
             <div className="main-content">
                 <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
+                <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
                 <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
             </div>
         </MainLayoutWrapper>

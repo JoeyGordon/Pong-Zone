@@ -11,7 +11,7 @@ const Leaderboard = (props, { authUser }) => {
 }
 
 Leaderboard.contextTypes = {
-    authUser: PropTypes.object,
+  authUser: PropTypes.object,
 };
 
 export default Leaderboard;
