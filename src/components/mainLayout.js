@@ -7,8 +7,9 @@ import * as routes from '../constants/routes';
 import * as auth from '../auth';
 
 import Leaderboard from './leaderboard';
-import SubmitMatch from './submitMatch';
+import History from './history';
 import SignIn from './signIn';
+import SubmitMatch from './submitMatch';
 
 const MainLayoutWrapper = styled.div`
   display: flex;
@@ -128,6 +129,7 @@ const MainLayout = (props, {authUser}) => {
             <div className="main-content">
                 <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
                 <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
+                <Route exact path={routes.HISTORY} component={() => <History />} />
                 <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
             </div>
         </MainLayoutWrapper>
