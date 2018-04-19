@@ -44,7 +44,7 @@ const withUserAuthedAndLoaded = (Component) => {
                         losses: 0,
                         name: result.user.displayName,
                         email: result.user.email,
-                        photoUrl: result.user.photoURL,
+                        photoURL: result.user.photoURL,
                     }
                     this.createUserRecord(newUser);
                 }
@@ -60,7 +60,6 @@ const withUserAuthedAndLoaded = (Component) => {
 
             firebase.auth().onAuthStateChanged(user => {
                 if (user) {
-                    console.log("User signed in: ", user);
                     // go fetch the user data from firebase and set the user
                     // var fetchedUser = db.collection('users').where('email', '==', 'someemail');
                 }
