@@ -3,11 +3,11 @@ import { Route, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import * as routes from '../../Constants/routes';
+import * as routes from '../../constants/routes';
 import * as auth from '../../auth';
 
-import Leaderboard from '../Leaderboard';
-import SignIn from '../SignIn';
+import Leaderboard from '../leaderboard';
+import SignIn from '../signIn';
 
 const MainLayoutWrapper = styled.div`
   display: flex;

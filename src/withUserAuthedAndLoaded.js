@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { firebase, auth } from './firebase';
 
-import * as userService from './Services/user';
+import * as userService from './services/user';
 
 const withUserAuthedAndLoaded = (Component) => {
     class WithUserAuthedAndLoaded extends React.Component {
