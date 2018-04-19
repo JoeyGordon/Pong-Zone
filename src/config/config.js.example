@@ -1,0 +1,21 @@
+// test firebase account credentials
+export const TEST_FIREBASE_CONFIG = {
+    apiKey: '<API-KEY>',
+    authDomain: '<YOUR-FIREBASE-DOMAIN>.firebaseapp.com',
+    databaseURL: 'https://<YOUR-FIREBASE-URL>.firebaseio.com',
+    projectId: '<PROJECT-ID>',
+    storageBucket: '<YOUR-FIREBASE-BUCKET>.appspot.com',
+    messagingSenderId: '<MESSAGING-SENDER-ID>',
+};
+
+// production firebase account credentials
+export const FIREBASE_CONFIG = {
+    piKey: '<API-KEY>',
+    authDomain: '<YOUR-FIREBASE-DOMAIN>.firebaseapp.com',
+    databaseURL: 'https://<YOUR-FIREBASE-URL>.firebaseio.com',
+    projectId: '<PROJECT-ID>',
+    storageBucket: '<YOUR-FIREBASE-BUCKET>.appspot.com',
+    messagingSenderId: '<MESSAGING-SENDER-ID>',
+};
+
+export const TESTING = false;
