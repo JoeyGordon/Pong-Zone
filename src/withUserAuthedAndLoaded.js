@@ -33,6 +33,19 @@ const withUserAuthedAndLoaded = (Component) => {
                 });
         }
 
+        getUserRecordByEmail(email) {
+            const fetchUserQuery = db.collection('users').where('email', '==', email);
+            return fetchUserQuery.get().then(response => {
+                console.log('RESPONSE', response);
+                if(response.docs.length > 1){
+                    throw new Error('More than one user returned for email');
+                }
+                const user = response.docs[0].data();
+                console.log('USER', user);
+                return Promise.resolve(user);
+            })
+        }
+
         componentDidMount() {
             const { dispatch } = this.props
 
@@ -65,12 +78,10 @@ const withUserAuthedAndLoaded = (Component) => {
             firebase.auth().onAuthStateChanged(authUser=> {
                 if (authUser) {
                     console.log("User is authed and signed in: ", authUser);
-
-                    
                     // go fetch the user data from firebase and set the user
-                    const fetchedUser = db.collection('users').where('email', '==', authUser.email);
-                    dispatch(userActions.setUser(fetchedUser));
-
+                    this.getUserRecordByEmail(authUser.email).then(user => {
+                        dispatch(userActions.setUser(user));
+                    });
                 }
             });
 
