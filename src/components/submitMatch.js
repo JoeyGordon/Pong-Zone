@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlayerEloRating from '../models/playerEloRating';
+import SubmitCard from './submitCard';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -70,8 +71,11 @@ class SubmitMatch extends Component {
             <input type="number" value={this.state.playerAElo} onChange={this.handlePlayerAChange} />
           </label>
           <label>
-            Player A Win:
-            <input type="number" value={this.state.playerAWin} onChange={this.handleWinChange} />
+            Winner:
+            <select value={this.state.playerAWin} onChange={this.handleWinChange}>
+              <option value="1">&lt;-</option>
+              <option value="0">-&gt;</option>
+            </select>
           </label>
           <label>
             Player B Elo:
@@ -88,6 +92,7 @@ class SubmitMatch extends Component {
           Player B New Elo:
         <input type="number" value={this.state.playerBNewElo} />
         </label>
+        <SubmitCard />
       </div>
     )
   };
