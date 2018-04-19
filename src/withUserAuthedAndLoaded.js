@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { firebase, auth, db } from './firebase';
+import * as userActions from './actions/user';
 
 // import * as userService from './services/user';
 
@@ -25,17 +26,20 @@ const withUserAuthedAndLoaded = (Component) => {
         createUserRecord(user) {
             db.collection('users').add(user)
                 .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef.id);
+                    console.log("New User document written with ID: ", docRef.id);
                 })
                 .catch(function (error) {
-                    console.error("Error adding document: ", error);
+                    console.error("Error adding user document: ", error);
                 });
         }
 
         componentDidMount() {
+            const { dispatch } = this.props
+
             auth.getRedirectResult()
             .then(result => {
                 if (result.credential && result.additionalUserInfo.isNewUser) {
+                    // TODO: move to models?
                     const newUser = {
                         createdDate: new Date(),
                         matches: {},
@@ -58,10 +62,15 @@ const withUserAuthedAndLoaded = (Component) => {
                 // var credential = error.credential;
             });
 
-            firebase.auth().onAuthStateChanged(user => {
-                if (user) {
+            firebase.auth().onAuthStateChanged(authUser=> {
+                if (authUser) {
+                    console.log("User is authed and signed in: ", authUser);
+
+                    
                     // go fetch the user data from firebase and set the user
-                    // var fetchedUser = db.collection('users').where('email', '==', 'someemail');
+                    const fetchedUser = db.collection('users').where('email', '==', authUser.email);
+                    dispatch(userActions.setUser(fetchedUser));
+
                 }
             });
 
