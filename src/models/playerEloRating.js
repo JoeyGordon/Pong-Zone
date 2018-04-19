@@ -3,7 +3,7 @@ const q = (x) => Math.pow(10, (x / 400));
 const eA = (x, y) => q(x) / (q(x) + q(y));
 const privateData = new WeakMap();
 
-export class PlayerEloRating {
+export default class PlayerEloRating {
     constructor(eloRating) {
         privateData.set(this, {
             eloRating

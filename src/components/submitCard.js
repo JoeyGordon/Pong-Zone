@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const MatchCard = (props) => {
+const SubmitCard = (props) => {
     return (
         <MatchCardWrapper>
             <div className="match-card">
@@ -12,7 +12,10 @@ const MatchCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Joey Gordon
+                        Anthony Zavala
+                    </div>
+                    <div className="team-score">
+                        2
                     </div>
                 </div>
                 <div className="team team-b">
@@ -21,7 +24,10 @@ const MatchCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Anthony Zavala
+                        Joey Gordon
+                    </div>
+                    <div className="team-score">
+                        0
                     </div>
                 </div>
                 <div className="match-vs">VS</div>
@@ -30,7 +36,7 @@ const MatchCard = (props) => {
     )
 };
 
-MatchCard.contextTypes = {
+SubmitCard.contextTypes = {
     match: PropTypes.object,
 };
 
@@ -57,6 +63,14 @@ const MatchCardWrapper = styled.div`
 
   .team-meta {
 
+  }
+
+  .team-score {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 3em;
+      font-weight: bold;
+      color: #666;
   }
 
   .team-b {
@@ -97,4 +111,4 @@ const MatchCardWrapper = styled.div`
   }
 `;
 
-export default MatchCard;
+export default SubmitCard;
