@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {firebase, db, provider} from '../firebase';
+import {provider} from '../firebase';
 import * as auth from '../auth';
 
 class SignInForm extends Component {
