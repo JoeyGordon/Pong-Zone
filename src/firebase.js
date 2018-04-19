@@ -11,7 +11,7 @@ if (TESTING) {
     firebase.firestore(app);
 }
 
-var provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider();
 
 const auth = firebase.auth();
 
