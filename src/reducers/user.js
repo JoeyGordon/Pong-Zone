@@ -13,8 +13,11 @@ export default function user(state = getInitialState(), action = {}) {
     switch(action.type) {
         // TODO: add case statements to respond to actions
         case userActionTypes.SET_USER:
+        console.log('action.data', action.data);
             // do some stuff
-            console.log('IT WORKS!!!', user);
+            return {
+
+            }
         default:
             return state;
     }
