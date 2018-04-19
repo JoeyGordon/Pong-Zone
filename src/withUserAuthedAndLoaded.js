@@ -42,7 +42,7 @@ const withUserAuthedAndLoaded = (Component) => {
                 }
                 const user = response.docs[0].data();
                 console.log('USER', user);
-                return Promise.resolve(user);
+                return user;
             })
         }
 
