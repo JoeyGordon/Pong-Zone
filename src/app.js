@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import './app.css';
-import MainLayout from './components/mainLayout/mainLayout';
+import MainLayout from './components/mainLayout';
 import ScrollToTop from './scrollToTop';
 import withUserAuthedAndLoaded from './withUserAuthedAndLoaded';
 
