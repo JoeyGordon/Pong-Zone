@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import './App.css';
-import MainLayout from './Components/MainLayout/MainLayout';
-import ScrollToTop from './ScrollToTop';
+import './app.css';
+import MainLayout from './components/mainLayout/mainLayout';
+import ScrollToTop from './scrollToTop';
 import withUserAuthedAndLoaded from './withUserAuthedAndLoaded';
 
 class App extends Component {
