@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import './app.css';
@@ -49,4 +50,4 @@ class App extends Component {
 }
 
 
-export default withUserAuthedAndLoaded(App);
+export default connect()(withUserAuthedAndLoaded(App));

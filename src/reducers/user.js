@@ -1,3 +1,5 @@
+import * as userActionTypes from '../actionTypes/user';
+
 const getInitialState = () => ({
     userId: null,
     createdDate: null,
@@ -10,6 +12,9 @@ const getInitialState = () => ({
 export default function user(state = getInitialState(), action = {}) {
     switch(action.type) {
         // TODO: add case statements to respond to actions
+        case userActionTypes.SET_USER:
+            // do some stuff
+            console.log('IT WORKS!!!', user);
         default:
             return state;
     }
