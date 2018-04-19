@@ -1,3 +1,4 @@
 export const LEADERBOARD = '/';
-export const SUBMIT_MATCH = '/SubmitMatch';
+export const HISTORY = '/history';
 export const SIGN_IN = '/SignIn';
+export const SUBMIT_MATCH = '/SubmitMatch';
