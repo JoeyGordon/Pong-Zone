@@ -22,3 +22,6 @@ export const doPasswordUpdate = (password) =>
 // Sign In WIth Redirect
 export const signInWithRedirect = (provider) =>
     auth.signInWithRedirect(provider);
+
+export const getRedirectResult = () =>
+    auth.getRedirectResult();

@@ -15,10 +15,13 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 const auth = firebase.auth();
 
+const db = firebase.firestore();
+
 export {
     firebase,
     auth,
-    provider
+    provider,
+    db
 }
 
 
