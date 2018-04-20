@@ -9,25 +9,29 @@ const SubmitCard = (props) => {
         oppPlayerA,
         oppPlayerB,
         handlePlayerChange,
+        handlePlayerReset,
+        handleWinnerClick,
     } = props;
 
-    const playerOptions = oppPlayers.map(x => <option key={x.userId} value={x.userId}>{x.name}</option>);
+    const playerOptions = oppPlayers.map(x => <option key={x.userId || ''} value={x.userId}>{x.name}</option>);
+
+    const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
 
     const teammateValue = teammate ?
-        teammate.name :
-        <select id="teammateId" onChange={handlePlayerChange}>
+        <a data-id="teammate" onClick={handlePlayerReset}>{`${teammate.name} (${teammate.rating})`}</a> :
+        <select data-id="teammate" onChange={handlePlayerChange}>
             {playerOptions}
         </select>
 
     const oppPlayerAValue = oppPlayerA ?
-        oppPlayerA.name :
-        <select id="oppPlayerAId" onChange={handlePlayerChange}>
+        <a data-id="oppPlayerA" onClick={handlePlayerReset}>{`${oppPlayerA.name} (${oppPlayerA.rating})`}</a> :
+        <select data-id="oppPlayerA" onChange={handlePlayerChange}>
             {playerOptions}
         </select>
 
     const oppPlayerBValue = oppPlayerB ?
-        oppPlayerB.name :
-        <select id="oppPlayerBId" onChange={handlePlayerChange}>
+        <a data-id="oppPlayerB" onClick={handlePlayerReset}>{`${oppPlayerB.name} (${oppPlayerB.rating})`}</a> :
+        <select data-id="oppPlayerB" onChange={handlePlayerChange}>
             {playerOptions}
         </select>
 
@@ -40,10 +44,11 @@ const SubmitCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        {activePlayer ? activePlayer.name : ''}
+                        {activePlayerValue}
                         <br />
                         {teammateValue}
                     </div>
+                    <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button>
                 </div>
                 <div className="team team-b">
                     <div className="team-photos">
@@ -55,6 +60,7 @@ const SubmitCard = (props) => {
                         <br />
                         {oppPlayerBValue}
                     </div>
+                    <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button>
                 </div>
                 <div className="match-vs">VS</div>
             </div>

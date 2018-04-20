@@ -1,76 +1,75 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import PlayerEloRating from '../models/playerEloRating';
 import SubmitCard from './submitCard';
 import * as matchActions from '../actions/match';
 import MatchPlayer from '../models/matchPlayer';
+import MatchCard from './matchCard';
+
 // import withUserAuthedAndLoaded from '../withUserAuthedAndLoaded';
 
 class SubmitMatch extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      playerAElo: 0,
-      playerBElo: 0,
-      playerANewElo: 0,
-      playerBNewElo: 0,
-      playerAWin: 1,
-      teammateId: null,
-      oppPlayerAId: null,
-      oppPlayerBId: null,
+    this.initialState = {
+      teammate: null,
+      oppPlayerA: null,
+      oppPlayerB: null,
+      newActiveUserEloRating: null,
+      newTeammateEloRating: null,
+      newOppPlayerAEloRating: null,
+      newOppPlayerBEloRating: null,
+      submitted: false,
     };
 
-    this.handlePlayerAChange = this.handlePlayerAChange.bind(this);
-    this.handlePlayerBChange = this.handlePlayerBChange.bind(this);
-    this.handleWinChange = this.handleWinChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = this.initialState;
+
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
-  }
-
-  handlePlayerAChange(event) {
-    this.setState({
-      ...this.state,
-      playerAElo: Number(event.target.value)
-    });
-  }
-
-  handlePlayerBChange(event) {
-    this.setState({
-      ...this.state,
-      playerBElo: Number(event.target.value)
-    });
-  }
-
-  handleWinChange(event) {
-    this.setState({
-      ...this.state,
-      playerAWin: Number(event.target.value)
-    });
+    this.handlePlayerReset = this.handlePlayerReset.bind(this);
+    this.handleWinnerClick = this.handleWinnerClick.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handlePlayerChange(event) {
-    const state = {...this.state};
-    state[event.target.id] = this.props.users.find(x => x.userId === event.target.value);
+    const state = { ...this.state };
+    state[event.target.dataset.id] = this.props.users.find(x => x.userId === event.target.value);
     this.setState(state);
   }
 
-  handleSubmit(event) {
-    const {
-      playerAElo,
-      playerBElo,
-      playerAWin
-    } = this.state;
-    event.preventDefault();
-    const playerAEloRating = new PlayerEloRating(playerAElo);
-    const playerBEloRating = new PlayerEloRating(playerBElo);
-    playerAEloRating.playerVsPlayerRatingShift(playerBElo, playerAWin);
-    playerBEloRating.playerVsPlayerRatingShift(playerAElo, 1 - playerAWin);
+  handlePlayerReset(event) {
+    const state = { ...this.state };
+    state[event.target.dataset.id] = null;
+    this.setState(state);
+  }
+
+  handleWinnerClick(event) {
+    const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
+    const { user } = this.props;
+    const { teammate, oppPlayerA, oppPlayerB } = this.state;
+
+    const activeUserEloRating = new PlayerEloRating(user.rating);
+    const teammateEloRating = teammate ? new PlayerEloRating(teammate.rating) : null;
+    const oppPlayerARating = new PlayerEloRating(oppPlayerA.rating);
+    const oppPlayerBRating = oppPlayerB ? new PlayerEloRating(oppPlayerB.rating) : null;
+
+    activeUserEloRating.ratingShift(winningTeam, oppPlayerARating, oppPlayerBRating);
+    if (teammateEloRating) {
+      teammateEloRating.ratingShift(winningTeam, oppPlayerARating, oppPlayerBRating);
+    }
+
+    oppPlayerARating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
+    if (oppPlayerBRating) {
+      oppPlayerBRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
+    }
 
     this.setState({
       ...this.state,
-      playerANewElo: playerAEloRating.getEloRating(),
-      playerBNewElo: playerBEloRating.getEloRating()
+      newActiveUserEloRating: activeUserEloRating.getEloRating(),
+      teammateEloRating: teammateEloRating ? teammateEloRating.getEloRating() : null,
+      newOppPlayerAEloRating: oppPlayerARating.getEloRating(),
+      newOppPlayerBEloRating: oppPlayerBRating ? oppPlayerBRating.getEloRating() : null,
+      submitted: true,
     });
 
     const player1Options = { userId: 1, team: 'TEAM_A', rating: 200 };
@@ -80,52 +79,78 @@ class SubmitMatch extends Component {
     const createdBy = 3;
     const matchDate = new Date('04/01/2018');
     matchActions.recordMatch(players, createdBy, matchDate);
+  }
     
+
+  handleReset(event) {
+    this.setState(this.initialState);
   }
 
   render() {
     const { user, users } = this.props;
+    const {
+      teammate,
+      oppPlayerA,
+      oppPlayerB,
+      submitted,
+      newActiveUserEloRating,
+      newTeammateEloRating,
+      newOppPlayerAEloRating,
+      newOppPlayerBEloRating,
+    } = this.state;
+
     const activePlayer = users.find(x => x.userId === user.userId);
-    const selectedPlayerIds = new Set([user.userId, this.state.teammateId, this.state.oppPlayerAId, this.state.oppPlayerBId]);
+    const selectedPlayerIds = new Set([
+      user.userId,
+      _.get(teammate, 'userId'),
+      _.get(oppPlayerA, 'userId'),
+      _.get(oppPlayerB, 'userId')
+    ]);
     const oppPlayers = [{}, ...(users.filter(x => !selectedPlayerIds.has(x.userId)))];
+
+    let card = <div></div>;
+
+    if (submitted) {
+      const updatedActivePlayer = {
+        ...activePlayer,
+        rating: newActiveUserEloRating,
+      }
+      const updatedTeammate = teammate ? {
+        ...teammate,
+        rating: newTeammateEloRating
+      } : null;
+      const updatedOppPlayerA = {
+        ...oppPlayerA,
+        rating: newOppPlayerAEloRating
+      };
+      const updatedOppPlayerB = oppPlayerB ? {
+        ...oppPlayerB,
+        rating: newOppPlayerBEloRating
+      } : null;
+      
+      card = <div><MatchCard
+        activePlayer={updatedActivePlayer}
+        teammate={updatedTeammate}
+        oppPlayerA={updatedOppPlayerA}
+        oppPlayerB={updatedOppPlayerB} />
+        <button onClick={this.handleReset}>Reset</button>
+      </div>
+    } else {
+      card = <SubmitCard
+        oppPlayers={oppPlayers}
+        activePlayer={activePlayer}
+        teammate={teammate}
+        oppPlayerA={oppPlayerA}
+        oppPlayerB={oppPlayerB}
+        handlePlayerChange={this.handlePlayerChange}
+        handlePlayerReset={this.handlePlayerReset}
+        handleWinnerClick={this.handleWinnerClick} />
+    }
 
     return (
       <div>
         <h1>Submit Match</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Player A Elo:
-            <input type="number" value={this.state.playerAElo} onChange={this.handlePlayerAChange} />
-          </label>
-          <label>
-            Winner:
-            <select value={this.state.playerAWin} onChange={this.handleWinChange}>
-              <option value="1">&lt;-</option>
-              <option value="0">-&gt;</option>
-            </select>
-          </label>
-          <label>
-            Player B Elo:
-            <input type="number" value={this.state.playerBElo} onChange={this.handlePlayerBChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-        <br />
-        <label>
-          Player A New Elo:
-        <input type="number" value={this.state.playerANewElo} />
-        </label>
-        <label>
-          Player B New Elo:
-        <input type="number" value={this.state.playerBNewElo} />
-        </label>
-        <SubmitCard
-          activePlayer={activePlayer}
-          oppPlayers={oppPlayers}
-          teammate={this.state.teammate}
-          oppPlayerA={this.state.oppPlayerA}
-          oppPlayerB={this.state.oppPlayerB}
-          handlePlayerChange={this.handlePlayerChange} />
+        {card}
       </div>
     )
   };

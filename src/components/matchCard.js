@@ -3,6 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const MatchCard = (props) => {
+    const {
+        activePlayer,
+        teammate,
+        oppPlayerA,
+        oppPlayerB,
+    } = props;
+
+    const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
+    const teammateValue = teammate ? `${teammate.name} (${teammate.rating})` : '';
+    const oppPlayerAValue = oppPlayerA ? `${oppPlayerA.name} (${oppPlayerA.rating})` : '';
+    const oppPlayerBValue = oppPlayerB ? `${oppPlayerB.name} (${oppPlayerB.rating})` : '';
+
     return (
         <MatchCardWrapper>
             <div className="match-card">
@@ -12,7 +24,9 @@ const MatchCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Joey Gordon
+                        {activePlayerValue}
+                        <br />
+                        {teammateValue}
                     </div>
                 </div>
                 <div className="team team-b">
@@ -21,7 +35,9 @@ const MatchCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Anthony Zavala
+                        {oppPlayerAValue}
+                        <br />
+                        {oppPlayerBValue}
                     </div>
                 </div>
                 <div className="match-vs">VS</div>
