@@ -21,7 +21,7 @@ export default function user(state = getInitialState(), action = {}) {
                 ...state,
                 userId: action.data.id,
                 email: action.data.email,
-                createdData: action.data.createdData,
+                createdDate: action.data.createdDate,
                 matches: action.data.matches,
                 rating: action.data.rating,
                 photoURL: action.data.photoURL,
