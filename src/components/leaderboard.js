@@ -8,8 +8,11 @@ const Leaderboard = (props) => {
   const sortedUsersByRating = _.orderBy(props.users, 'rating', 'desc');
 
   const usersList = sortedUsersByRating.map(user => {
+    const currentUserClass = user.userId === props.loggedInUser.userId ?
+      "current-user" :
+      null;
     return (
-      <li key={user.userId}>
+      <li key={user.userId} className={currentUserClass}>
         <h3>{user.name} ({user.rating})</h3>
         <img src={user.photoURL} alt="" />
       </li>
@@ -19,9 +22,9 @@ const Leaderboard = (props) => {
   return (
     <LeaderboardWrapper>
       <h1>Leaderboard</h1>
-      <ul>
+      <ol>
         {usersList}
-      </ul>
+      </ol>
     </LeaderboardWrapper>
   )
 }
@@ -31,15 +34,20 @@ Leaderboard.contextTypes = {
 };
 
 const mapStateToProps = state => ({
-  users: state.users
+  users: state.users,
+  loggedInUser: state.user,
 });
 
 const LeaderboardWrapper = styled.div`
+  .current-user {
+    background: goldenrod;
+  }
+
   img {
     width: 80px;
-    height; auto;
+    height: auto;
     border-radius: 50%;
-  }  
+  }
 `;
 
 export default connect(mapStateToProps)(Leaderboard);
