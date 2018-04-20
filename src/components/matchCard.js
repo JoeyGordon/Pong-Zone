@@ -30,7 +30,7 @@ const MatchCard = (props) => {
     )
 };
 
-MatchCard.contextTypes = {
+MatchCard.propTypes = {
     match: PropTypes.object,
 };
 
