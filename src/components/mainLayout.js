@@ -169,8 +169,8 @@ const MainLayoutWrapper = styled.div`
   }
 
   .main-content {
-    margin-top: 60px;
-    padding:  1em 2em 70px;
+    ${'' /* margin-top: 60px; */}
+    padding:  1em 1em 70px;
   }
 
   .logged-in-user-photo {
