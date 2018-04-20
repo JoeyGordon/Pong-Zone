@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PlayerEloRating from '../models/playerEloRating';
 import SubmitCard from './submitCard';
+import * as matchActions from '../actions/match';
+import MatchPlayer from '../models/matchPlayer';
 // import withUserAuthedAndLoaded from '../withUserAuthedAndLoaded';
 
 class SubmitMatch extends Component {
@@ -59,7 +61,7 @@ class SubmitMatch extends Component {
       playerBElo,
       playerAWin
     } = this.state;
-
+    event.preventDefault();
     const playerAEloRating = new PlayerEloRating(playerAElo);
     const playerBEloRating = new PlayerEloRating(playerBElo);
     playerAEloRating.playerVsPlayerRatingShift(playerBElo, playerAWin);
@@ -70,7 +72,15 @@ class SubmitMatch extends Component {
       playerANewElo: playerAEloRating.getEloRating(),
       playerBNewElo: playerBEloRating.getEloRating()
     });
-    event.preventDefault();
+
+    const player1Options = { userId: 1, team: 'TEAM_A', rating: 200 };
+    const player2Options = { userId: 2, team: 'TEAM_B', rating: 300 };
+    const players = [new MatchPlayer(player1Options), new MatchPlayer(player2Options)];
+    console.log('PLAYERS', players);
+    const createdBy = 3;
+    const matchDate = new Date('04/01/2018');
+    matchActions.recordMatch(players, createdBy, matchDate);
+    
   }
 
   render() {
