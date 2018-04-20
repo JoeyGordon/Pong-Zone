@@ -4,6 +4,7 @@ import {createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './app';
 import registerServiceWorker from './registerServiceWorker';
+import './index.css';
 
 import pongZone from './rootReducer';
 
