@@ -19,7 +19,7 @@ const MainLayout = (props) => {
             <li>
                 <NavLink to="/SubmitMatch" exact activeClassName="active">
                     Submit Match
-                        </NavLink>
+                </NavLink>
             </li>
         ) : 
         null;
@@ -54,12 +54,7 @@ const MainLayout = (props) => {
                     {submitMatchLink}
                     <li>
                         <NavLink to="/history" exact activeClassName="active">
-                            Game History
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/tournaments" exact activeClassName="active">
-                            Tournaments
+                            Match History
                         </NavLink>
                     </li>
                     {loginBlock}
