@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { firebase, auth, db } from './firebase';
 import * as userActions from './actions/user';
+import * as User from './models/user';
 
 // import * as userService from './services/user';
 
@@ -51,18 +52,7 @@ const withUserAuthedAndLoaded = (Component) => {
             auth.getRedirectResult()
             .then(result => {
                 if (result.credential && result.additionalUserInfo.isNewUser) {
-                    // TODO: move to models?
-                    const newUser = {
-                        createdDate: new Date(),
-                        matches: [],
-                        rating: 0,
-                        wins: 0,
-                        losses: 0,
-                        name: result.user.displayName,
-                        email: result.user.email,
-                        photoURL: result.user.photoURL,
-                    }
-                    this.createUserRecord(newUser);
+                    this.createUserRecord(new User(result.user));
                 }
             }).catch(function (error) {
                 // Handle Errors here.
