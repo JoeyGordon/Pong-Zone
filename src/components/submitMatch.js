@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PlayerEloRating from '../models/playerEloRating';
 import SubmitCard from './submitCard';
+// import withUserAuthedAndLoaded from '../withUserAuthedAndLoaded';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -12,12 +14,16 @@ class SubmitMatch extends Component {
       playerANewElo: 0,
       playerBNewElo: 0,
       playerAWin: 1,
+      teammateId: null,
+      oppPlayerAId: null,
+      oppPlayerBId: null,
     };
 
     this.handlePlayerAChange = this.handlePlayerAChange.bind(this);
     this.handlePlayerBChange = this.handlePlayerBChange.bind(this);
     this.handleWinChange = this.handleWinChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handlePlayerChange = this.handlePlayerChange.bind(this);
   }
 
   handlePlayerAChange(event) {
@@ -41,6 +47,12 @@ class SubmitMatch extends Component {
     });
   }
 
+  handlePlayerChange(event) {
+    const state = {...this.state};
+    state[event.target.id] = this.props.users.find(x => x.userId === event.target.value);
+    this.setState(state);
+  }
+
   handleSubmit(event) {
     const {
       playerAElo,
@@ -62,6 +74,11 @@ class SubmitMatch extends Component {
   }
 
   render() {
+    const { user, users } = this.props;
+    const activePlayer = users.find(x => x.userId === user.userId);
+    const selectedPlayerIds = new Set([user.userId, this.state.teammateId, this.state.oppPlayerAId, this.state.oppPlayerBId]);
+    const oppPlayers = [{}, ...(users.filter(x => !selectedPlayerIds.has(x.userId)))];
+
     return (
       <div>
         <h1>Submit Match</h1>
@@ -92,14 +109,21 @@ class SubmitMatch extends Component {
           Player B New Elo:
         <input type="number" value={this.state.playerBNewElo} />
         </label>
-        <SubmitCard />
+        <SubmitCard
+          activePlayer={activePlayer}
+          oppPlayers={oppPlayers}
+          teammate={this.state.teammate}
+          oppPlayerA={this.state.oppPlayerA}
+          oppPlayerB={this.state.oppPlayerB}
+          handlePlayerChange={this.handlePlayerChange} />
       </div>
     )
   };
 }
 
-SubmitMatch.contextTypes = {
-  authUser: PropTypes.object,
-};
+const mapStateToProps = state => ({
+  user: state.user,
+  users: state.users,
+});
 
-export default SubmitMatch;
+export default connect(mapStateToProps)(SubmitMatch);

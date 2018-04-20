@@ -1,21 +1,48 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const SubmitCard = (props) => {
+    const {
+        activePlayer,
+        oppPlayers,
+        teammate,
+        oppPlayerA,
+        oppPlayerB,
+        handlePlayerChange,
+    } = props;
+
+    const playerOptions = oppPlayers.map(x => <option key={x.userId} value={x.userId}>{x.name}</option>);
+
+    const teammateValue = teammate ?
+        teammate.name :
+        <select id="teammateId" onChange={handlePlayerChange}>
+            {playerOptions}
+        </select>
+
+    const oppPlayerAValue = oppPlayerA ?
+        oppPlayerA.name :
+        <select id="oppPlayerAId" onChange={handlePlayerChange}>
+            {playerOptions}
+        </select>
+
+    const oppPlayerBValue = oppPlayerB ?
+        oppPlayerB.name :
+        <select id="oppPlayerBId" onChange={handlePlayerChange}>
+            {playerOptions}
+        </select>
+
     return (
         <MatchCardWrapper>
             <div className="match-card">
-                <div className="team team-a winner">
+                <div className="team team-a">
                     <div className="team-photos">
                         <img src="http://via.placeholder.com/60x60" alt="" />
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Anthony Zavala
-                    </div>
-                    <div className="team-score">
-                        2
+                        {activePlayer ? activePlayer.name : ''}
+                        <br />
+                        {teammateValue}
                     </div>
                 </div>
                 <div className="team team-b">
@@ -24,20 +51,15 @@ const SubmitCard = (props) => {
                         <img src="http://via.placeholder.com/60x60" alt="" />
                     </div>
                     <div className="team-meta">
-                        Joey Gordon
-                    </div>
-                    <div className="team-score">
-                        0
+                        {oppPlayerAValue}
+                        <br />
+                        {oppPlayerBValue}
                     </div>
                 </div>
                 <div className="match-vs">VS</div>
             </div>
         </MatchCardWrapper>
     )
-};
-
-SubmitCard.contextTypes = {
-    match: PropTypes.object,
 };
 
 const MatchCardWrapper = styled.div`
@@ -62,23 +84,16 @@ const MatchCardWrapper = styled.div`
   }
 
   .team-meta {
-
+    color: #EEE
   }
 
-  .team-score {
-      flex-grow: 1;
-      text-align: center;
-      font-size: 3em;
-      font-weight: bold;
-      color: #666;
+  .team-a {
+    background: #33F;
   }
 
   .team-b {
       flex-direction: row-reverse;
-  }
-
-  .winner {
-      background: #AAA;
+      background: #F33;
   }
 
   .team-photos {
@@ -108,6 +123,7 @@ const MatchCardWrapper = styled.div`
       font-weight: bold;
       font-size: 2em;
       font-style: italic;
+      color: #FFF
   }
 `;
 
