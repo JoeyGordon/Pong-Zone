@@ -40,6 +40,7 @@ const withUserAuthedAndLoaded = (Component) => {
                     throw new Error('More than one user returned for email');
                 }
                 const user = response.docs[0].data();
+                user.id = response.docs[0].id;
                 return user;
             })
         }
@@ -53,7 +54,7 @@ const withUserAuthedAndLoaded = (Component) => {
                     // TODO: move to models?
                     const newUser = {
                         createdDate: new Date(),
-                        matches: {},
+                        matches: [],
                         rating: 0,
                         wins: 0,
                         losses: 0,
