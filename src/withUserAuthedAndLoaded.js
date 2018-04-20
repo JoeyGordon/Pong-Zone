@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { firebase, auth, db } from './firebase';
 import * as userActions from './actions/user';
-import * as User from './models/user';
+import User from './models/user';
+import * as utils from './utils/utils';
 
 // import * as userService from './services/user';
 
@@ -25,7 +26,8 @@ const withUserAuthedAndLoaded = (Component) => {
         }
 
         createUserRecord(user) {
-            db.collection('users').add(user)
+            const newUserRecord = utils.createFirebaseGeneric(user);
+            db.collection('users').add(newUserRecord)
                 .then(function (docRef) {
                     console.log("New User document written with ID: ", docRef.id);
                 })
@@ -52,16 +54,10 @@ const withUserAuthedAndLoaded = (Component) => {
             auth.getRedirectResult()
             .then(result => {
                 if (result.credential && result.additionalUserInfo.isNewUser) {
-                    this.createUserRecord(new User(result.user));
+                    this.createUserRecord(new User(result.user))
                 }
             }).catch(function (error) {
-                // Handle Errors here.
-                // var errorCode = error.code;
-                // var errorMessage = error.message;
-                // // The email of the user's account used.
-                // var email = error.email;
-                // // The firebase.auth.AuthCredential type that was used.
-                // var credential = error.credential;
+                throw error;
             });
 
             firebase.auth().onAuthStateChanged(authUser=> {
@@ -75,6 +71,7 @@ const withUserAuthedAndLoaded = (Component) => {
                     dispatch(userActions.logOutUser());
                 }
             });
+            
         }
 
         render() {
