@@ -11,6 +11,79 @@ import History from './history';
 import SignIn from './signIn';
 import SubmitMatch from "./submitMatch";
 
+const MainLayout = (props) => {
+    const isLoggedIn = Boolean(props.loggedInUser.userId);
+
+    const submitMatchLink = isLoggedIn ?
+        (
+            <li>
+                <NavLink to="/SubmitMatch" exact activeClassName="active">
+                    Submit Match
+                        </NavLink>
+            </li>
+        ) : 
+        null;
+
+    const loginBlock = isLoggedIn ?
+        (
+            <li>
+                <button onClick={auth.doSignOut}>Sign Out</button>
+            </li>
+        ) :
+        (
+            <li>
+                <NavLink to="/SignIn" exact activeClassName="active">
+                    Login
+                </NavLink>
+            </li>
+        )
+
+    const photoBlock = isLoggedIn ? <img src={props.loggedInUser.photoURL} alt="" /> : null;
+
+    return (
+        <MainLayoutWrapper>
+            <div className="sidebar">
+                <h1>Pong Zone</h1>
+
+                <ul className="primary-menu">
+                    <li>
+                        <NavLink to="/" exact activeClassName="active">
+                            Leaderboard
+                        </NavLink>
+                    </li>
+                    {submitMatchLink}
+                    <li>
+                        <NavLink to="/history" exact activeClassName="active">
+                            Game History
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/tournaments" exact activeClassName="active">
+                            Tournaments
+                        </NavLink>
+                    </li>
+                    {loginBlock}
+                </ul>
+                {photoBlock}
+            </div>
+
+            <div className="main-content">
+                <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
+                <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
+                <Route exact path={routes.HISTORY} component={() => <History />} />
+                <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
+            </div>
+        </MainLayoutWrapper>
+    )
+};
+
+MainLayout.propTypes = {
+};
+
+const mapStateToProps = state => ({
+  loggedInUser: state.user
+});
+
 const MainLayoutWrapper = styled.div`
   display: flex;
   min-height: 100%;
@@ -72,72 +145,5 @@ const MainLayoutWrapper = styled.div`
     flex-grow: 1;
   }
 `;
-
-const MainLayout = (props) => {
-    const isLoggedIn = Boolean(props.loggedInUser.userId);
-
-    const loginBlock = isLoggedIn ?
-        (
-            <li>
-                <button onClick={auth.doSignOut}>Sign Out</button>
-            </li>
-        ) :
-        (
-            <li>
-                <NavLink to="/SignIn" exact activeClassName="active">
-                    Login
-                </NavLink>
-            </li>
-        )
-
-    const photoBlock = isLoggedIn ? <img src={props.loggedInUser.photoURL} alt="" /> : null;
-
-    return (
-        <MainLayoutWrapper>
-            <div className="sidebar">
-                <h1>Pong Zone</h1>
-
-                <ul className="primary-menu">
-                    <li>
-                        <NavLink to="/" exact activeClassName="active">
-                            Leaderboard
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/SubmitMatch" exact activeClassName="active">
-                            Submit Match
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/history" exact activeClassName="active">
-                            Game History
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/tournaments" exact activeClassName="active">
-                            Tournaments
-                        </NavLink>
-                    </li>
-                    {loginBlock}
-                </ul>
-                {photoBlock}
-            </div>
-
-            <div className="main-content">
-                <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
-                <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
-                <Route exact path={routes.HISTORY} component={() => <History />} />
-                <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
-            </div>
-        </MainLayoutWrapper>
-    )
-};
-
-MainLayout.propTypes = {
-};
-
-const mapStateToProps = state => ({
-  loggedInUser: state.user
-});
 
 export default withRouter(connect(mapStateToProps)(MainLayout));
