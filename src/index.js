@@ -7,7 +7,10 @@ import registerServiceWorker from './registerServiceWorker';
 
 import pongZone from './rootReducer';
 
-const store = createStore(pongZone);
+const store = createStore(
+  pongZone,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, global.document.getElementById('root'));
 registerServiceWorker();
