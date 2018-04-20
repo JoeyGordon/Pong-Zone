@@ -7,3 +7,9 @@ export function setUser(user) {
     };
 }
 
+export function logOutUser() {
+    return {
+        type: userActionTypes.LOG_OUT_USER,
+    };
+}
+

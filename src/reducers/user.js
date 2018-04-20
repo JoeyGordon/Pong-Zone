@@ -26,6 +26,8 @@ export default function user(state = getInitialState(), action = {}) {
                 wins: action.data.wins,
                 losses: action.data.losses,
             }
+        case userActionTypes.LOG_OUT_USER: 
+            return getInitialState();
         default:
             return state;
     }

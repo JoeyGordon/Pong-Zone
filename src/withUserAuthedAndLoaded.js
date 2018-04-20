@@ -81,25 +81,10 @@ const withUserAuthedAndLoaded = (Component) => {
                     this.getUserRecordByEmail(authUser.email).then(user => {
                         dispatch(userActions.setUser(user));
                     });
+                }else{
+                    dispatch(userActions.logOutUser());
                 }
             });
-
-            // const db = firebase.database();
-            // this.setAuthUserAndLoadUserInfo = (authUser) => {
-            //     console.log('authUser', authUser);
-            //     // const testUser = userService.getUserByEmail(authUser.email);
-
-            //     db.ref('users').orderByChild('email').equalTo(authUser.email).on('value', (snapshot) => {
-            //         this.setState(() => ({ authUser, user: snapshot.val() }));
-            //     });
-            // }
-
-
-            // auth.onAuthStateChanged(authUser => {
-            //     authUser
-            //         ? this.setAuthUserAndLoadUserInfo(authUser)
-            //         : this.setState(() => ({ authUser: null, user: null, }));
-            // });
         }
 
         render() {
