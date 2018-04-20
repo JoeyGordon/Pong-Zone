@@ -14,7 +14,7 @@ const getInitialState = () => ({
 export default function user(state = getInitialState(), action = {}) {
     switch(action.type) {
         // TODO: add case statements to respond to actions
-        case userActionTypes.LOG_OUT_USER: 
+        case userActionTypes.LOG_OUT_USER:
             return getInitialState();
         case userActionTypes.SET_USER:
             return {
@@ -27,6 +27,7 @@ export default function user(state = getInitialState(), action = {}) {
                 photoURL: action.data.photoURL,
                 wins: action.data.wins,
                 losses: action.data.losses,
+                name: action.data.name,
             }
         default:
             return state;
