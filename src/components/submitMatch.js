@@ -134,11 +134,12 @@ class SubmitMatch extends Component {
         rating: newOppPlayerBEloRating
       } : null;
 
-      card = <div><MatchCard
-        activePlayer={updatedActivePlayer}
-        teammate={updatedTeammate}
-        oppPlayerA={updatedOppPlayerA}
-        oppPlayerB={updatedOppPlayerB} />
+      card = <div>
+        <MatchCard
+          activePlayer={updatedActivePlayer}
+          teammate={updatedTeammate}
+          oppPlayerA={updatedOppPlayerA}
+          oppPlayerB={updatedOppPlayerB} />
         <button onClick={this.handleReset}>Reset</button>
       </div>
     } else {
