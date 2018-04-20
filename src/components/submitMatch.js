@@ -17,6 +17,7 @@ class SubmitMatch extends Component {
       newTeammateEloRating: null,
       newOppPlayerAEloRating: null,
       newOppPlayerBEloRating: null,
+      submitIsValid: false,
       submitted: false,
     };
 
@@ -31,12 +32,28 @@ class SubmitMatch extends Component {
   handlePlayerChange(event) {
     const state = { ...this.state };
     state[event.target.dataset.id] = this.props.users.find(x => x.userId === event.target.value);
+    state.submitIsValid = this.getSubmitIsValid(state);
     this.setState(state);
+  }
+
+  getSubmitIsValid(state) {
+    const {
+      teammate,
+      oppPlayerA,
+      oppPlayerB,
+    } = state;
+
+    if ((!teammate && oppPlayerA && !oppPlayerB) || (teammate && oppPlayerA && oppPlayerB)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   handlePlayerReset(event) {
     const state = { ...this.state };
     state[event.target.dataset.id] = null;
+    state.submitIsValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
 
@@ -63,7 +80,7 @@ class SubmitMatch extends Component {
     this.setState({
       ...this.state,
       newActiveUserEloRating: activeUserEloRating.getEloRating(),
-      teammateEloRating: teammateEloRating ? teammateEloRating.getEloRating() : null,
+      newTeammateEloRating: teammateEloRating ? teammateEloRating.getEloRating() : null,
       newOppPlayerAEloRating: oppPlayerARating.getEloRating(),
       newOppPlayerBEloRating: oppPlayerBRating ? oppPlayerBRating.getEloRating() : null,
       submitted: true,
@@ -80,11 +97,12 @@ class SubmitMatch extends Component {
       teammate,
       oppPlayerA,
       oppPlayerB,
-      submitted,
       newActiveUserEloRating,
       newTeammateEloRating,
       newOppPlayerAEloRating,
       newOppPlayerBEloRating,
+      submitIsValid,
+      submitted,
     } = this.state;
 
     const activePlayer = users.find(x => x.userId === user.userId);
@@ -115,7 +133,7 @@ class SubmitMatch extends Component {
         ...oppPlayerB,
         rating: newOppPlayerBEloRating
       } : null;
-      
+
       card = <div><MatchCard
         activePlayer={updatedActivePlayer}
         teammate={updatedTeammate}
@@ -132,7 +150,8 @@ class SubmitMatch extends Component {
         oppPlayerB={oppPlayerB}
         handlePlayerChange={this.handlePlayerChange}
         handlePlayerReset={this.handlePlayerReset}
-        handleWinnerClick={this.handleWinnerClick} />
+        handleWinnerClick={this.handleWinnerClick}
+        submitIsValid={submitIsValid} />
     }
 
     return (

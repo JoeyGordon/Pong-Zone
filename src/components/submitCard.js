@@ -11,6 +11,7 @@ const SubmitCard = (props) => {
         handlePlayerChange,
         handlePlayerReset,
         handleWinnerClick,
+        submitIsValid,
     } = props;
 
     const playerOptions = oppPlayers.map(x => <option key={x.userId || ''} value={x.userId}>{x.name}</option>);
@@ -48,7 +49,11 @@ const SubmitCard = (props) => {
                         <br />
                         {teammateValue}
                     </div>
-                    <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button>
+                    {
+                        submitIsValid ?
+                            <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button> :
+                            null
+                    }
                 </div>
                 <div className="team team-b">
                     <div className="team-photos">
@@ -60,7 +65,11 @@ const SubmitCard = (props) => {
                         <br />
                         {oppPlayerBValue}
                     </div>
-                    <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button>
+                    {
+                        submitIsValid ?
+                            <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button> :
+                            null
+                    }
                 </div>
                 <div className="match-vs">VS</div>
             </div>
