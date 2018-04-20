@@ -16,10 +16,10 @@ class SubmitMatch extends Component {
       teammate: null,
       oppPlayerA: null,
       oppPlayerB: null,
-      newActiveUserEloRating: null,
-      newTeammateEloRating: null,
-      newOppPlayerAEloRating: null,
-      newOppPlayerBEloRating: null,
+      activeUserEloRating: null,
+      teammateEloRating: null,
+      oppPlayerAEloRating: null,
+      oppPlayerBEloRating: null,
       submitIsValid: false,
       submitted: false,
     };
@@ -34,7 +34,9 @@ class SubmitMatch extends Component {
 
   handlePlayerChange(event) {
     const state = { ...this.state };
-    state[event.target.dataset.id] = this.props.users.find(x => x.userId === event.target.value);
+    const user = this.props.users.find(x => x.userId === event.target.value);
+    state[event.target.dataset.id] = user;
+    state[`${event.target.dataset.id}EloRating`] = new PlayerEloRating(user.rating);
     state.submitIsValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
@@ -62,42 +64,67 @@ class SubmitMatch extends Component {
 
   handleWinnerClick(event) {
     const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
-    const { user } = this.props;
-    const { teammate, oppPlayerA, oppPlayerB } = this.state;
+    const { user, users } = this.props;
+    const activePlayer = users.find(x => x.userId === user.userId);
+    const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
+    const {
+      teammate,
+      oppPlayerA,
+      oppPlayerB,
+      teammateEloRating,
+      oppPlayerAEloRating,
+      oppPlayerBEloRating
+    } = this.state;
 
-    const activeUserEloRating = new PlayerEloRating(user.rating);
-    const teammateEloRating = teammate ? new PlayerEloRating(teammate.rating) : null;
-    const oppPlayerARating = new PlayerEloRating(oppPlayerA.rating);
-    const oppPlayerBRating = oppPlayerB ? new PlayerEloRating(oppPlayerB.rating) : null;
+    const matchPlayers = [];
 
-    activeUserEloRating.ratingShift(winningTeam, oppPlayerARating, oppPlayerBRating);
+    activeUserEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
+    matchPlayers.push(new MatchPlayer({
+      userId: activePlayer.userId,
+      team: 'A',
+      rating: activeUserEloRating.getEloRating(),
+      ratingShift: activeUserEloRating.getShift()
+    }));
+
     if (teammateEloRating) {
-      teammateEloRating.ratingShift(winningTeam, oppPlayerARating, oppPlayerBRating);
+      teammateEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
+      matchPlayers.push(new MatchPlayer({
+        userId: teammate.userId,
+        team: 'A',
+        rating: teammateEloRating.getEloRating(),
+        ratingShift: teammateEloRating.getShift()
+      }));
     }
 
-    oppPlayerARating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
-    if (oppPlayerBRating) {
-      oppPlayerBRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
+    oppPlayerAEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
+    matchPlayers.push(new MatchPlayer({
+      userId: oppPlayerA.userId,
+      team: 'B',
+      rating: oppPlayerAEloRating.getEloRating(),
+      ratingShift: oppPlayerAEloRating.getShift()
+    }));
+    if (oppPlayerBEloRating) {
+      oppPlayerBEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
+      matchPlayers.push(new MatchPlayer({
+        userId: oppPlayerB.userId,
+        team: 'B',
+        rating: oppPlayerBEloRating.getEloRating(),
+        ratingShift: oppPlayerBEloRating.getShift()
+      }));
     }
 
     this.setState({
       ...this.state,
-      newActiveUserEloRating: activeUserEloRating.getEloRating(),
-      newTeammateEloRating: teammateEloRating ? teammateEloRating.getEloRating() : null,
-      newOppPlayerAEloRating: oppPlayerARating.getEloRating(),
-      newOppPlayerBEloRating: oppPlayerBRating ? oppPlayerBRating.getEloRating() : null,
+      activeUserEloRating: activeUserEloRating,
+      teammateEloRating: teammateEloRating,
+      oppPlayerAEloRating: oppPlayerAEloRating,
+      oppPlayerBEloRating: oppPlayerBEloRating,
       submitted: true,
     });
 
-    const player1Options = { userId: 1, team: 'TEAM_A', rating: 200 };
-    const player2Options = { userId: 2, team: 'TEAM_B', rating: 300 };
-    const players = [new MatchPlayer(player1Options), new MatchPlayer(player2Options)];
-    console.log('PLAYERS', players);
-    const createdBy = 3;
-    const matchDate = new Date('04/01/2018');
-    matchActions.recordMatch(players, createdBy, matchDate);
+    matchActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
   }
-    
+
 
   handleReset(event) {
     this.setState(this.initialState);
@@ -109,10 +136,10 @@ class SubmitMatch extends Component {
       teammate,
       oppPlayerA,
       oppPlayerB,
-      newActiveUserEloRating,
-      newTeammateEloRating,
-      newOppPlayerAEloRating,
-      newOppPlayerBEloRating,
+      activeUserEloRating,
+      teammateEloRating,
+      oppPlayerAEloRating,
+      oppPlayerBEloRating,
       submitIsValid,
       submitted,
     } = this.state;
@@ -131,19 +158,19 @@ class SubmitMatch extends Component {
     if (submitted) {
       const updatedActivePlayer = {
         ...activePlayer,
-        rating: newActiveUserEloRating,
+        rating: activeUserEloRating.getEloRating(),
       }
       const updatedTeammate = teammate ? {
         ...teammate,
-        rating: newTeammateEloRating
+        rating: teammateEloRating.getEloRating()
       } : null;
       const updatedOppPlayerA = {
         ...oppPlayerA,
-        rating: newOppPlayerAEloRating
+        rating: oppPlayerAEloRating.getEloRating()
       };
       const updatedOppPlayerB = oppPlayerB ? {
         ...oppPlayerB,
-        rating: newOppPlayerBEloRating
+        rating: oppPlayerBEloRating.getEloRating()
       } : null;
 
       card = <div>

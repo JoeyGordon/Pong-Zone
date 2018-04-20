@@ -6,7 +6,8 @@ const privateData = new WeakMap();
 export default class PlayerEloRating {
     constructor(eloRating) {
         privateData.set(this, {
-            eloRating
+            eloRating,
+            shift: 0,
         });
     }
 
@@ -19,13 +20,16 @@ export default class PlayerEloRating {
 
         const newEloRating = eloRating + shift;
         privateData.set(this, {
-            eloRating: newEloRating < 0 ? 0 : newEloRating
+            eloRating: newEloRating < 0 ? 0 : newEloRating,
+            shift
         });
-
-        return shift;
     }
 
     getEloRating() {
         return privateData.get(this).eloRating;
+    };
+
+    getShift() {
+        return privateData.get(this).shift;
     };
 }
