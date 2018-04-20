@@ -14,6 +14,8 @@ const getInitialState = () => ({
 export default function user(state = getInitialState(), action = {}) {
     switch(action.type) {
         // TODO: add case statements to respond to actions
+        case userActionTypes.LOG_OUT_USER: 
+            return getInitialState();
         case userActionTypes.SET_USER:
             return {
                 ...state,
@@ -26,8 +28,6 @@ export default function user(state = getInitialState(), action = {}) {
                 wins: action.data.wins,
                 losses: action.data.losses,
             }
-        case userActionTypes.LOG_OUT_USER: 
-            return getInitialState();
         default:
             return state;
     }

@@ -89,7 +89,7 @@ const withUserAuthedAndLoaded = (Component) => {
 
         render() {
             return (
-                <Component />
+                <Component dispatch={this.props.dispatch}/>
             );
         }
     }
