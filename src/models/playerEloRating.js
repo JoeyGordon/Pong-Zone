@@ -10,20 +10,18 @@ export default class PlayerEloRating {
         });
     }
 
-    playerVsPlayerRatingShift(otherPlayerRating, winLoss) {
+    ratingShift(winLoss, oppPairPlayerAEloRating, oppPairPlayerBEloRating) {
+        const otherTeamRating = oppPairPlayerBEloRating ?
+            (oppPairPlayerAEloRating.getEloRating() + oppPairPlayerBEloRating.getEloRating()) / 2 :
+            oppPairPlayerAEloRating.getEloRating();
         const eloRating = privateData.get(this).eloRating;
-        const shift = Math.round(k * (winLoss - eA(eloRating, otherPlayerRating)));
+        const shift = Math.round(k * (Number(winLoss) - eA(eloRating, otherTeamRating)));
 
         const newEloRating = eloRating + shift;
         privateData.set(this, {
             eloRating: newEloRating < 0 ? 0 : newEloRating
         });
 
-        return shift;
-    }
-
-    playerVsTeamRatingShift(oppPairPlayerARating, oppPairPlayerBRating, winLoss) {
-        const shift = this.playerVsPlayerRatingShift((oppPairPlayerARating + oppPairPlayerBRating) / 2, winLoss);
         return shift;
     }
 
