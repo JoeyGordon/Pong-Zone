@@ -36,12 +36,10 @@ const withUserAuthedAndLoaded = (Component) => {
         getUserRecordByEmail(email) {
             const fetchUserQuery = db.collection('users').where('email', '==', email);
             return fetchUserQuery.get().then(response => {
-                console.log('RESPONSE', response);
                 if(response.docs.length > 1){
                     throw new Error('More than one user returned for email');
                 }
                 const user = response.docs[0].data();
-                console.log('USER', user);
                 return user;
             })
         }
@@ -117,5 +115,6 @@ const withUserAuthedAndLoaded = (Component) => {
 
     return WithUserAuthedAndLoaded;
 }
+
 
 export default withUserAuthedAndLoaded;
