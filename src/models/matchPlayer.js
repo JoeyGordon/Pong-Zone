@@ -9,6 +9,7 @@ export default class MatchPlayer {
             if(!isNumber(matchPlayerOptions.ratingShift)) throw new Error('Player must have a rating shift');
                                 
             this.userId = matchPlayerOptions.userId;
+            this.win = matchPlayerOptions.win;
             this.team = matchPlayerOptions.team;
             this.rating = matchPlayerOptions.rating;
             this.ratingShift = matchPlayerOptions.ratingShift;

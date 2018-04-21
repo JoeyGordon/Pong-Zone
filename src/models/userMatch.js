@@ -1,4 +1,4 @@
-export default class Match {
+export default class UserMatch {
     constructor(userMatchOptions) {
         if (userMatchOptions) {
             if(!userMatchOptions.userId ||
