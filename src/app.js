@@ -11,8 +11,11 @@ import withUserAuthedAndLoaded from './withUserAuthedAndLoaded';
 import * as usersActions from './actions/users';
 import * as matchesActions from './actions/matches';
 
+const MAX_MATCHES_RECORDS = 100;
+
 class App extends Component {
   componentWillMount() {
+    // setup users listener and populate redux with full collection
     db.collection('users')
     .onSnapshot(users => {
       const usersArray = [];
@@ -24,8 +27,9 @@ class App extends Component {
       });
       this.props.dispatch(usersActions.setAllUsers(usersArray));
     });
-    db.collection('matches').get()
-    .then(matches => {
+    // setup matches listener and populate redux with last 100 records
+    db.collection('matches').orderBy('matchDate', 'desc').limit(MAX_MATCHES_RECORDS)
+    .onSnapshot(matches => {
       const matchesArray = [];
       matches.forEach(match => {
         const matchDetails = match.data();
@@ -33,8 +37,8 @@ class App extends Component {
         matchesArray.push(matchDetails);
       });
       this.props.dispatch(matchesActions.setMatches(matchesArray));
-    })
-  }
+    });
+  };
 
   render() {
     return (
