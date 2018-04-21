@@ -30,7 +30,7 @@ class Leaderboard extends Component {
 
     const sortedUsersByRating = _.orderBy(this.props.users, 'rating', 'desc');
 
-    const usersList = sortedUsersByRating.map(user => {
+    const usersList = sortedUsersByRating.map((user, index) => {
       const selectedUserClass = (selectedUser && user.userId === selectedUser.userId) ?
         "selected-user" :
         null;
@@ -38,8 +38,12 @@ class Leaderboard extends Component {
       return (
         <a key={user.userId} href="" onClick={(e) => {this.handleUserSelect(e, user)}}>
           <li className={selectedUserClass}>
-            <h3>{user.name} ({user.rating})</h3>
+            <div className="user-rank">
+              {index + 1}
+            </div>
             <img src={user.photoURL} alt="" />
+            <h3>{user.name}</h3>
+            <span className="user-rating">{user.rating}</span>
           </li>
         </a>
       )
@@ -47,7 +51,6 @@ class Leaderboard extends Component {
 
     return (
       <LeaderboardWrapper>
-        <h1>Leaderboard</h1>
         <ol>
           {usersList}
         </ol>
@@ -68,14 +71,63 @@ const mapStateToProps = state => ({
 });
 
 const LeaderboardWrapper = styled.div`
+  ol {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ol li {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    background: white;
+    border-bottom: 2px solid #EEEEEE;
+    margin: 0 0 0.5em 0;
+    ${'' /* padding: 1em; */}
+  }
+
   .selected-user{
-    background: coral;
+    background: #FCD581;
+  }
+
+  li h3{
+    margin: 0;
+    padding: 0;
   }
 
   img {
-    width: 80px;
-    height: auto;
-    border-radius: 50%;
+    background: #DDD;
+    flex-grow: 0;
+    height: 50px;
+    min-width: 50px;
+    width: auto;
+    margin-right: 1em;
+    ${'' /* border-radius: 50%; */}
+  }
+
+  .user-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #B6C454;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0 1em;
+    height: 50px;
+    width: 50px;
+  }
+
+  .user-rating {
+    display: block;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 0 1em;
   }
 `;
 

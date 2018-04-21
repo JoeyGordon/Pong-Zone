@@ -18,6 +18,7 @@ const MainLayout = (props) => {
         (
             <li>
                 <NavLink to="/SubmitMatch" exact activeClassName="active">
+                    <i className="fas fa-plus-square fa-2x"></i>
                     Submit Match
                 </NavLink>
             </li>
@@ -27,7 +28,7 @@ const MainLayout = (props) => {
     const loginBlock = isLoggedIn ?
         (
             <li>
-                <button onClick={auth.doSignOut}>Sign Out</button>
+                <button onClick={auth.doSignOut} className="sign-out-button">Sign Out</button>
             </li>
         ) :
         (
@@ -38,22 +39,27 @@ const MainLayout = (props) => {
             </li>
         )
 
-    const photoBlock = isLoggedIn ? <img src={props.loggedInUser.photoURL} alt="" /> : null;
+    const photoBlock = isLoggedIn ? <img className="logged-in-user-photo" src={props.loggedInUser.photoURL} alt="" /> : null;
 
     return (
         <MainLayoutWrapper>
-            <div className="sidebar">
+            <div className="banner">
+                <h1>Pong Zone</h1>
+            </div>
+            <div className="menu-bar">
                 <h1>Pong Zone</h1>
 
                 <ul className="primary-menu">
                     <li>
                         <NavLink to="/" exact activeClassName="active">
+                            <i className="fas fa-trophy fa-2x"></i>
                             Leaderboard
                         </NavLink>
                     </li>
                     {submitMatchLink}
                     <li>
                         <NavLink to="/history" exact activeClassName="active">
+                            <i className="fas fa-list fa-2x"></i>
                             Match History
                         </NavLink>
                     </li>
@@ -80,54 +86,82 @@ const mapStateToProps = state => ({
 });
 
 const MainLayoutWrapper = styled.div`
-  display: flex;
   min-height: 100%;
 
   h1 {
-    display: inline-block;
-    font-size: 30px;
-    margin: 0 1em 0 0;
+    margin: 0px;
+    padding: 0px;
     font-weight: 100;
   }
 
-  .sidebar {
+  .banner {
+      background-image: linear-gradient(135deg, rgba(153, 13, 53, 0.7), rgba(252, 213, 129, 0.7)),
+      url(/img/header-table.png);
+      background-position: center center;
+      background-size: 100% auto;
+      display: flex;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 60px;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      padding: 1em 1em;
+
+      display: none;
+  }
+
+  .menu-bar {
     display: flex;
     align-items: center;
     position: fixed;
+    bottom: 0;
     background: #191919;
     width: 100%;
-    height: 64px;
-    padding: 0 2em;
+    padding: 1em;
     color: #fff;
     z-index: 2;
   }
 
-  .sidebar ul {
-    display: inline-block;
+  .menu-bar h1 {
+      display: none;
+  }
+
+  .menu-bar ul {
+    display: flex;
+    justify-content: space-between;
     padding: 0;
     margin: 0;
+    width: 100%;
   }
 
-  .sidebar li {
-    display: inline-block;
+  .menu-bar li {
+    display: block;
     list-style: none;
-    margin: 0 1.5em 0;
+    text-align: center;
+    font-size: 0.8em;
   }
 
-  .sidebar a {
+  .menu-bar li svg {
+      display: block;
+      margin: 0 auto 0.2em;
+  }
+
+  .menu-bar a {
     color: #fff;
     text-decoration: none;
   }
 
-  .sidebar a:hover {
-    color: #e53935;
+  .menu-bar a:hover {
+    color: #FCD581;
   }
 
-  .sidebar a.active {
-    color: #e53935;
+  .menu-bar a.active {
+    color: #FCD581;
   }
 
-  .sidebar img {
+  .menu-bar img {
     margin-left: auto;
     max-height: 60%;
     width: auto;
@@ -135,9 +169,17 @@ const MainLayoutWrapper = styled.div`
   }
 
   .main-content {
-    padding: 2em;
-    margin-top: 60px;
-    flex-grow: 1;
+    ${'' /* margin-top: 60px; */}
+    padding:  1em 1em 70px;
+  }
+
+  .logged-in-user-photo {
+      height: 3em;
+      width: auto;
+  }
+
+  .sign-out-button {
+      display: none;
   }
 `;
 
