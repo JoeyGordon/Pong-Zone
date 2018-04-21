@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PlayerEloRating from '../models/playerEloRating';
 import SubmitCard from './submitCard';
-import * as matchActions from '../actions/match';
+import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
 
@@ -95,7 +95,7 @@ class SubmitMatch extends Component {
     console.log('PLAYERS', players);
     const createdBy = 3;
     const matchDate = new Date('04/01/2018');
-    matchActions.recordMatch(players, createdBy, matchDate);
+    matchesActions.recordMatch(players, createdBy, matchDate);
   }
     
 
