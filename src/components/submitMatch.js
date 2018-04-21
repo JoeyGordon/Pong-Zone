@@ -81,6 +81,7 @@ class SubmitMatch extends Component {
     activeUserEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
     matchPlayers.push(new MatchPlayer({
       userId: activePlayer.userId,
+      win: winningTeam,
       team: 'A',
       rating: activeUserEloRating.getEloRating(),
       ratingShift: activeUserEloRating.getShift()
@@ -90,6 +91,7 @@ class SubmitMatch extends Component {
       teammateEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
       matchPlayers.push(new MatchPlayer({
         userId: teammate.userId,
+        win: winningTeam,
         team: 'A',
         rating: teammateEloRating.getEloRating(),
         ratingShift: teammateEloRating.getShift()
@@ -99,6 +101,7 @@ class SubmitMatch extends Component {
     oppPlayerAEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
     matchPlayers.push(new MatchPlayer({
       userId: oppPlayerA.userId,
+      win: winningTeam,
       team: 'B',
       rating: oppPlayerAEloRating.getEloRating(),
       ratingShift: oppPlayerAEloRating.getShift()
@@ -107,6 +110,7 @@ class SubmitMatch extends Component {
       oppPlayerBEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
       matchPlayers.push(new MatchPlayer({
         userId: oppPlayerB.userId,
+        win: winningTeam,
         team: 'B',
         rating: oppPlayerBEloRating.getEloRating(),
         ratingShift: oppPlayerBEloRating.getShift()
@@ -123,7 +127,6 @@ class SubmitMatch extends Component {
     });
 
     matchesActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
-
   }
 
 
