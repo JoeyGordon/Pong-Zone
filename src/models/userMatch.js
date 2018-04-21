@@ -5,7 +5,7 @@ export default class UserMatch {
                 !userMatchOptions.matchId ||
                 !userMatchOptions.matchDate ||
                 !userMatchOptions.win ||
-                (!userMatchOptions.oppPlayerA && !userMatchOptions.oppPlayerB) ||
+                userMatchOptions.opponents.length < 1 || userMatchOptions.opponents.length > 2 || 
                 !userMatchOptions.team ||
                 !userMatchOptions.rating ||
                 !userMatchOptions.ratingShift
@@ -21,8 +21,7 @@ export default class UserMatch {
             this.team = userMatchOptions.team;
             this.rating = userMatchOptions.rating;
             this.ratingShift = userMatchOptions.ratingShift;
-            this.oppPlayerA = userMatchOptions.oppPlayerA || null;
-            this.oppPlayerB = userMatchOptions.oppPlayerB || null;
+            this.opponents = userMatchOptions.opponents;
         }
     }
 }

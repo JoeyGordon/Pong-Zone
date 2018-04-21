@@ -49,14 +49,13 @@ export function acceptMatch(match) {
         // now pull the matches collection
         const playerMatches = user.matches;
         const matchPlayer = match.players.filter(player => player.userId === user.id);
-        const oppPlayerA = match.players.filter(player => player.team !== matchPlayer.team);
+        const opponents = match.players.filter(player => 
+            player.team !== matchPlayer.team).forEach(player => {return player.id});
         
         let teammatePlayer;
-        let oppPlayerB;
 
-        if(match.players.length === 4) {
+        if(match.players.length > 2) {
             teammatePlayer = match.players.filter(player => player.team === matchPlayer.team);
-            oppPlayerB = match.players.filter(player => player.team !== matchPlayer.team && player.userId !== oppPlayerA.userId);
         }
 
         // create the new user match
@@ -66,8 +65,7 @@ export function acceptMatch(match) {
             matchDate: match.matchDate,
             win: matchPlayer.win,
             teammate: teammatePlayer ? teammatePlayer.userId : null,
-            oppPlayerA: oppPlayerA.userId,
-            oppPlayerB: oppPlayerB ? oppPlayerB.userId : null,
+            opponents: opponents,
             team: matchPlayer.team,
             rating: matchPlayer.rating,
             ratingShift: matchPlayer.ratingShift,
