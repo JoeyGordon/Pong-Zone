@@ -101,7 +101,7 @@ class SubmitMatch extends Component {
     oppPlayerAEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
     matchPlayers.push(new MatchPlayer({
       userId: oppPlayerA.userId,
-      win: winningTeam,
+      win: !winningTeam,
       team: 'B',
       rating: oppPlayerAEloRating.getEloRating(),
       ratingShift: oppPlayerAEloRating.getShift()
@@ -110,7 +110,7 @@ class SubmitMatch extends Component {
       oppPlayerBEloRating.ratingShift(!winningTeam, activeUserEloRating, teammateEloRating);
       matchPlayers.push(new MatchPlayer({
         userId: oppPlayerB.userId,
-        win: winningTeam,
+        win: !winningTeam,
         team: 'B',
         rating: oppPlayerBEloRating.getEloRating(),
         ratingShift: oppPlayerBEloRating.getShift()
