@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import * as routes from '../constants/routes';
 import * as auth from '../auth';
+import { provider } from '../firebase';
 
 import Leaderboard from './leaderboard';
 import History from './history';
@@ -12,6 +13,11 @@ import SignIn from './signIn';
 import SubmitMatch from "./submitMatch";
 
 const MainLayout = (props) => {
+    const googleLogin = (e) => {
+        e.preventDefault();
+        auth.signInWithRedirect(provider);
+    }
+
     const isLoggedIn = Boolean(props.loggedInUser.userId);
 
     const submitMatchLink = isLoggedIn ?
@@ -33,9 +39,10 @@ const MainLayout = (props) => {
         ) :
         (
             <li>
-                <NavLink to="/SignIn" exact activeClassName="active">
+                <a onClick={(e) => googleLogin(e)} href="">
+                    <i className="fas fa-user fa-2x"></i>
                     Login
-                </NavLink>
+                </a>
             </li>
         )
 
@@ -179,7 +186,7 @@ const MainLayoutWrapper = styled.div`
   }
 
   .sign-out-button {
-      display: none;
+      /* display: none; */
   }
 `;
 
