@@ -37,20 +37,24 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
 
         matchRef.get().then((response) => {
                     // for each player on the match
-                    console.log('response', response);
             const match = response.data();
             match.players.forEach(player => {
                 // get the user by id
-                console.log('plauyer', player);
                 const userRef = db.collection('users').doc(player.userId);
-                userRef.get().then(user => {
+                userRef.get().then(response => {
 
+                    const user = response.data();
+                    user.userId = response.id;
+                    console.log('USER', user);
                     // now pull the matches collection
                     const playerMatches = user.matches;
-                    const matchPlayer = match.players.filter(player => player.userId === user.id);
+                    const matchPlayer = match.players.find(player => player.userId === user.userId);
                     console.log('Match Player', matchPlayer);
+                    console.log('Match Players', match.players);
                     const opponents = match.players.filter(player => 
-                        player.team !== matchPlayer.team).forEach(player => {return player.id});
+                        player.team !== matchPlayer.team).map(player => {
+                            return player.userId
+                        });
                     
                     let teammatePlayer;
 
@@ -58,10 +62,11 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
                         teammatePlayer = match.players.filter(player => player.team === matchPlayer.team);
                     }
 
+                    console.log('MATCH', match);
                     // create the new user match
                     const userMatchOptions = {
-                        userId: user.id,
-                        matchId: match.matchId,
+                        userId: user.userId,
+                        matchId: newMatchId,
                         matchDate: match.matchDate,
                         win: matchPlayer.win,
                         teammate: teammatePlayer ? teammatePlayer.userId : null,
