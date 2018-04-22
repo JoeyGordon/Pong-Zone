@@ -6,6 +6,7 @@ import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
+import Match from '../models/match';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class SubmitMatch extends Component {
       submitValid: false,
       submitted: false,
       winningTeam: null,
+      newMatch: null,
     };
 
     this.state = this.initialState;
@@ -125,6 +127,8 @@ class SubmitMatch extends Component {
       }));
     }
 
+    const newMatch = matchesActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
+
     this.setState({
       ...this.state,
       activeUserEloRating: activeUserEloRating,
@@ -132,9 +136,8 @@ class SubmitMatch extends Component {
       oppPlayerAEloRating: oppPlayerAEloRating,
       oppPlayerBEloRating: oppPlayerBEloRating,
       submitted: true,
+      newMatch,
     });
-
-    matchesActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
   }
 
   handleReset(event) {
@@ -154,6 +157,7 @@ class SubmitMatch extends Component {
       submitValid,
       submitted,
       winningTeam,
+      newMatch,
     } = this.state;
 
     const activePlayer = users.find(x => x.userId === user.userId);
@@ -168,29 +172,33 @@ class SubmitMatch extends Component {
     let submitCard = <div></div>;
 
     if (submitted) {
-      const updatedActivePlayer = {
+      const teamA = [{
         ...activePlayer,
         rating: activeUserEloRating.getEloRating(),
+      }];
+      if (teammate) {
+        teamA.push({
+          ...teammate,
+          rating: teammateEloRating.getEloRating()
+        });
       }
-      const updatedTeammate = teammate ? {
-        ...teammate,
-        rating: teammateEloRating.getEloRating()
-      } : null;
-      const updatedOppPlayerA = {
+
+      const teamB = [{
         ...oppPlayerA,
         rating: oppPlayerAEloRating.getEloRating()
-      };
-      const updatedOppPlayerB = oppPlayerB ? {
-        ...oppPlayerB,
-        rating: oppPlayerBEloRating.getEloRating()
-      } : null;
+      }];
+      if (oppPlayerB){
+        teamB.push({
+          ...oppPlayerB,
+          rating: oppPlayerBEloRating.getEloRating()
+        });
+      }
 
       submitCard = <div>
         <MatchCard
-          activePlayer={updatedActivePlayer}
-          teammate={updatedTeammate}
-          oppPlayerA={updatedOppPlayerA}
-          oppPlayerB={updatedOppPlayerB} />
+          match={newMatch}
+          teamA={teamA}
+          teamB={teamB} />
         <button onClick={this.handleReset}>Reset</button>
       </div>
     } else {
