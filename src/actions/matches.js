@@ -93,6 +93,8 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
     .catch(function(error) {
         console.error("Error writing document: ", error);
     });
+
+    return newMatch;
 }
 
 export function acceptMatch(match) {
