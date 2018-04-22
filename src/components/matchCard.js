@@ -14,16 +14,18 @@ const MatchCard = (props) => {
 
     let teamAImages = [];
     let teamBImages = [];
+    let teamANames = [];
+    let teamBNames = [];
 
-    teamA.forEach(player => {
-        teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
+    props.teamA.forEach(player => {
+        teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />);
+        teamANames.push(<span key={player.userId}>{player.name}</span>)
     })
 
     teamB.forEach(player => {
         teamBImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
+        teamBNames.push(<span key={player.userId}>{player.name}</span>)
     })
-
-    // console.log(teamAImages);
 
     // const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
     // const teammateValue = teammate ? `${teammate.name} (${teammate.rating})` : '';
@@ -38,9 +40,7 @@ const MatchCard = (props) => {
                         {teamAImages}
                     </div>
                     <div className="team-meta">
-                        {/* {activePlayerValue} */}
-                        <br />
-                        {/* {teammateValue} */}
+                        {teamANames}
                     </div>
                 </div>
                 <div className="team team-b">
@@ -48,9 +48,7 @@ const MatchCard = (props) => {
                         {teamBImages}
                     </div>
                     <div className="team-meta">
-                        {/* {oppPlayerAValue} */}
-                        <br />
-                        {/* {oppPlayerBValue} */}
+                        {teamBNames}
                     </div>
                 </div>
                 <div className="match-vs">VS</div>
@@ -86,8 +84,8 @@ const MatchCardWrapper = styled.div`
       z-index: 2;
   }
 
-  .team-meta {
-
+  .team-meta span{
+      display: block;
   }
 
   .team-b {
