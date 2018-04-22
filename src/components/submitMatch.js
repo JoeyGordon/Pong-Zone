@@ -7,8 +7,6 @@ import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
 
-// import withUserAuthedAndLoaded from '../withUserAuthedAndLoaded';
-
 class SubmitMatch extends Component {
   constructor(props) {
     super(props);
@@ -20,8 +18,9 @@ class SubmitMatch extends Component {
       teammateEloRating: null,
       oppPlayerAEloRating: null,
       oppPlayerBEloRating: null,
-      submitIsValid: false,
+      submitValid: false,
       submitted: false,
+      winningTeam: null,
     };
 
     this.state = this.initialState;
@@ -29,6 +28,7 @@ class SubmitMatch extends Component {
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
     this.handlePlayerReset = this.handlePlayerReset.bind(this);
     this.handleWinnerClick = this.handleWinnerClick.bind(this);
+    this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
 
@@ -37,7 +37,7 @@ class SubmitMatch extends Component {
     const user = this.props.users.find(x => x.userId === event.target.value);
     state[event.target.dataset.id] = user;
     state[`${event.target.dataset.id}EloRating`] = new PlayerEloRating(user.rating);
-    state.submitIsValid = this.getSubmitIsValid(state);
+    state.submitValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
 
@@ -58,12 +58,19 @@ class SubmitMatch extends Component {
   handlePlayerReset(event) {
     const state = { ...this.state };
     state[event.target.dataset.id] = null;
-    state.submitIsValid = this.getSubmitIsValid(state);
+    state.submitValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
 
   handleWinnerClick(event) {
     const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
+    this.setState({
+      ...this.state,
+      winningTeam: winningTeam,
+    });
+  }
+
+  handleSubmitClick(event) {
     const { user, users } = this.props;
     const activePlayer = users.find(x => x.userId === user.userId);
     const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
@@ -73,7 +80,8 @@ class SubmitMatch extends Component {
       oppPlayerB,
       teammateEloRating,
       oppPlayerAEloRating,
-      oppPlayerBEloRating
+      oppPlayerBEloRating,
+      winningTeam,
     } = this.state;
 
     const matchPlayers = [];
@@ -129,7 +137,6 @@ class SubmitMatch extends Component {
     matchesActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
   }
 
-
   handleReset(event) {
     this.setState(this.initialState);
   }
@@ -144,8 +151,9 @@ class SubmitMatch extends Component {
       teammateEloRating,
       oppPlayerAEloRating,
       oppPlayerBEloRating,
-      submitIsValid,
+      submitValid,
       submitted,
+      winningTeam,
     } = this.state;
 
     const activePlayer = users.find(x => x.userId === user.userId);
@@ -157,7 +165,7 @@ class SubmitMatch extends Component {
     ]);
     const oppPlayers = [{}, ...(users.filter(x => !selectedPlayerIds.has(x.userId)))];
 
-    let card = <div></div>;
+    let submitCard = <div></div>;
 
     if (submitted) {
       const updatedActivePlayer = {
@@ -177,7 +185,7 @@ class SubmitMatch extends Component {
         rating: oppPlayerBEloRating.getEloRating()
       } : null;
 
-      card = <div>
+      submitCard = <div>
         <MatchCard
           activePlayer={updatedActivePlayer}
           teammate={updatedTeammate}
@@ -186,7 +194,7 @@ class SubmitMatch extends Component {
         <button onClick={this.handleReset}>Reset</button>
       </div>
     } else {
-      card = <SubmitCard
+      submitCard = <SubmitCard
         oppPlayers={oppPlayers}
         activePlayer={activePlayer}
         teammate={teammate}
@@ -195,13 +203,15 @@ class SubmitMatch extends Component {
         handlePlayerChange={this.handlePlayerChange}
         handlePlayerReset={this.handlePlayerReset}
         handleWinnerClick={this.handleWinnerClick}
-        submitIsValid={submitIsValid} />
+        handleSubmitClick={this.handleSubmitClick}
+        winningTeam={winningTeam}
+        submitIsValid={submitValid} />
     }
 
     return (
       <div>
         <h1>Submit Match</h1>
-        {card}
+        {submitCard}
       </div>
     )
   };
