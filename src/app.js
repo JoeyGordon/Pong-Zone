@@ -33,7 +33,7 @@ class App extends Component {
       const matchesArray = [];
       matches.forEach(match => {
         const matchDetails = match.data();
-        matchDetails.userId = match.id;
+        matchDetails.matchId = match.id;
         matchesArray.push(matchDetails);
       });
       this.props.dispatch(matchesActions.setMatches(matchesArray));
