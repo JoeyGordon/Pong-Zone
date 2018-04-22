@@ -59,10 +59,10 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
                     let teammatePlayer;
 
                     if(match.players.length > 2) {
-                        teammatePlayer = match.players.filter(player => player.team === matchPlayer.team);
+                        teammatePlayer = match.players.find(player => player.team === matchPlayer.team && player.userId !== matchPlayer.userId);
                     }
 
-                    console.log('MATCH', match);
+                    console.log('teammate player', teammatePlayer);
                     // create the new user match
                     const userMatchOptions = {
                         userId: user.userId,
