@@ -81,6 +81,7 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
                     // update the record in firebase
                     userRef.update({
                         matches: playerMatches,
+                        rating: matchPlayer.rating,
                     });
                 });
                 
