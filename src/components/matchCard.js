@@ -1,43 +1,55 @@
+// import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const MatchCard = (props) => {
     const {
-        activePlayer,
-        teammate,
-        oppPlayerA,
-        oppPlayerB,
-    } = props;
+        players,
+        accepted,
+        matchDate,
+        createdBy,
+    } = props.match;
 
-    const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
-    const teammateValue = teammate ? `${teammate.name} (${teammate.rating})` : '';
-    const oppPlayerAValue = oppPlayerA ? `${oppPlayerA.name} (${oppPlayerA.rating})` : '';
-    const oppPlayerBValue = oppPlayerB ? `${oppPlayerB.name} (${oppPlayerB.rating})` : '';
+    let teamAImages = [];
+    let teamBImages = [];
+
+    props.teamA.forEach(player => {
+        teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
+    })
+
+    props.teamB.forEach(player => {
+        teamBImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
+    })
+
+    // console.log(teamAImages);
+
+    // const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
+    // const teammateValue = teammate ? `${teammate.name} (${teammate.rating})` : '';
+    // const oppPlayerAValue = oppPlayerA ? `${oppPlayerA.name} (${oppPlayerA.rating})` : '';
+    // const oppPlayerBValue = oppPlayerB ? `${oppPlayerB.name} (${oppPlayerB.rating})` : '';
 
     return (
         <MatchCardWrapper>
             <div className="match-card">
                 <div className="team team-a winner">
                     <div className="team-photos">
-                        <img src="http://via.placeholder.com/60x60" alt="" />
-                        <img src="http://via.placeholder.com/60x60" alt="" />
+                        {teamAImages}
                     </div>
                     <div className="team-meta">
-                        {activePlayerValue}
+                        {/* {activePlayerValue} */}
                         <br />
-                        {teammateValue}
+                        {/* {teammateValue} */}
                     </div>
                 </div>
                 <div className="team team-b">
                     <div className="team-photos">
-                        <img src="http://via.placeholder.com/60x60" alt="" />
-                        <img src="http://via.placeholder.com/60x60" alt="" />
+                        {teamBImages}
                     </div>
                     <div className="team-meta">
-                        {oppPlayerAValue}
+                        {/* {oppPlayerAValue} */}
                         <br />
-                        {oppPlayerBValue}
+                        {/* {oppPlayerBValue} */}
                     </div>
                 </div>
                 <div className="match-vs">VS</div>
@@ -48,6 +60,8 @@ const MatchCard = (props) => {
 
 MatchCard.propTypes = {
     match: PropTypes.object,
+    teamA: PropTypes.array,
+    teamB: PropTypes.array,
 };
 
 const MatchCardWrapper = styled.div`

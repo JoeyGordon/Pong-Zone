@@ -4,7 +4,6 @@ export default class UserMatch {
             if(!userMatchOptions.userId ||
                 !userMatchOptions.matchId ||
                 !userMatchOptions.matchDate ||
-                !userMatchOptions.win ||
                 userMatchOptions.opponents.length < 1 || userMatchOptions.opponents.length > 2 || 
                 !userMatchOptions.team ||
                 !userMatchOptions.rating ||
@@ -16,7 +15,7 @@ export default class UserMatch {
             this.userId = userMatchOptions.userId;
             this.matchId = userMatchOptions.matchId;
             this.matchDate = userMatchOptions.matchDate;
-            this.win = userMatchOptions.win;
+            this.win = userMatchOptions.win || false;
             this.teammate = userMatchOptions.teammate;
             this.team = userMatchOptions.team;
             this.rating = userMatchOptions.rating;
