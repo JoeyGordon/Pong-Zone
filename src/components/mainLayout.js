@@ -50,9 +50,6 @@ const MainLayout = (props) => {
 
     return (
         <MainLayoutWrapper>
-            <div className="banner">
-                <h1>Pong Zone</h1>
-            </div>
             <div className="menu-bar">
                 <h1>Pong Zone</h1>
 
@@ -96,27 +93,8 @@ const MainLayoutWrapper = styled.div`
   min-height: 100%;
 
   h1 {
-    margin: 0px;
-    padding: 0px;
     font-weight: 100;
-  }
-
-  .banner {
-      background-image: linear-gradient(135deg, rgba(153, 13, 53, 0.7), rgba(252, 213, 129, 0.7)),
-      url(/img/header-table.png);
-      background-position: center center;
-      background-size: 100% auto;
-      display: flex;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 60px;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      padding: 1em 1em;
-
-      display: none;
+    font-size: 20px;
   }
 
   .menu-bar {
@@ -124,11 +102,11 @@ const MainLayoutWrapper = styled.div`
     align-items: center;
     position: fixed;
     bottom: 0;
-    background: #191919;
+    background: #011627;
     width: 100%;
     padding: 1em;
     color: #fff;
-    z-index: 2;
+    z-index: 5;
   }
 
   .menu-bar h1 {
@@ -176,17 +154,11 @@ const MainLayoutWrapper = styled.div`
   }
 
   .main-content {
-    ${'' /* margin-top: 60px; */}
-    padding:  1em 1em 70px;
   }
 
   .logged-in-user-photo {
       height: 3em;
       width: auto;
-  }
-
-  .sign-out-button {
-      /* display: none; */
   }
 `;
 

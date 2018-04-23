@@ -4,20 +4,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const MatchCard = (props) => {
-    const {match, teamA, teamB} = props;
-    const {
-        players,
-        accepted,
-        matchDate,
-        createdBy,
-    } = match;
+    const {teamA, teamB} = props;
+    // const {
+    //     players,
+    //     accepted,
+    //     matchDate,
+    //     createdBy,
+    // } = match;
 
     let teamAImages = [];
     let teamBImages = [];
     let teamANames = [];
     let teamBNames = [];
 
-    props.teamA.forEach(player => {
+    teamA.forEach(player => {
         teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />);
         teamANames.push(<span key={player.userId}>{player.name}</span>)
     })

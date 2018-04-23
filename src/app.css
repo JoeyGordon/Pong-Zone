@@ -25,7 +25,35 @@ h2 {
 }
 
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    padding: 16px 0 0;
+    background-image: linear-gradient(90deg, #E61D36 0%, #EF4A2D 100%);
+    color: #FDFFFC;
+}
+
+.page-header h1 {
+  background-image: url(/img/logo@2x.png);
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  padding: 5px 0 5px 40px;
+  margin: 0 16px;
+}
+
+.page-filter {
+  flex-grow: 1;
+  margin-top: 2em;
+  padding: 16px;
+  background-color: #CD1E33;
+}
+
+.page-content {
+  position: relative;
+  top: -130px;
+  border-radius: 3px;
+  background-color: #FDFFFC;
+  margin: 0 16px;
+  padding: 8px 8px 4px;
+  box-shadow: 0 2px 2px 0 rgba(218,218,218,0.50);
 }
