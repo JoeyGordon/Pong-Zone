@@ -93,8 +93,6 @@ const MainLayoutWrapper = styled.div`
   min-height: 100%;
 
   h1 {
-    margin: 0px;
-    padding: 0px;
     font-weight: 100;
     font-size: 20px;
   }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import UserProfile from './userProfile';
+// import UserProfile from './userProfile';
 
 class Leaderboard extends Component {
   constructor(props) {
@@ -82,35 +82,6 @@ const mapStateToProps = state => ({
 });
 
 const LeaderboardWrapper = styled.div`
-  .page-header {
-    padding: 16px 0 0;
-    background-image: linear-gradient(90deg, #E61D36 0%, #EF4A2D 100%);
-    color: #FDFFFC;
-
-    h1 {
-      background-image: url(/img/logo@2x.png);
-      background-repeat: no-repeat;
-      background-size: auto 100%;
-      padding: 5px 0 5px 40px;
-      margin: 0 16px;
-    }
-  }
-
-  .page-filter {
-    margin-top: 2em;
-    padding: 16px 16px 200px;
-    background-color: rgb(1, 22, 39, 0.11);
-  }
-
-  .page-content {
-    position: relative;
-    top: -180px;
-    border-radius: 3px;
-    background-color: #FDFFFC;
-    margin: 0 16px;
-    padding: 8px 8px 4px;
-    box-shadow: 0 2px 2px 0 rgba(218,218,218,0.50);
-  }
 
   ol {
     margin: 0px;

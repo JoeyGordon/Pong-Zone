@@ -24,8 +24,13 @@ const History = (props) => {
 
     return (
         <div>
-            <h1>History</h1>
-            {matchesArray}
+            <div className="page-header">
+                <h1>Match History</h1>
+            </div>
+
+            <div className="page-content">
+                {matchesArray}
+            </div>
         </div>
     )
 }

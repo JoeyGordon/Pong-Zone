@@ -6,7 +6,7 @@ import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
-import Match from '../models/match';
+// import Match from '../models/match';
 
 class SubmitMatch extends Component {
   constructor(props) {
