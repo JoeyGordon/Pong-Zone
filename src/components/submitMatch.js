@@ -60,6 +60,7 @@ class SubmitMatch extends Component {
   handlePlayerReset(event) {
     const state = { ...this.state };
     state[event.target.dataset.id] = null;
+    state[`${event.target.dataset.id}EloRating`] = null;
     state.submitValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
