@@ -45,12 +45,12 @@ h2 {
   flex-grow: 1;
   margin-top: 2em;
   padding: 16px;
-  background-color: #CD1E33;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .page-content {
   position: relative;
-  top: -130px;
+  top: -110px;
   border-radius: 3px;
   background-color: #FDFFFC;
   margin: 0 16px;

@@ -51,12 +51,19 @@ class Leaderboard extends Component {
       )
     });
 
+    const filter = (
+      <ul className="filter-list">
+        <li className="selected"><a href="">Singles</a></li>
+        <li><a href="">Doubles</a></li>
+      </ul>
+    )
+
     return (
       <LeaderboardWrapper>
         <div className="page-header">
           <h1>Leaderboard</h1>
           <div className="page-filter">
-            Singles/Doubles
+            {filter}
           </div>
         </div>
 
@@ -85,6 +92,7 @@ const LeaderboardWrapper = styled.div`
 
   ol {
     margin: 0px;
+    margin-bottom: -4px;
     padding: 0px;
   }
 
@@ -98,7 +106,8 @@ const LeaderboardWrapper = styled.div`
     align-items: center;
     list-style: none;
     background: #E9ECEB;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    border-radius: 3px;
   }
 
   .selected-user{
@@ -134,6 +143,28 @@ const LeaderboardWrapper = styled.div`
   .user-rating {
     color: #747F88;
     font-weight: 100;
+  }
+
+  .filter-list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  .filter-list li {
+    display: flex;
+    flex: 1;
+  }
+
+  .filter-list li a {
+    flex: 1;
+    text-align: center;
+    border-radius: 3px;
+    padding: 10px 0;
+  }
+
+  .filter-list li.selected a {
+    background: rgba(0, 0, 0, 0.25);
   }
 `;
 
