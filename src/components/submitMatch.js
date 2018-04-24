@@ -35,12 +35,8 @@ class SubmitMatch extends Component {
   }
 
   handlePlayerChange(event) {
-    const state = { ...this.state };
     const user = this.props.users.find(x => x.userId === event.target.value);
-    state[event.target.dataset.id] = user;
-    state[`${event.target.dataset.id}EloRating`] = new PlayerEloRating(user.rating);
-    state.submitValid = this.getSubmitIsValid(state);
-    this.setState(state);
+    this.setUserState(user, { ...this.state }, event);
   }
 
   getSubmitIsValid(state) {
@@ -58,9 +54,12 @@ class SubmitMatch extends Component {
   }
 
   handlePlayerReset(event) {
-    const state = { ...this.state };
-    state[event.target.dataset.id] = null;
-    state[`${event.target.dataset.id}EloRating`] = null;
+    this.setUserState(null, { ...this.state }, event);
+  }
+
+  setUserState(user, state, event) {
+    state[event.target.dataset.id] = user;
+    state[`${event.target.dataset.id}EloRating`] = user ? new PlayerEloRating(user.rating) : null;
     state.submitValid = this.getSubmitIsValid(state);
     this.setState(state);
   }
@@ -188,7 +187,7 @@ class SubmitMatch extends Component {
         ...oppPlayerA,
         rating: oppPlayerAEloRating.getEloRating()
       }];
-      if (oppPlayerB){
+      if (oppPlayerB) {
         teamB.push({
           ...oppPlayerB,
           rating: oppPlayerBEloRating.getEloRating()
