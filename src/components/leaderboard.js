@@ -11,7 +11,10 @@ class Leaderboard extends Component {
     super(props);
     this.state = {
       selectedUser: null,
+      filter: 'singles',
     };
+
+    this.handleUserSelect = this.handleUserSelect.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +39,7 @@ class Leaderboard extends Component {
         null;
 
       return (
-        <a key={user.userId} href="" onClick={(e) => {this.handleUserSelect(e, user)}}>
+        <a key={user.userId} href={`/user/${user.userId}`} onClick={(e) => {this.handleUserSelect(e, user)}}>
           <li className={selectedUserClass}>
             <img src={user.photoURL} alt="" />
             <div className="user-name">

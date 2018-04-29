@@ -4,13 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const MatchCard = (props) => {
-    const {teamA, teamB} = props;
-    // const {
-    //     players,
-    //     accepted,
-    //     matchDate,
-    //     createdBy,
-    // } = match;
+    const {teamA, teamB, match} = props;
 
     let teamAImages = [];
     let teamBImages = [];
@@ -27,31 +21,33 @@ const MatchCard = (props) => {
         teamBNames.push(<span key={player.userId}>{player.name}</span>)
     })
 
-    // const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
-    // const teammateValue = teammate ? `${teammate.name} (${teammate.rating})` : '';
-    // const oppPlayerAValue = oppPlayerA ? `${oppPlayerA.name} (${oppPlayerA.rating})` : '';
-    // const oppPlayerBValue = oppPlayerB ? `${oppPlayerB.name} (${oppPlayerB.rating})` : '';
+    // this can probably be less gross
+    const winningTeam = match.players.find((player) => player.win === true).team;
+    const teamAWinClass = winningTeam === 'A' ? 'winner' : '';
+    const teamBWinClass = winningTeam === 'B' ? 'winner' : '';
 
     return (
         <MatchCardWrapper>
-            <div className="match-card">
-                <div className="team team-a winner">
-                    <div className="team-photos">
-                        {teamAImages}
-                    </div>
-                    <div className="team-meta">
-                        {teamANames}
-                    </div>
+            <div className="match-date">April 2, 2018</div>
+            <div className={`team team-a ${teamAWinClass}`}>
+                <div className="team-photos">
+                    {teamAImages}
                 </div>
-                <div className="team team-b">
-                    <div className="team-photos">
-                        {teamBImages}
-                    </div>
-                    <div className="team-meta">
-                        {teamBNames}
-                    </div>
+                <div className="team-meta">
+                    {teamANames}
                 </div>
-                <div className="match-vs">VS</div>
+                {winningTeam === 'A' &&
+                <div className="win-column">W</div>}
+            </div>
+            <div className={`team team-b ${teamBWinClass}`}>
+                <div className="team-photos">
+                    {teamBImages}
+                </div>
+                <div className="team-meta">
+                    {teamBNames}
+                </div>
+                {winningTeam === 'B' &&
+                <div className="win-column">W</div>}
             </div>
         </MatchCardWrapper>
     )
@@ -65,19 +61,22 @@ MatchCard.propTypes = {
 
 const MatchCardWrapper = styled.div`
   margin-bottom: 1em;
+  padding: 8px;
+  border-radius: 3px;
+  background: #FDFFFC;
+  box-shadow: 0 2px 2px 0 rgba(218,218,218,0.50);
 
-  .match-card {
-      display: flex;
-      position: relative;
-      max-width: 900px;
-      background: #EEE;
+  .match-date {
+      background: #E1E5E4;
+      color: #758289;
+      padding: 8px 16px;
   }
 
   .team {
       display: flex;
       align-items: center;
-      padding: 1em;
-      width: 50%;
+      padding: 10px;
+      background: #E9ECEB;
   }
 
   .team * {
@@ -88,12 +87,8 @@ const MatchCardWrapper = styled.div`
       display: block;
   }
 
-  .team-b {
-      flex-direction: row-reverse;
-  }
-
   .winner {
-      background: #AAA;
+      background: #2EC4B6;
   }
 
   .team-photos {
@@ -103,26 +98,18 @@ const MatchCardWrapper = styled.div`
   .team-photos img {
       display: block;
       background: black;
-      height: 60px;
-      width: 60px;
+      height: 48px;
+      width: 48px;
       margin-right: 1em;
+      border-radius: 50%;
   }
 
-  .team-b .team-photos img {
-      margin-right: 0;
-      margin-left: 1em;
-  }
-
-  .match-vs {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      height: 100%;
-      width: 100%;
+  .win-column {
+      margin-left: auto;
+      color: #008682;
+      font-size: 1.5em;
       font-weight: bold;
-      font-size: 2em;
-      font-style: italic;
+      padding-right: 16px;
   }
 `;
 
