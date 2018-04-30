@@ -69,13 +69,13 @@ const MatchCardWrapper = styled.div`
   .match-date {
       background: #E1E5E4;
       color: #758289;
-      padding: 8px 16px;
+      padding: 8px 8px;
   }
 
   .team {
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding: 8px;
       background: #E9ECEB;
   }
 
@@ -85,6 +85,7 @@ const MatchCardWrapper = styled.div`
 
   .team-meta span{
       display: block;
+      line-height: 1.5em;
   }
 
   .winner {
@@ -100,7 +101,7 @@ const MatchCardWrapper = styled.div`
       background: black;
       height: 48px;
       width: 48px;
-      margin-right: 1em;
+      margin-right: 8px;
       border-radius: 50%;
   }
 
@@ -109,7 +110,7 @@ const MatchCardWrapper = styled.div`
       color: #008682;
       font-size: 1.5em;
       font-weight: bold;
-      padding-right: 16px;
+      padding-right: 8px;
   }
 `;
 
