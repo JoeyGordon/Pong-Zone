@@ -16,13 +16,13 @@ const MatchCard = (props) => {
     teamA.forEach(player => {
         const matchPlayer = match.players.find((matchPlayer) => matchPlayer.userId === player.userId);
         teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />);
-        teamANames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift} (${matchPlayer.rating})`}</span>)
+        teamANames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.rating} (${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift})`}</span>)
     })
 
     teamB.forEach(player => {
         const matchPlayer = match.players.find((matchPlayer) => matchPlayer.userId === player.userId);
         teamBImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
-        teamBNames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift} (${matchPlayer.rating})`}</span>)
+        teamBNames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.rating} (${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift})`}</span>)
     })
 
     // this can probably be less gross

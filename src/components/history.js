@@ -51,7 +51,7 @@ const HistoryWrapper = styled.div`
         background: transparent;
         padding: 0;
         box-shadow: none;
-        top: -168px;
+        top: -218px;
     }
 `;
 

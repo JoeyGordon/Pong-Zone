@@ -95,6 +95,9 @@ const mapStateToProps = state => ({
 });
 
 const LeaderboardWrapper = styled.div`
+  .page-content {
+    padding-bottom: 4px;
+  }
 
   ol {
     margin: 0px;

@@ -7,6 +7,7 @@ import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
 import User from '../models/user';
+import styled from 'styled-components';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -203,10 +204,18 @@ class SubmitMatch extends Component {
     }
 
     return (
-      <div>
-        <h1>Submit Match</h1>
-        {submitCard}
-      </div>
+      <SubmitMatchWrapper>
+        <div className="page-header">
+          <h1>Submit A Match</h1>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon fill="white" points="0,100 100,0 100,100" />
+          </svg>
+        </div>
+
+        <div className="page-content">
+          {submitCard}
+        </div>
+      </SubmitMatchWrapper>
     )
   };
 }
@@ -215,5 +224,14 @@ const mapStateToProps = state => ({
   user: state.user,
   users: state.users,
 });
+
+const SubmitMatchWrapper = styled.div`
+  .page-content {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    top: -218px;
+  }
+`;
 
 export default connect(mapStateToProps)(SubmitMatch);

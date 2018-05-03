@@ -15,7 +15,6 @@ export const formatDate = (date) => {
         "August", "September", "October",
         "November", "December"
     ];
-
     const dateMonth = monthNames[date.getMonth()];
     const dateDay = date.getDate();
     const dateYear = date.getFullYear();

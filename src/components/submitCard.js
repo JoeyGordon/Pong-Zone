@@ -38,21 +38,19 @@ const SubmitCard = (props) => {
 
     return (
         <MatchCardWrapper>
-            <div className="match-card">
+            <div className="submit-card">
                 <div className="team team-a">
                     <div className="team-photos">
                         <img src={activePlayer.photoURL} alt="" />
                         <img src={teammate.photoURL} alt="" />
                     </div>
                     <div className="team-meta">
-                        {`${activePlayer.name} (${activePlayer.rating})`}
-                        <br />
-                        {teammateValue}
+                        <span>{`${activePlayer.name} (${activePlayer.rating})`}</span>
+                        <span>{teammateValue}</span>
                     </div>
-                    <div>{submitIsValid ?
-                        <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button> :
-                        null}
-                    </div>
+                    {submitIsValid ?
+                    <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button> :
+                    null}
                 </div>
                 <div className="team team-b">
                     <div className="team-photos">
@@ -60,16 +58,13 @@ const SubmitCard = (props) => {
                         <img src={oppPlayerB.photoURL} alt="" />
                     </div>
                     <div className="team-meta">
-                        {oppPlayerAValue}
-                        <br />
-                        {oppPlayerBValue}
+                        <span>{oppPlayerAValue}</span>
+                        <span>{oppPlayerBValue}</span>
                     </div>
-                    <div>{submitIsValid ?
-                        <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button> :
-                        null}
-                    </div>
+                    {submitIsValid ?
+                    <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button> :
+                    null}
                 </div>
-                <div className="match-vs">VS</div>
             </div>
         </MatchCardWrapper>
     )
@@ -89,36 +84,34 @@ SubmitCard.propTypes = {
 
 const MatchCardWrapper = styled.div`
   margin-bottom: 1em;
+  padding: 8px;
+  border-radius: 3px;
+  background: #FDFFFC;
+  box-shadow: 0 2px 2px 0 rgba(218,218,218,0.50);
 
-  .match-card {
-      display: flex;
-      position: relative;
-      max-width: 900px;
-      background: #EEE;
+  .submit-card {
+    border-radius: 3px;
+    background: #FDFFFC;
   }
 
   .team {
       display: flex;
       align-items: center;
-      padding: 1em;
-      width: 50%;
-  }
-
-  .team * {
-      z-index: 2;
-  }
-
-  .team-meta {
-    color: #EEE
+      padding: 8px;
+      background: #E9ECEB;
   }
 
   .team-a {
-    background: #33F;
+      margin-bottom: 2px;
   }
 
   .team-b {
-      flex-direction: row-reverse;
-      background: #F33;
+      background: #E1E5E4;
+  }
+
+  .team-meta span{
+      display: block;
+      line-height: 1.5em;
   }
 
   .team-photos {
@@ -128,27 +121,14 @@ const MatchCardWrapper = styled.div`
   .team-photos img {
       display: block;
       background: black;
-      height: 60px;
-      width: 60px;
-      margin-right: 1em;
+      height: 48px;
+      width: 48px;
+      margin-right: 8px;
+      border-radius: 50%;
   }
 
-  .team-b .team-photos img {
-      margin-right: 0;
-      margin-left: 1em;
-  }
-
-  .match-vs {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      font-weight: bold;
-      font-size: 2em;
-      font-style: italic;
-      color: #FFF
+  .team button {
+      margin-left: auto;
   }
 `;
 
