@@ -7,3 +7,18 @@ export const createFirebaseGeneric = (customObject) => {
     });
     return firebaseGeneric;
 }
+
+export const formatDate = (date) => {
+    const monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    const dateMonth = monthNames[date.getMonth()];
+    const dateDay = date.getDate();
+    const dateYear = date.getFullYear();
+
+    return `${dateMonth} ${dateDay}, ${dateYear}`;
+}

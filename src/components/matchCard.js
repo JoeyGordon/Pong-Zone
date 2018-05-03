@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import * as utils from '../utils/utils';
+
 const MatchCard = (props) => {
     const {teamA, teamB, match} = props;
 
@@ -28,7 +30,7 @@ const MatchCard = (props) => {
 
     return (
         <MatchCardWrapper>
-            <div className="match-date">April 2, 2018</div>
+            <div className="match-date">{utils.formatDate(match.matchDate)}</div>
             <div className={`team team-a ${teamAWinClass}`}>
                 <div className="team-photos">
                     {teamAImages}
