@@ -21,6 +21,7 @@ export default class Match {
             this.createdDate = matchOptions.createdDate || new Date();
             this.matchDate = matchOptions.matchDate || new Date();
             this.accepted = matchOptions.accepted || false;
+            this.isDoublesMatch = matchOptions.isDoubles || false;
             
         }
     }

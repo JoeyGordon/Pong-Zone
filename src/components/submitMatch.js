@@ -116,8 +116,8 @@ class SubmitMatch extends Component {
         ratingShift: oppPlayerBEloRating.getShift()
       }));
     }
-
-    const newMatch = matchesActions.recordMatch(matchPlayers, activePlayer.userId, new Date());
+    const isDoubles = matchPlayers.length === 4;
+    const newMatch = matchesActions.recordMatch(matchPlayers, isDoubles, activePlayer.userId, new Date());
 
     this.setState({
       ...this.state,
