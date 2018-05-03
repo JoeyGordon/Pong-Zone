@@ -18,15 +18,15 @@ export default class PlayerEloRating {
         const eloRating = privateData.get(this).eloRating;
         const shift = Math.round(k * (Number(winLoss) - eA(eloRating, otherTeamRating)));
 
-        const newEloRating = eloRating + shift;
         privateData.set(this, {
-            eloRating: newEloRating < 0 ? 0 : newEloRating,
+            ...privateData.get(this),
             shift
         });
     }
 
     getEloRating() {
-        return privateData.get(this).eloRating;
+        const newEloRating = privateData.get(this).eloRating + privateData.get(this).shift;
+        return newEloRating < 0 ? 0 : newEloRating;
     };
 
     getShift() {

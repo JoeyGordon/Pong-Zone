@@ -4,7 +4,7 @@ const getInitialState = () => ([]);
 
 export default function teams(state = getInitialState(), action = {}) {
   switch (action.type) {
-    case teamsActionTypes.SET_ALL_teams:
+    case teamsActionTypes.SET_ALL_TEAMS:
       return action.data
     default:
       return state;
