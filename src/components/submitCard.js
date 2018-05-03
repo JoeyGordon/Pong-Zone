@@ -11,28 +11,24 @@ const SubmitCard = (props) => {
         handlePlayerChange,
         handlePlayerReset,
         handleWinnerClick,
-        handleSubmitClick,
         submitIsValid,
-        winningTeam,
     } = props;
 
     const playerOptions = oppPlayers.map(x => <option key={x.userId || ''} value={x.userId}>{x.name}</option>);
 
-    const activePlayerValue = activePlayer ? `${activePlayer.name} (${activePlayer.rating})` : '';
-
-    const teammateValue = teammate ?
+    const teammateValue = teammate.name ?
         <a data-id="teammate" onClick={handlePlayerReset}>{`${teammate.name} (${teammate.rating})`}</a> :
         <select data-id="teammate" onChange={handlePlayerChange}>
             {playerOptions}
         </select>
 
-    const oppPlayerAValue = oppPlayerA ?
+    const oppPlayerAValue = oppPlayerA.name ?
         <a data-id="oppPlayerA" onClick={handlePlayerReset}>{`${oppPlayerA.name} (${oppPlayerA.rating})`}</a> :
         <select data-id="oppPlayerA" onChange={handlePlayerChange}>
             {playerOptions}
         </select>
 
-    const oppPlayerBValue = oppPlayerB ?
+    const oppPlayerBValue = oppPlayerB.name ?
         <a data-id="oppPlayerB" onClick={handlePlayerReset}>{`${oppPlayerB.name} (${oppPlayerB.rating})`}</a> :
         <select data-id="oppPlayerB" onChange={handlePlayerChange}>
             {playerOptions}
@@ -43,42 +39,36 @@ const SubmitCard = (props) => {
             <div className="match-card">
                 <div className="team team-a">
                     <div className="team-photos">
-                        <img src="http://via.placeholder.com/60x60" alt="" />
-                        <img src="http://via.placeholder.com/60x60" alt="" />
+                        <img src={activePlayer.photoURL} alt="" />
+                        <img src={teammate.photoURL} alt="" />
                     </div>
                     <div className="team-meta">
-                        {activePlayerValue}
+                        {`${activePlayer.name} (${activePlayer.rating})`}
                         <br />
                         {teammateValue}
                     </div>
-                    <div>{
-                        submitIsValid && winningTeam === null ?
-                            <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button> :
-                            null
-                    }</div>
+                    <div>{submitIsValid ?
+                        <button data-winning-team="true" onClick={handleWinnerClick}>Winner</button> :
+                        null}
+                    </div>
                 </div>
                 <div className="team team-b">
                     <div className="team-photos">
-                        <img src="http://via.placeholder.com/60x60" alt="" />
-                        <img src="http://via.placeholder.com/60x60" alt="" />
+                        <img src={oppPlayerA.photoURL} alt="" />
+                        <img src={oppPlayerB.photoURL} alt="" />
                     </div>
                     <div className="team-meta">
                         {oppPlayerAValue}
                         <br />
                         {oppPlayerBValue}
                     </div>
-                    <div>{
-                        submitIsValid && winningTeam === null ?
-                            <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button> :
-                            null
-                    }</div>
+                    <div>{submitIsValid ?
+                        <button data-winning-team="false" onClick={handleWinnerClick}>Winner</button> :
+                        null}
+                    </div>
                 </div>
                 <div className="match-vs">VS</div>
             </div>
-            {submitIsValid && winningTeam !== null ?
-                <div><button onClick={handleSubmitClick}>Submit</button></div> :
-                null
-            }
         </MatchCardWrapper>
     )
 };
