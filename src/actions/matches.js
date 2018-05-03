@@ -11,8 +11,8 @@ export function setMatches(matches) {
     }
 }
 
-export function recordMatch(players, createdBy, matchDate = new Date()) {
-    const options = { players, matchDate, createdBy }
+export function recordMatch(players, isDoubles, createdBy, matchDate = new Date()) {
+    const options = { players, isDoubles, matchDate, createdBy }
     const newMatch = new Match(options);
     const newMatchRecord = utils.createFirebaseGeneric(newMatch);
 
@@ -88,7 +88,6 @@ export function recordMatch(players, createdBy, matchDate = new Date()) {
             })
         });
 
-            
         })
     .catch(function(error) {
         console.error("Error writing document: ", error);
