@@ -22,8 +22,7 @@ class App extends Component {
       users.forEach(user => {
         const userDetails = user.data();
         userDetails.userId = user.id;
-        usersArray.push(userDetails);
-        
+        usersArray.push(userDetails);        
       });
       this.props.dispatch(usersActions.setAllUsers(usersArray));
     });

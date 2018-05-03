@@ -1,10 +1,10 @@
 export default class User {
     constructor(userOptions) {
         if (userOptions) {
-            if(!userOptions.displayName) throw new Error('Cannot create new user without displayName');
+            if(!userOptions.displayName && !userOptions.name) throw new Error('Cannot create new user without displayName');
             if(!userOptions.email) throw new Error('Cannot create new user without email');
 
-            this.name = userOptions.displayName;
+            this.name = userOptions.displayName || userOptions.name;
             this.email = userOptions.email;
             this.createdDate = userOptions.createdDate || new Date();
             this.matches = userOptions.matches || [];

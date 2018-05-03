@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import * as utils from '../utils/utils';
+
 const MatchCard = (props) => {
     const {teamA, teamB, match} = props;
 
@@ -12,13 +14,15 @@ const MatchCard = (props) => {
     let teamBNames = [];
 
     teamA.forEach(player => {
+        const matchPlayer = match.players.find((matchPlayer) => matchPlayer.userId === player.userId);
         teamAImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />);
-        teamANames.push(<span key={player.userId}>{player.name}</span>)
+        teamANames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift} (${matchPlayer.rating})`}</span>)
     })
 
     teamB.forEach(player => {
+        const matchPlayer = match.players.find((matchPlayer) => matchPlayer.userId === player.userId);
         teamBImages.push(<img src={player.photoURL} alt="" key={player.photoURL} />)
-        teamBNames.push(<span key={player.userId}>{player.name}</span>)
+        teamBNames.push(<span key={player.userId}>{`${player.name} ${matchPlayer.ratingShift > 0 ? '+' : ''}${matchPlayer.ratingShift} (${matchPlayer.rating})`}</span>)
     })
 
     // this can probably be less gross
@@ -28,7 +32,7 @@ const MatchCard = (props) => {
 
     return (
         <MatchCardWrapper>
-            <div className="match-date">April 2, 2018</div>
+            <div className="match-date">{utils.formatDate(match.matchDate)}</div>
             <div className={`team team-a ${teamAWinClass}`}>
                 <div className="team-photos">
                     {teamAImages}

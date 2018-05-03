@@ -6,7 +6,7 @@ import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
-// import Match from '../models/match';
+import User from '../models/user';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -21,7 +21,6 @@ class SubmitMatch extends Component {
       oppPlayerBEloRating: null,
       submitValid: false,
       submitted: false,
-      winningTeam: null,
       newMatch: null,
     };
 
@@ -30,7 +29,6 @@ class SubmitMatch extends Component {
     this.handlePlayerChange = this.handlePlayerChange.bind(this);
     this.handlePlayerReset = this.handlePlayerReset.bind(this);
     this.handleWinnerClick = this.handleWinnerClick.bind(this);
-    this.handleSubmitClick = this.handleSubmitClick.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
 
@@ -65,14 +63,6 @@ class SubmitMatch extends Component {
   }
 
   handleWinnerClick(event) {
-    const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
-    this.setState({
-      ...this.state,
-      winningTeam: winningTeam,
-    });
-  }
-
-  handleSubmitClick(event) {
     const { user, users } = this.props;
     const activePlayer = users.find(x => x.userId === user.userId);
     const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
@@ -82,10 +72,10 @@ class SubmitMatch extends Component {
       oppPlayerB,
       teammateEloRating,
       oppPlayerAEloRating,
-      oppPlayerBEloRating,
-      winningTeam,
+      oppPlayerBEloRating
     } = this.state;
 
+    const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
     const matchPlayers = [];
 
     activeUserEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
@@ -96,7 +86,6 @@ class SubmitMatch extends Component {
       rating: activeUserEloRating.getEloRating(),
       ratingShift: activeUserEloRating.getShift()
     }));
-
     if (teammateEloRating) {
       teammateEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
       matchPlayers.push(new MatchPlayer({
@@ -156,7 +145,6 @@ class SubmitMatch extends Component {
       oppPlayerBEloRating,
       submitValid,
       submitted,
-      winningTeam,
       newMatch,
     } = this.state;
 
@@ -199,20 +187,18 @@ class SubmitMatch extends Component {
           match={newMatch}
           teamA={teamA}
           teamB={teamB} />
-        <button onClick={this.handleReset}>Reset</button>
+        <button onClick={this.handleReset}>Submit New Match</button>
       </div>
     } else {
       submitCard = <SubmitCard
         oppPlayers={oppPlayers}
-        activePlayer={activePlayer}
-        teammate={teammate}
-        oppPlayerA={oppPlayerA}
-        oppPlayerB={oppPlayerB}
+        activePlayer={new User(activePlayer)}
+        teammate={new User(teammate)}
+        oppPlayerA={new User(oppPlayerA)}
+        oppPlayerB={new User(oppPlayerB)}
         handlePlayerChange={this.handlePlayerChange}
         handlePlayerReset={this.handlePlayerReset}
         handleWinnerClick={this.handleWinnerClick}
-        handleSubmitClick={this.handleSubmitClick}
-        winningTeam={winningTeam}
         submitIsValid={submitValid} />
     }
 
