@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import User from '../models/user';
 
 const SubmitCard = (props) => {
     const {
-        activePlayer,
         oppPlayers,
+        activePlayer,
         teammate,
         oppPlayerA,
         oppPlayerB,
@@ -71,6 +73,18 @@ const SubmitCard = (props) => {
             </div>
         </MatchCardWrapper>
     )
+};
+
+SubmitCard.propTypes = {
+    oppPlayers: PropTypes.arrayOf(PropTypes.object).isRequired,
+    activePlayer: PropTypes.instanceOf(User).isRequired,
+    teammate: PropTypes.instanceOf(User).isRequired,
+    oppPlayerA: PropTypes.instanceOf(User).isRequired,
+    oppPlayerB: PropTypes.instanceOf(User).isRequired,
+    handlePlayerChange: PropTypes.func.isRequired,
+    handlePlayerReset: PropTypes.func.isRequired,
+    handleWinnerClick: PropTypes.func.isRequired,
+    submitIsValid: PropTypes.bool.isRequired,
 };
 
 const MatchCardWrapper = styled.div`

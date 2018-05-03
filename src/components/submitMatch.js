@@ -6,7 +6,7 @@ import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
-// import Match from '../models/match';
+import User from '../models/user';
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -187,15 +187,15 @@ class SubmitMatch extends Component {
           match={newMatch}
           teamA={teamA}
           teamB={teamB} />
-        <button onClick={this.handleReset}>Reset</button>
+        <button onClick={this.handleReset}>Submit New Match</button>
       </div>
     } else {
       submitCard = <SubmitCard
         oppPlayers={oppPlayers}
-        activePlayer={activePlayer ? activePlayer : new MatchPlayer()}
-        teammate={teammate ? teammate : new MatchPlayer()}
-        oppPlayerA={oppPlayerA ? oppPlayerA : new MatchPlayer()}
-        oppPlayerB={oppPlayerB ? oppPlayerB : new MatchPlayer()}
+        activePlayer={new User(activePlayer)}
+        teammate={new User(teammate)}
+        oppPlayerA={new User(oppPlayerA)}
+        oppPlayerB={new User(oppPlayerB)}
         handlePlayerChange={this.handlePlayerChange}
         handlePlayerReset={this.handlePlayerReset}
         handleWinnerClick={this.handleWinnerClick}
