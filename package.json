@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^5.0.19",
     "firebase": "^4.7.0",
     "firebase-admin": "^5.7.0",
     "lodash": "^4.17.5",
