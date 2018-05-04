@@ -185,17 +185,17 @@ class SubmitMatch extends Component {
           team.matches.push(newMatch.matchId);
         });
         teamsActions.updateTeams(doublesTeams);
-
-        this.setState({
-          ...this.state,
-          activeUserEloRating: activeUserEloRating,
-          teammateEloRating: teammateEloRating,
-          oppPlayerAEloRating: oppPlayerAEloRating,
-          oppPlayerBEloRating: oppPlayerBEloRating,
-          submitted: true,
-          newMatch,
-        });
       }
+
+      this.setState({
+        ...this.state,
+        activeUserEloRating: activeUserEloRating,
+        teammateEloRating: teammateEloRating,
+        oppPlayerAEloRating: oppPlayerAEloRating,
+        oppPlayerBEloRating: oppPlayerBEloRating,
+        submitted: true,
+        newMatch,
+      });
     })
   }
 
