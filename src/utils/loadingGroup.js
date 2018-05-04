@@ -15,14 +15,3 @@ export default class LoadingGroup {
         return new LoadingGroup(this.fetchesInProgress - 1);
     }
 }
-
-// LoadingGroup.prototype.startFetch = () => {
-//     return LoadingGroup(this.fetchesInProgress + 1);
-// }
-
-// LoadingGroup.prototype.completeFetch = () => {
-//     if(this.fetchesInProgress === 0) {
-//         throw new Error('Could not complete fetch, none were in progress.');
-//     }
-//     return LoadingGroup(this.fetchesInProgress - 1);;
-// }
