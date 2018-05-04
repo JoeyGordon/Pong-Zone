@@ -5,17 +5,20 @@ import PropTypes from "prop-types";
 
 import './app.css';
 import { db } from './firebase';
+import LoadingScreen from './components/loadingScreen';
 import MainLayout from './components/mainLayout';
 import ScrollToTop from './scrollToTop';
 import withUserAuthedAndLoaded from './withUserAuthedAndLoaded';
 import * as usersActions from './actions/users';
 import * as matchesActions from './actions/matches';
 import * as teamsActions from './actions/teams';
+import * as loadingActions from './actions/loading';
 
 const MAX_MATCHES_RECORDS = 100;
 
 class App extends Component {
   componentWillMount() {
+    this.props.dispatch(loadingActions.startLoading());
     // setup users listener and populate redux with full collection
     db.collection('users')
     .onSnapshot(users => {
@@ -23,10 +26,14 @@ class App extends Component {
       users.forEach(user => {
         const userDetails = user.data();
         userDetails.userId = user.id;
-        usersArray.push(userDetails);        
+        usersArray.push(userDetails);
       });
       this.props.dispatch(usersActions.setAllUsers(usersArray));
+      this.props.dispatch(loadingActions.stopLoading());
     });
+
+
+    this.props.dispatch(loadingActions.startLoading());
     // setup matches listener and populate redux with last 100 records
     db.collection('matches').orderBy('matchDate', 'desc').limit(MAX_MATCHES_RECORDS)
     .onSnapshot(matches => {
@@ -37,6 +44,7 @@ class App extends Component {
         matchesArray.push(matchDetails);
       });
       this.props.dispatch(matchesActions.setMatches(matchesArray));
+      this.props.dispatch(loadingActions.stopLoading());
     });
     // set up teams listener and populate redux with the full collection
     db.collection('teams')
@@ -52,6 +60,9 @@ class App extends Component {
   };
 
   render() {
+    if(this.props.loading && this.props.loading.isLoading) {
+      return <LoadingScreen />
+    }
     return (
       <Router className="App">
         <ScrollToTop>
@@ -64,6 +75,11 @@ class App extends Component {
 
 App.propTypes = {
   dispatch: PropTypes.func,
+  loading: PropTypes.object,
 }
 
-export default connect()(withUserAuthedAndLoaded(App));
+const mapStateToProps = state => ({
+  loading: state.loading
+});
+
+export default connect(mapStateToProps)(withUserAuthedAndLoaded(App));
