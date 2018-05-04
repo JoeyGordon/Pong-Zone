@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { firebase, auth, db } from './firebase';
 import * as userActions from './actions/user';
+import * as loadingActions from './actions/loading';
 import User from './models/user';
 import * as utils from './utils/utils';
 
@@ -50,6 +51,7 @@ const withUserAuthedAndLoaded = (Component) => {
 
         componentDidMount() {
             const { dispatch } = this.props
+            dispatch(loadingActions.startLoading());
 
             auth.getRedirectResult()
             .then(result => {
@@ -58,7 +60,7 @@ const withUserAuthedAndLoaded = (Component) => {
                 }
             }).catch(function (error) {
                 throw error;
-            });
+                });
 
             firebase.auth().onAuthStateChanged(authUser=> {
                 if (authUser) {
@@ -71,12 +73,13 @@ const withUserAuthedAndLoaded = (Component) => {
                     dispatch(userActions.logOutUser());
                 }
             });
-            
+
+            dispatch(loadingActions.stopLoading());
         }
 
         render() {
             return (
-                <Component dispatch={this.props.dispatch}/>
+                <Component dispatch={this.props.dispatch} loading={this.props.loading}/>
             );
         }
     }
