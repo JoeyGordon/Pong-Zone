@@ -10,7 +10,7 @@ export default class LoadingGroup {
 
     completeFetch() {
         if (this.fetchesInProgress === 0) {
-            throw new Error('Could not complete fetch, none were in progress.');
+            return new LoadingGroup(this.fetchesInProgress);
         }
         return new LoadingGroup(this.fetchesInProgress - 1);
     }

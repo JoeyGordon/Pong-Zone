@@ -32,7 +32,6 @@ class App extends Component {
       this.props.dispatch(loadingActions.stopLoading());
     });
 
-
     this.props.dispatch(loadingActions.startLoading());
     // setup matches listener and populate redux with last 100 records
     db.collection('matches').orderBy('matchDate', 'desc').limit(MAX_MATCHES_RECORDS)
@@ -46,6 +45,8 @@ class App extends Component {
       this.props.dispatch(matchesActions.setMatches(matchesArray));
       this.props.dispatch(loadingActions.stopLoading());
     });
+
+    this.props.dispatch(loadingActions.startLoading());
     // set up teams listener and populate redux with the full collection
     db.collection('teams')
     .onSnapshot(teams => {
@@ -56,6 +57,7 @@ class App extends Component {
         teamsArray.push(teamDetails);
       });
       this.props.dispatch(teamsActions.setAllTeams(teamsArray));
+      this.props.dispatch(loadingActions.stopLoading());
     });
   };
 
