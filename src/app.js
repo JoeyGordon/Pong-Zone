@@ -10,6 +10,7 @@ import ScrollToTop from './scrollToTop';
 import withUserAuthedAndLoaded from './withUserAuthedAndLoaded';
 import * as usersActions from './actions/users';
 import * as matchesActions from './actions/matches';
+import * as teamsActions from './actions/teams';
 
 const MAX_MATCHES_RECORDS = 100;
 
@@ -36,6 +37,17 @@ class App extends Component {
         matchesArray.push(matchDetails);
       });
       this.props.dispatch(matchesActions.setMatches(matchesArray));
+    });
+    // set up teams listener and populate redux with the full collection
+    db.collection('teams')
+    .onSnapshot(teams => {
+      const teamsArray = [];
+      teams.forEach(team => {
+        const teamDetails = team.data();
+        teamDetails.teamId = team.id;
+        teamsArray.push(teamDetails);
+      });
+      this.props.dispatch(teamsActions.setAllTeams(teamsArray));
     });
   };
 

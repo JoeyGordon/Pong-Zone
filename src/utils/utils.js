@@ -21,3 +21,8 @@ export const formatDate = (date) => {
 
     return `${dateMonth} ${dateDay}, ${dateYear}`;
 }
+
+export const getTeamIdFromUserIds = (userIdA, userIdB) => {
+    if(userIdA === userIdB) throw new Error('Teammates cannot be the same person');
+    return userIdA > userIdB ? userIdB + userIdA : userIdA + userIdB;
+}
