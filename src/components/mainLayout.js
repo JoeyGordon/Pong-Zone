@@ -8,6 +8,7 @@ import * as auth from '../auth';
 import { provider } from '../firebase';
 
 import Leaderboard from './leaderboard';
+import LeaderboardDoubles from './leaderboardDoubles';
 import History from './history';
 import SignIn from './signIn';
 import SubmitMatch from "./submitMatch";
@@ -74,6 +75,7 @@ const MainLayout = (props) => {
 
             <div className="main-content">
                 <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
+                <Route exact path={routes.LEADERBOARDDOUBLES} component={() => <LeaderboardDoubles />} />
                 <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
                 <Route exact path={routes.HISTORY} component={() => <History />} />
                 <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />

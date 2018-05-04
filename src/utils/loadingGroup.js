@@ -10,7 +10,7 @@ export default class LoadingGroup {
 
     completeFetch() {
         if (this.fetchesInProgress === 0) {
-            return new LoadingGroup(this.fetchesInProgress);
+            return new LoadingGroup();
         }
         return new LoadingGroup(this.fetchesInProgress - 1);
     }

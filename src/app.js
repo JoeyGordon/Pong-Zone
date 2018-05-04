@@ -62,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    if(this.props.loading && this.props.loading.isLoading) {
+    if(this.props.loading.isLoading) {
       return <LoadingScreen />
     }
     return (
