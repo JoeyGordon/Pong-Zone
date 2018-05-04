@@ -181,6 +181,11 @@ const LeaderboardWrapper = styled.div`
       max-width: 800px;
       margin: 0 auto;
     }
+
+    img {
+      height: 70px;
+      width: 70px;
+    }
   }
 `;
 

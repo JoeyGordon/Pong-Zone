@@ -114,6 +114,13 @@ const MatchCardWrapper = styled.div`
       font-weight: bold;
       padding-right: 8px;
   }
+
+  @media screen and (min-width: 800px) {
+    .team-photos img  {
+        height: 70px;
+        width: 70px;
+    }
+  }
 `;
 
 export default MatchCard;
