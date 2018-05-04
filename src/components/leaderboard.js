@@ -175,6 +175,13 @@ const LeaderboardWrapper = styled.div`
   .filter-list li.selected a {
     background: rgba(0, 0, 0, 0.25);
   }
+
+  @media screen and (min-width: 800px) {
+    .filter-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  }
 `;
 
 export default connect(mapStateToProps)(Leaderboard);
