@@ -7,7 +7,6 @@ import * as utils from '../utils/utils';
 
 const MatchCard = (props) => {
     const {teamA, teamB, match} = props;
-
     let teamAImages = [];
     let teamBImages = [];
     let teamANames = [];
@@ -29,7 +28,6 @@ const MatchCard = (props) => {
     const winningTeam = match.players.find((player) => player.win === true).team;
     const teamAWinClass = winningTeam === 'A' ? 'winner' : '';
     const teamBWinClass = winningTeam === 'B' ? 'winner' : '';
-
     return (
         <MatchCardWrapper>
             <div className="match-date">{utils.formatDate(match.matchDate)}</div>

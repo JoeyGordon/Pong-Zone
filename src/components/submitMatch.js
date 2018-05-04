@@ -2,12 +2,18 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PlayerEloRating from '../models/playerEloRating';
+import TeamEloRating from '../models/teamEloRating';
 import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
 import User from '../models/user';
 import styled from 'styled-components';
+import DoublesTeam from '../models/doublesTeam';
+import * as Utils from '../utils/utils';
+import * as teamsActions from '../actions/teams';
+import { configureForStandalone } from '@firebase/firestore/dist/cjs/src/platform/config';
+
 
 class SubmitMatch extends Component {
   constructor(props) {
@@ -64,7 +70,7 @@ class SubmitMatch extends Component {
   }
 
   handleWinnerClick(event) {
-    const { user, users } = this.props;
+    const { user, users, teams } = this.props;
     const activePlayer = users.find(x => x.userId === user.userId);
     const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
     const {
@@ -73,11 +79,13 @@ class SubmitMatch extends Component {
       oppPlayerB,
       teammateEloRating,
       oppPlayerAEloRating,
-      oppPlayerBEloRating
+      oppPlayerBEloRating,
     } = this.state;
 
     const winningTeam = Boolean(event.target.dataset.winningTeam === 'true');
     const matchPlayers = [];
+    const doublesTeams = [];
+    let isDoubles = false;
 
     activeUserEloRating.ratingShift(winningTeam, oppPlayerAEloRating, oppPlayerBEloRating);
     matchPlayers.push(new MatchPlayer({
@@ -116,18 +124,79 @@ class SubmitMatch extends Component {
         ratingShift: oppPlayerBEloRating.getShift()
       }));
     }
-    const isDoubles = matchPlayers.length === 4;
-    const newMatch = matchesActions.recordMatch(matchPlayers, isDoubles, activePlayer.userId, new Date());
 
-    this.setState({
-      ...this.state,
-      activeUserEloRating: activeUserEloRating,
-      teammateEloRating: teammateEloRating,
-      oppPlayerAEloRating: oppPlayerAEloRating,
-      oppPlayerBEloRating: oppPlayerBEloRating,
-      submitted: true,
-      newMatch,
-    });
+    // If we're in a doubles situation, create the doublesTeams and doublesTeamMatches
+    if(matchPlayers.length === 4){
+      isDoubles = true;
+
+      // create teamIds
+      const teamId = Utils.getTeamIdFromUserIds(activePlayer.userId, teammate.userId);
+      const oppTeamId = Utils.getTeamIdFromUserIds(oppPlayerA.userId, oppPlayerB.userId);
+      
+      // find teams or else create new ones we will persist later
+      const team = teams.find(t => t.teamId === teamId) || new DoublesTeam({
+        teamId,
+        members: [activePlayer.userId, teammate.userId],
+        matches: [],
+        rating: -1,
+        wins: 0,
+        losses: 0,
+      });
+
+      const oppTeamMembers = [oppPlayerA.userId, oppPlayerB.userId];
+      const oppTeam = teams.find(t => t.teamId === oppTeamId) || new DoublesTeam({
+        teamId: oppTeamId,
+        members: oppTeamMembers,
+        matches: [],
+        rating: -1,
+        wins: 0,
+        losses: 0,
+      });
+
+      // winningTeam represents the fact that 'team' won. If false, then oppTeam won.
+      if(winningTeam){
+        team.wins++;
+        oppTeam.losses++;
+      }
+      else{
+        team.losses++;
+        team.wins++;
+      }
+
+      const teamEloRating = team.rating === -1 ? new TeamEloRating(activeUserEloRating, teammateEloRating) : new TeamEloRating(team.rating);
+      const oppTeamEloRating = oppTeam.rating === -1 ? new TeamEloRating(oppPlayerAEloRating, oppPlayerBEloRating) : new TeamEloRating(oppTeam.rating);
+
+      teamEloRating.ratingShift(winningTeam, oppTeamEloRating);
+      oppTeamEloRating.ratingShift(!winningTeam, teamEloRating);
+      
+      team.rating = teamEloRating.getEloRating();
+      oppTeam.rating = oppTeamEloRating.getEloRating();
+
+      doublesTeams.push(team);
+      doublesTeams.push(oppTeam);
+
+    }
+
+
+    matchesActions.recordMatch(matchPlayers, isDoubles, activePlayer.userId, new Date())
+    .then((newMatch) => {
+      if (isDoubles){
+        doublesTeams.forEach(team => {
+          team.matches.push(newMatch.matchId);
+        });
+        teamsActions.updateTeams(doublesTeams);
+
+        this.setState({
+          ...this.state,
+          activeUserEloRating: activeUserEloRating,
+          teammateEloRating: teammateEloRating,
+          oppPlayerAEloRating: oppPlayerAEloRating,
+          oppPlayerBEloRating: oppPlayerBEloRating,
+          submitted: true,
+          newMatch,
+        });
+      }
+    })
   }
 
   handleReset(event) {
@@ -223,6 +292,7 @@ class SubmitMatch extends Component {
 const mapStateToProps = state => ({
   user: state.user,
   users: state.users,
+  teams: state.teams,
 });
 
 const SubmitMatchWrapper = styled.div`

@@ -1,7 +1,6 @@
 export default class UserMatch {
     constructor(userMatchOptions) {
         if (userMatchOptions) {
-            console.log('USER MATCH OPTIONS TESTSSSSSSSS', userMatchOptions);
             if(!userMatchOptions.userId) throw new Error('Bad user id');
             if(!userMatchOptions.matchId) throw new Error('Bad match id');
             if(!userMatchOptions.matchDate) throw new Error('Bad match date');

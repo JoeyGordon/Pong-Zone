@@ -17,15 +17,17 @@ export function recordMatch(players, isDoubles, createdBy, matchDate = new Date(
     const newMatchRecord = utils.createFirebaseGeneric(newMatch);
 
     let newMatchId;
-    db.collection("matches").add(newMatchRecord)
+    return db.collection("matches").add(newMatchRecord)
     .then(function(result) {
         console.log("Document successfully written!");
         newMatchId = result.id;
-
+        newMatch.matchId = newMatchId;
+        newMatch.accepted = true;
         // flip the bit on the match and persist
         const matchRef = db.collection('matches').doc(newMatchId);
         matchRef.update({
             accepted: true,
+            matchId: newMatchId,
         }).then(function() {
             console.log("Document successfully updated!");
         })
@@ -45,12 +47,9 @@ export function recordMatch(players, isDoubles, createdBy, matchDate = new Date(
 
                     const user = response.data();
                     user.userId = response.id;
-                    console.log('USER', user);
                     // now pull the matches collection
                     const playerMatches = user.matches;
                     const matchPlayer = match.players.find(player => player.userId === user.userId);
-                    console.log('Match Player', matchPlayer);
-                    console.log('Match Players', match.players);
                     const opponents = match.players.filter(player => 
                         player.team !== matchPlayer.team).map(player => {
                             return player.userId
@@ -62,7 +61,6 @@ export function recordMatch(players, isDoubles, createdBy, matchDate = new Date(
                         teammatePlayer = match.players.find(player => player.team === matchPlayer.team && player.userId !== matchPlayer.userId);
                     }
 
-                    console.log('teammate player', teammatePlayer);
                     // create the new user match
                     const userMatchOptions = {
                         userId: user.userId,
@@ -75,25 +73,27 @@ export function recordMatch(players, isDoubles, createdBy, matchDate = new Date(
                         rating: matchPlayer.rating,
                         ratingShift: matchPlayer.ratingShift,
                     }
-                    console.log('USER MATCH OPTIONS', userMatchOptions);
                     const newUserMatch = new UserMatch(userMatchOptions);
                     playerMatches.push(utils.createFirebaseGeneric(newUserMatch));
+
+                    const wins = user.wins + 1;
                     // update the record in firebase
                     userRef.update({
                         matches: playerMatches,
                         rating: matchPlayer.rating,
+                        wins: wins,
                     });
                 });
                 
             })
         });
 
+        }).then(()=> {
+            return Promise.resolve(newMatch);
         })
     .catch(function(error) {
         console.error("Error writing document: ", error);
     });
-
-    return newMatch;
 }
 
 export function acceptMatch(match) {
