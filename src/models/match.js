@@ -15,10 +15,10 @@ export default class Match {
                 
             this.createdBy = matchOptions.createdBy;
             this.players = genericPlayers;
-            this.matchId = matchOptions.matchId || null;
+            this.matchId = utils.getId();
             this.createdDate = matchOptions.createdDate || new Date();
             this.matchDate = matchOptions.matchDate || new Date();
-            this.accepted = matchOptions.accepted || false;
+            this.accepted = matchOptions.accepted || true;
             this.isDoublesMatch = matchOptions.isDoubles || false;
             
         }

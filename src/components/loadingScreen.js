@@ -17,8 +17,8 @@ const LoadingScreenWrapper = styled.div`
   color: #FDFFFC;
   height: 100%;
   width: 100%;
-  font-weight: bold;
-  font-size: 2em;
+  font-weight: 100;
+  font-size: 3em;
 `;
 
 export default LoadingScreen;

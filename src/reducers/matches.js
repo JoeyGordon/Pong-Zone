@@ -9,7 +9,6 @@ export default function matches(state = [], action = {}) {
             return [];
         case matchesActionTypes.ADD_MATCH:
             state.matches.push(action.data);
-            console.log('state.matches', state.matches);
             return state;
         case matchesActionTypes.SET_MATCHES:
             return action.data

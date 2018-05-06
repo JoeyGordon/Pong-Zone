@@ -5,11 +5,13 @@ import PlayerEloRating from '../models/playerEloRating';
 import TeamEloRating from '../models/teamEloRating';
 import SubmitCard from './submitCard';
 import * as matchesActions from '../actions/matches';
+import * as usersActions from '../actions/users';
 import MatchPlayer from '../models/matchPlayer';
 import MatchCard from './matchCard';
 import User from '../models/user';
 import styled from 'styled-components';
 import DoublesTeam from '../models/doublesTeam';
+import Match from "../models/match";
 import * as Utils from '../utils/utils';
 import * as teamsActions from '../actions/teams';
 import PageHeader from './pageHeader';
@@ -125,13 +127,14 @@ class SubmitMatch extends Component {
       }));
     }
 
-    // If we're in a doubles situation, create the doublesTeams and doublesTeamMatches
+    // If we're in a doubles situation, create the doublesTeams
     if(matchPlayers.length === 4){
       isDoubles = true;
 
       // create teamIds
       const teamId = Utils.getTeamIdFromUserIds(activePlayer.userId, teammate.userId);
       const oppTeamId = Utils.getTeamIdFromUserIds(oppPlayerA.userId, oppPlayerB.userId);
+
       
       // find teams or else create new ones we will persist later
       const team = teams.find(t => t.teamId === teamId) || new DoublesTeam({
@@ -177,15 +180,21 @@ class SubmitMatch extends Component {
 
     }
 
+    const options = { players: matchPlayers, isDoubles, matchDate: new Date(), createdBy: activePlayer.userId }
+    const newMatch = new Match(options);
+    // record new match and update redux matches
+    matchesActions.recordMatch(newMatch)
 
-    matchesActions.recordMatch(matchPlayers, isDoubles, activePlayer.userId, new Date())
-    .then((newMatch) => {
-      if (isDoubles){
-        doublesTeams.forEach(team => {
-          team.matches.push(newMatch.matchId);
-        });
-        teamsActions.updateTeams(doublesTeams);
-      }
+    // update users userMatch collections with new match info
+    usersActions.updateUsersWithMatches(newMatch);
+
+    // if doubles, record new teams if necessary and add matchId to team's matches collection
+    if (isDoubles){
+      doublesTeams.forEach(team => {
+        team.matches.push(newMatch.matchId);
+      });
+      teamsActions.updateTeams(doublesTeams);
+    }
 
       this.setState({
         ...this.state,
@@ -196,7 +205,6 @@ class SubmitMatch extends Component {
         submitted: true,
         newMatch,
       });
-    })
   }
 
   handleReset(event) {

@@ -1,3 +1,5 @@
+import * as utils from '../utils/utils';
+
 export default class DoublesTeam {
     constructor(doublesTeamOptions) {
         if (doublesTeamOptions) {

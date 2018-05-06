@@ -36,7 +36,18 @@ class App extends React.Component<Props> {
         this.props.dispatch(usersActions.setAllUsers(usersArray));
         this.props.dispatch(loadingActions.stopLoading());
       });
-
+    // set up teams listener and populate redux with the full collection
+    db.collection('teams')
+      .onSnapshot(teams => {
+        const teamsArray = [];
+        teams.forEach(team => {
+          const teamDetails = team.data();
+          teamDetails.teamId = team.id;
+          teamsArray.push(teamDetails);
+        });
+        this.props.dispatch(teamsActions.setAllTeams(teamsArray));
+        this.props.dispatch(loadingActions.stopLoading());
+      });
     this.props.dispatch(loadingActions.startLoading());
     // setup matches listener and populate redux with last 100 records
     db.collection('matches').orderBy('matchDate', 'desc').limit(MAX_MATCHES_RECORDS)
@@ -52,18 +63,7 @@ class App extends React.Component<Props> {
       });
 
     this.props.dispatch(loadingActions.startLoading());
-    // set up teams listener and populate redux with the full collection
-    db.collection('teams')
-      .onSnapshot(teams => {
-        const teamsArray = [];
-        teams.forEach(team => {
-          const teamDetails = team.data();
-          teamDetails.teamId = team.id;
-          teamsArray.push(teamDetails);
-        });
-        this.props.dispatch(teamsActions.setAllTeams(teamsArray));
-        this.props.dispatch(loadingActions.stopLoading());
-      });
+
   };
 
   render() {
