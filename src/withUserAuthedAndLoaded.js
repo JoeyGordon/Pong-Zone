@@ -27,6 +27,9 @@ const withUserAuthedAndLoaded = (Component) => {
         }
 
         createUserRecord(user) {
+            // dispatch to set user in redux state
+
+            // now persist the user
             const newUserRecord = utils.createFirebaseGeneric(user);
             db.collection('users').add(newUserRecord)
                 .then(function (docRef) {
@@ -38,6 +41,7 @@ const withUserAuthedAndLoaded = (Component) => {
         }
 
         getUserRecordByEmail(email) {
+            // 
             const fetchUserQuery = db.collection('users').where('email', '==', email);
             return fetchUserQuery.get().then(response => {
                 if(response.docs.length > 1){

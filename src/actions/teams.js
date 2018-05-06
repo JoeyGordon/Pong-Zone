@@ -8,10 +8,15 @@ export function setAllTeams(teams) {
         data: teams,
     }
 }
+export function addTeam(team) {
+    return {
+        type: teamsActionTypes.ADD_TEAM,
+        data: team,
+    }
+}
 
 export function updateTeams(teams) {
     teams.forEach(team => {
-        console.log('WE ARE MAKING TEAMS!')
         const teamRef = db.collection('teams').doc(team.teamId);
         teamRef.get().then((doc) => {
             if(doc.exists){
