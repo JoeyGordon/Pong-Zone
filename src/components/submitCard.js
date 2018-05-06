@@ -130,6 +130,13 @@ const MatchCardWrapper = styled.div`
   .team button {
       margin-left: auto;
   }
+
+  @media screen and (min-width: 800px) {
+    .team-photos img  {
+        height: 70px;
+        width: 70px;
+    }
+  }
 `;
 
 export default SubmitCard;

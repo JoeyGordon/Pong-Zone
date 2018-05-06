@@ -15,6 +15,7 @@ import Match from "../models/match";
 import * as Utils from '../utils/utils';
 import * as teamsActions from '../actions/teams';
 import { configureForStandalone } from '@firebase/firestore/dist/cjs/src/platform/config';
+import PageHeader from './pageHeader';
 
 
 class SubmitMatch extends Component {
@@ -282,12 +283,7 @@ class SubmitMatch extends Component {
 
     return (
       <SubmitMatchWrapper>
-        <div className="page-header">
-          <h1>Submit A Match</h1>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon fill="white" points="0,100 100,0 100,100" />
-          </svg>
-        </div>
+        <PageHeader title="Submit A Match" />
 
         <div className="page-content">
           {submitCard}

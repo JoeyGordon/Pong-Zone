@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import MatchCard from './matchCard';
+import PageHeader from './pageHeader';
 
 
 
@@ -27,12 +28,7 @@ const History = (props) => {
 
     return (
         <HistoryWrapper>
-            <div className="page-header">
-                <h1>Match History</h1>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <polygon fill="white" points="0,100 100,0 100,100" />
-                </svg>
-            </div>
+            <PageHeader title="Match History" />
 
             <div className="page-content">
                 {matchesArray}

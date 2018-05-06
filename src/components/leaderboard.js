@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 // import UserProfile from './userProfile';
+import PageHeader from './pageHeader';
 
 class Leaderboard extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class Leaderboard extends Component {
         null;
 
       return (
-        <a key={user.userId} href={`/user/${user.userId}`} onClick={(e) => {this.handleUserSelect(e, user)}}>
+        <a className="leaderboard-user" key={user.userId} href={`/user/${user.userId}`} onClick={(e) => {this.handleUserSelect(e, user)}}>
           <li className={selectedUserClass}>
             <img src={user.photoURL} alt="" />
             <div className="user-name">
@@ -63,15 +64,11 @@ class Leaderboard extends Component {
 
     return (
       <LeaderboardWrapper>
-        <div className="page-header">
-          <h1>Leaderboard</h1>
+        <PageHeader title="Leaderboard">
           <div className="page-filter">
             {filter}
           </div>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon fill="white" points="0,100 100,0 100,100" />
-          </svg>
-        </div>
+        </PageHeader>
 
         <div className="page-content">
           <ol>
@@ -129,7 +126,7 @@ const LeaderboardWrapper = styled.div`
     font-weight: 100;
   }
 
-  img {
+  .leaderboard-user img {
     background: #DDD;
     flex-grow: 0;
     height: 50px;
@@ -174,6 +171,18 @@ const LeaderboardWrapper = styled.div`
 
   .filter-list li.selected a {
     background: rgba(0, 0, 0, 0.25);
+  }
+
+  @media screen and (min-width: 800px) {
+    .filter-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .leaderboard-user img {
+      height: 70px;
+      width: 70px;
+    }
   }
 `;
 
