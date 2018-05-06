@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import * as PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import PropTypes from "prop-types";
 
 import './app.css';
 import { db } from './firebase';
@@ -16,57 +16,62 @@ import * as loadingActions from './actions/loading';
 
 const MAX_MATCHES_RECORDS = 100;
 
-class App extends Component {
+type Props = {
+  dispatch: Function,
+  loading: Object,
+};
+
+class App extends React.Component<Props> {
   componentWillMount() {
     this.props.dispatch(loadingActions.startLoading());
     // setup users listener and populate redux with full collection
     db.collection('users')
-    .onSnapshot(users => {
-      const usersArray = [];
-      users.forEach(user => {
-        const userDetails = user.data();
-        userDetails.userId = user.id;
-        usersArray.push(userDetails);
+      .onSnapshot(users => {
+        const usersArray = [];
+        users.forEach(user => {
+          const userDetails = user.data();
+          userDetails.userId = user.id;
+          usersArray.push(userDetails);
+        });
+        this.props.dispatch(usersActions.setAllUsers(usersArray));
+        this.props.dispatch(loadingActions.stopLoading());
       });
-      this.props.dispatch(usersActions.setAllUsers(usersArray));
-      this.props.dispatch(loadingActions.stopLoading());
-    });
 
     this.props.dispatch(loadingActions.startLoading());
     // setup matches listener and populate redux with last 100 records
     db.collection('matches').orderBy('matchDate', 'desc').limit(MAX_MATCHES_RECORDS)
-    .onSnapshot(matches => {
-      const matchesArray = [];
-      matches.forEach(match => {
-        const matchDetails = match.data();
-        matchDetails.matchId = match.id;
-        matchesArray.push(matchDetails);
+      .onSnapshot(matches => {
+        const matchesArray = [];
+        matches.forEach(match => {
+          const matchDetails = match.data();
+          matchDetails.matchId = match.id;
+          matchesArray.push(matchDetails);
+        });
+        this.props.dispatch(matchesActions.setMatches(matchesArray));
+        this.props.dispatch(loadingActions.stopLoading());
       });
-      this.props.dispatch(matchesActions.setMatches(matchesArray));
-      this.props.dispatch(loadingActions.stopLoading());
-    });
 
     this.props.dispatch(loadingActions.startLoading());
     // set up teams listener and populate redux with the full collection
     db.collection('teams')
-    .onSnapshot(teams => {
-      const teamsArray = [];
-      teams.forEach(team => {
-        const teamDetails = team.data();
-        teamDetails.teamId = team.id;
-        teamsArray.push(teamDetails);
+      .onSnapshot(teams => {
+        const teamsArray = [];
+        teams.forEach(team => {
+          const teamDetails = team.data();
+          teamDetails.teamId = team.id;
+          teamsArray.push(teamDetails);
+        });
+        this.props.dispatch(teamsActions.setAllTeams(teamsArray));
+        this.props.dispatch(loadingActions.stopLoading());
       });
-      this.props.dispatch(teamsActions.setAllTeams(teamsArray));
-      this.props.dispatch(loadingActions.stopLoading());
-    });
   };
 
   render() {
-    if(this.props.loading.isLoading) {
+    if ((this.props.loading as any).isLoading) {
       return <LoadingScreen />
     }
     return (
-      <Router className="App">
+      <Router>
         <ScrollToTop>
           <MainLayout />
         </ScrollToTop>
@@ -75,12 +80,7 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  dispatch: PropTypes.func,
-  loading: PropTypes.object,
-}
-
-const mapStateToProps = state => ({
+const mapStateToProps: any = state => ({
   loading: state.loading
 });
 

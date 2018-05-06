@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import DoublesTeam from '../models/doublesTeam';
 import * as Utils from '../utils/utils';
 import * as teamsActions from '../actions/teams';
-import { configureForStandalone } from '@firebase/firestore/dist/cjs/src/platform/config';
 import PageHeader from './pageHeader';
 
 

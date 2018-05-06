@@ -1,4 +1,8 @@
-import firebase from 'firebase'
+// This import loads the firebase namespace along with all its type information.
+import * as firebase from 'firebase';
+
+// These imports load individual services into the firebase namespace.
+import 'firebase/auth';
 import 'firebase/firestore';
 
 import { FIREBASE_CONFIG, TEST_FIREBASE_CONFIG, TESTING } from './config/config';
@@ -23,6 +27,3 @@ export {
     provider,
     db
 }
-
-
-
