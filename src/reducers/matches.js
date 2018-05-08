@@ -8,7 +8,7 @@ export default function matches(state = [], action = {}) {
         case userActionTypes.LOG_OUT_USER:
             return [];
         case matchesActionTypes.ADD_MATCH:
-            state.matches.push(action.data);
+            state.push(action.data);
             return state;
         case matchesActionTypes.SET_MATCHES:
             return action.data

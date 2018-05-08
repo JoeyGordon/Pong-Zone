@@ -1,19 +1,22 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PlayerEloRating from '../models/playerEloRating';
-import TeamEloRating from '../models/teamEloRating';
 import SubmitCard from './submitCard';
+import MatchCard from './matchCard';
 import * as matchesActions from '../actions/matches';
 import * as usersActions from '../actions/users';
+import * as teamsActions from '../actions/teams';
+import * as teamsService from '../services/teams';
+import * as usersService from '../services/users';
+import * as matchesService from '../services/matches';
 import MatchPlayer from '../models/matchPlayer';
-import MatchCard from './matchCard';
 import User from '../models/user';
-import styled from 'styled-components';
+import PlayerEloRating from '../models/playerEloRating';
+import TeamEloRating from '../models/teamEloRating';
 import DoublesTeam from '../models/doublesTeam';
 import Match from "../models/match";
+import styled from 'styled-components';
 import * as Utils from '../utils/utils';
-import * as teamsActions from '../actions/teams';
 import PageHeader from './pageHeader';
 
 
@@ -32,6 +35,8 @@ class SubmitMatch extends Component {
       submitted: false,
       newMatch: null,
     };
+
+    console.log('PROPS', this.props);
 
     this.state = this.initialState;
 
@@ -72,7 +77,7 @@ class SubmitMatch extends Component {
   }
 
   handleWinnerClick(event) {
-    const { user, users, teams } = this.props;
+    const { user, users, teams, dispatch } = this.props;
     const activePlayer = users.find(x => x.userId === user.userId);
     const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
     const {
@@ -183,17 +188,20 @@ class SubmitMatch extends Component {
     const options = { players: matchPlayers, isDoubles, matchDate: new Date(), createdBy: activePlayer.userId }
     const newMatch = new Match(options);
     // record new match and update redux matches
-    matchesActions.recordMatch(newMatch)
+    matchesService.recordMatch(newMatch)
+    dispatch(matchesActions.addMatch(newMatch));
 
     // update users userMatch collections with new match info
-    usersActions.updateUsersWithMatches(newMatch);
+    usersService.updateUsersWithMatch(newMatch);
+    dispatch(usersActions.updateUsersWithMatch(newMatch));
 
     // if doubles, record new teams if necessary and add matchId to team's matches collection
     if (isDoubles){
       doublesTeams.forEach(team => {
         team.matches.push(newMatch.matchId);
       });
-      teamsActions.updateTeams(doublesTeams);
+      teamsService.updateTeams(doublesTeams);
+      dispatch(teamsActions.updateTeams(teams));
     }
 
       this.setState({
