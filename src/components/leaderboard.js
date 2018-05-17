@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-// import UserProfile from './userProfile';
+import * as leaderboard from '../constants/leaderboard';
+
 import PageHeader from './pageHeader';
 
 class Leaderboard extends Component {
@@ -12,10 +13,11 @@ class Leaderboard extends Component {
     super(props);
     this.state = {
       selectedUser: null,
-      filter: 'singles',
+      filter: leaderboard.FILTER_SINGLES,
     };
 
     this.handleUserSelect = this.handleUserSelect.bind(this);
+    this.handleFilterSelect = this.handleFilterSelect.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +26,11 @@ class Leaderboard extends Component {
     }
   }
 
+  handleFilterSelect(event, filter) {
+    event.preventDefault();
+    this.setState({filter: filter});
+   }
+
   handleUserSelect(event, user) {
     event.preventDefault();
     this.setState({selectedUser: user});
@@ -31,8 +38,9 @@ class Leaderboard extends Component {
 
   render() {
     const { selectedUser } = this.state;
+    const { users } = this.props;
 
-    const sortedUsersByRating = _.orderBy(this.props.users, 'rating', 'desc');
+    const sortedUsersByRating = _.orderBy(users, 'rating', 'desc');
 
     const usersList = sortedUsersByRating.map((user, index) => {
       const selectedUserClass = (selectedUser && user.userId === selectedUser.userId) ?
@@ -55,10 +63,45 @@ class Leaderboard extends Component {
       )
     });
 
+    const sortedTeamsByRating = _.orderBy(this.props.teams, 'rating', 'desc');
+    const sortedTeamsWithMemberNames = _.map(sortedTeamsByRating, team => {
+      team.names = [];
+      team.members.forEach(member => {
+        const user = _.find(users, user => user.userId === member);
+        team.names.push(user.name);
+      });
+      return team;
+    })
+
+    const teamsList = sortedTeamsWithMemberNames.map((team, index) => {
+      //   const selectedTeamClass = (selectedUser && team.team === selectedTeam.teamId) ?
+      //     "selected-user" :
+      //     null;
+
+      return (
+        <a key={team.teamId} href={`/user/${team.teamId}`} onClick={(e) => { this.handleUserSelect(e, team) }}>
+          <li /*className={selectedTeamClass}*/>
+            {/* <img src={user.photoURL} alt="" /> */}
+            <div className="user-name">
+              <h3>{team.names[0] + " & " + team.names[1]}</h3>
+              <span className="user-rating">{team.rating}</span>
+            </div>
+            <div className="user-rank">
+              {index + 1}
+            </div>
+          </li>
+        </a>
+      )
+    });
+
     const filter = (
       <ul className="filter-list">
-        <li className="selected"><a href="">Singles</a></li>
-        <li><a href="">Doubles</a></li>
+        <li className={this.state.filter === leaderboard.FILTER_SINGLES ? 'selected' : null}>
+          <a href="#singles" onClick={(e) => {this.handleFilterSelect(e, leaderboard.FILTER_SINGLES) }}>Singles</a>
+        </li>
+        <li className={this.state.filter === leaderboard.FILTER_DOUBLES ? 'selected' : null}>
+          <a href="#doubles" onClick={(e) => {this.handleFilterSelect(e, leaderboard.FILTER_DOUBLES)}}>Doubles</a>
+        </li>
       </ul>
     )
 
@@ -72,7 +115,8 @@ class Leaderboard extends Component {
 
         <div className="page-content">
           <ol>
-            {usersList}
+            {this.state.filter === leaderboard.FILTER_SINGLES && usersList}
+            {this.state.filter === leaderboard.FILTER_DOUBLES && teamsList}
           </ol>
           {/* {(selectedUser && selectedUser.userId) && <UserProfile user={selectedUser} />} */}
         </div>
@@ -83,11 +127,13 @@ class Leaderboard extends Component {
 
 Leaderboard.propTypes = {
   users: PropTypes.array,
+  teams: PropTypes.array,
   loggedInUser: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   users: state.users,
+  teams: state.teams,
   loggedInUser: state.user,
 });
 

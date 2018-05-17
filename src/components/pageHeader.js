@@ -36,7 +36,7 @@ class PageHeader extends Component {
                 <img className="logged-in-user-photo" src={loggedInUser.photoURL} alt="" />
             </button> :
             <a className="login-button" onClick={(e) => this.googleLogin(e)} href="">
-                Login
+                Sign In
             </a>;
         const userDropdown = this.state.dropdownOpen ?
             <div className="dropdownMenu">
@@ -107,7 +107,7 @@ const PageHeaderWrapper = styled.div`
         right: 0px;
         top: 50px;
         color: #011627;
-        padding: 8px;
+        padding: 8px 16px;
     }
 
     .login-button {
