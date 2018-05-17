@@ -25,21 +25,6 @@ const MainMenu = (props) => {
         ) :
         null;
 
-    // const loginBlock = isLoggedIn ?
-    //     (
-    //         <li>
-    //             <button onClick={auth.doSignOut} className="sign-out-button">Sign Out</button>
-    //         </li>
-    //     ) :
-    //     (
-    //         <li>
-    //             <a onClick={(e) => googleLogin(e)} href="">
-    //                 <i className="fas fa-user fa-2x"></i>
-    //                 Login
-    //             </a>
-    //         </li>
-    //     )
-
     return (
         <MainMenuWrapper>
             <h1>Pong Zone</h1>
@@ -91,6 +76,7 @@ const MainMenuWrapper = styled.div`
     }
 
     li {
+        flex-grow: 1;
         display: block;
         list-style: none;
         text-align: center;

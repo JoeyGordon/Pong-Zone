@@ -13,6 +13,7 @@ class Leaderboard extends Component {
     super(props);
     this.state = {
       selectedUser: null,
+      selectedTeam: null,
       filter: leaderboard.FILTER_SINGLES,
     };
 
@@ -38,17 +39,21 @@ class Leaderboard extends Component {
 
   render() {
     const { selectedUser } = this.state;
+    const { selectedTeam } = this.state;
     const { users } = this.props;
 
     const sortedUsersByRating = _.orderBy(users, 'rating', 'desc');
-
     const usersList = sortedUsersByRating.map((user, index) => {
       const selectedUserClass = (selectedUser && user.userId === selectedUser.userId) ?
         "selected-user" :
         null;
 
       return (
-        <a className="leaderboard-user" key={user.userId} href={`/user/${user.userId}`} onClick={(e) => {this.handleUserSelect(e, user)}}>
+        <a className="leaderboard-user"
+          key={user.userId}
+          href={`/user/${user.userId}`}
+          onClick={(e) => {this.handleUserSelect(e, user)}}
+        >
           <li className={selectedUserClass}>
             <img src={user.photoURL} alt="" />
             <div className="user-name">
@@ -66,22 +71,27 @@ class Leaderboard extends Component {
     const sortedTeamsByRating = _.orderBy(this.props.teams, 'rating', 'desc');
     const sortedTeamsWithMemberNames = _.map(sortedTeamsByRating, team => {
       team.names = [];
+      team.images = [];
       team.members.forEach(member => {
         const user = _.find(users, user => user.userId === member);
         team.names.push(user.name);
+        team.images.push(user.photoURL);
       });
       return team;
     })
 
     const teamsList = sortedTeamsWithMemberNames.map((team, index) => {
-      //   const selectedTeamClass = (selectedUser && team.team === selectedTeam.teamId) ?
-      //     "selected-user" :
-      //     null;
+      const selectedTeamClass = (selectedTeam && team.team === selectedTeam.teamId) ?
+        "selected-user" :
+        null;
 
       return (
-        <a key={team.teamId} href={`/user/${team.teamId}`} onClick={(e) => { this.handleUserSelect(e, team) }}>
-          <li /*className={selectedTeamClass}*/>
-            {/* <img src={user.photoURL} alt="" /> */}
+        <a className="leaderboard-user"
+          key={team.teamId} href={`/user/${team.teamId}`}
+          onClick={(e) => { this.handleUserSelect(e, team) }}
+        >
+          <li className={selectedTeamClass}>
+            <img src={team.images[0]} alt="" /><img src={team.images[1]} alt="" />
             <div className="user-name">
               <h3>{team.names[0] + " & " + team.names[1]}</h3>
               <span className="user-rating">{team.rating}</span>
@@ -97,7 +107,7 @@ class Leaderboard extends Component {
     const filter = (
       <ul className="filter-list">
         <li className={this.state.filter === leaderboard.FILTER_SINGLES ? 'selected' : null}>
-          <a href="#singles" onClick={(e) => {this.handleFilterSelect(e, leaderboard.FILTER_SINGLES) }}>Singles</a>
+          <a href="#singles" onClick={(e) => {this.handleFilterSelect(e, leaderboard.FILTER_SINGLES)}}>Singles</a>
         </li>
         <li className={this.state.filter === leaderboard.FILTER_DOUBLES ? 'selected' : null}>
           <a href="#doubles" onClick={(e) => {this.handleFilterSelect(e, leaderboard.FILTER_DOUBLES)}}>Doubles</a>
@@ -172,14 +182,18 @@ const LeaderboardWrapper = styled.div`
     font-weight: 100;
   }
 
+  .leaderboard-user li {
+    padding: 8px;
+  }
+
   .leaderboard-user img {
-    background: #DDD;
     flex-grow: 0;
-    height: 50px;
-    min-width: 50px;
-    width: auto;
-    margin: 8px;
-    border-radius: 50%;
+      display: block;
+      background: black;
+      height: 48px;
+      width: 48px;
+      margin-right: 8px;
+      border-radius: 50%;
   }
 
   .user-rank {
@@ -189,7 +203,7 @@ const LeaderboardWrapper = styled.div`
     justify-content: center;
     font-size: 2em;
     font-weight: bold;
-    padding: 0 1em;
+    padding: 0 0.5em;
   }
 
   .user-rating {
@@ -228,6 +242,10 @@ const LeaderboardWrapper = styled.div`
     .leaderboard-user img {
       height: 70px;
       width: 70px;
+    }
+
+    .user-rank {
+      padding: 0 1em;
     }
   }
 `;

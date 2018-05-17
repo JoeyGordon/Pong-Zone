@@ -90,7 +90,7 @@ const PageHeaderWrapper = styled.div`
         background-repeat: no-repeat;
         background-size: auto 100%;
         padding: 5px 0 5px 40px;
-        margin: 0 16px 0 0;
+        margin: 0 16px;
         height: auto;
     }
 
@@ -114,7 +114,18 @@ const PageHeaderWrapper = styled.div`
         display: flex;
         align-items: center;
         height: 40px;
+        margin-right: 16px;
     }
+
+  @media screen and (min-width: 800px) {
+      h1 {
+          margin-left: 0px;
+      }
+
+      .login-button {
+          margin-right: 0px;
+      }
+  }
 `;
 
 export default connect(mapStateToProps)(PageHeader);
