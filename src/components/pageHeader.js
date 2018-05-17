@@ -94,6 +94,11 @@ const PageHeaderWrapper = styled.div`
         height: auto;
     }
 
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .logged-in-user-photo {
         margin-left: auto;
         height: 40px;
@@ -105,9 +110,11 @@ const PageHeaderWrapper = styled.div`
         position: absolute;
         background: white;
         right: 0px;
-        top: 50px;
+        top: 45px;
         color: #011627;
         padding: 8px 16px;
+        z-index: 100;
+        box-shadow: 0 2px 2px 0 rgba(218,218,218,0.50);
     }
 
     .login-button {

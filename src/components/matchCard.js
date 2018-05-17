@@ -11,7 +11,7 @@ const MatchCard = (props) => {
     let teamBImages = [];
     let teamANames = [];
     let teamBNames = [];
-    
+
     teamA.forEach(player => {
         const matchPlayer = match.players.find((matchPlayer) => matchPlayer.userId === player.userId);
         teamAImages.push(<img src={player.photoURL} alt="" key={player.userId} />);
