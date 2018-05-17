@@ -34,7 +34,7 @@ const MainMenu = (props) => {
                     <NavLink to="/" exact activeClassName="active">
                         <i className="fas fa-trophy fa-2x"></i>
                         Leaderboard
-                        </NavLink>
+                    </NavLink>
                 </li>
                 {submitMatchLink}
                 <li>
@@ -89,6 +89,7 @@ const MainMenuWrapper = styled.div`
     }
 
     a {
+        display:block;
         color: #fff;
         text-decoration: none;
     }
