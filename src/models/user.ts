@@ -10,12 +10,12 @@ export default class User {
     rating: number;
     wins: number;
     losses: number;
-    photoURL: URL;
+    photoURL: string;
 
-    constructor(userOptions) {
+    constructor(userOptions = null) {
         if (userOptions) {
-            if(!userOptions.displayName && !userOptions.name) throw new Error('Cannot create new user without displayName');
-            if(!userOptions.email) throw new Error('Cannot create new user without email');
+            if (!userOptions.displayName && !userOptions.name) throw new Error('Cannot create new user without displayName');
+            if (!userOptions.email) throw new Error('Cannot create new user without email');
 
             this.userId = utils.getId();
             this.name = userOptions.displayName || userOptions.name;
@@ -26,6 +26,15 @@ export default class User {
             this.wins = userOptions.wins || 0;
             this.losses = userOptions.losses || 0;
             this.photoURL = userOptions.photoURL || '';
+        } else {
+            this.userId = null;
+            this.email = null;
+            this.createdDate = null;
+            this.matches = [];
+            this.rating = null;
+            this.photoURL = '';
+            this.wins = null;
+            this.losses = null;
         }
     }
 }

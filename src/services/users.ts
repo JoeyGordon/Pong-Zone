@@ -11,20 +11,20 @@ export function updateUsersWithMatch(match) {
             const user = response.data();
 
             // until we reboot the user db, we will lack userIds on the users
-            if(!user.userId){
+            if (!user.userId) {
                 user.userId = response.id;
             }
             // now pull the matches collection
             const playerMatches = user.matches;
             const matchPlayer = match.players.find(player => player.userId === user.userId);
-            const opponents = match.players.filter(player => 
+            const opponents = match.players.filter(player =>
                 player.team !== matchPlayer.team).map(player => {
                     return player.userId
                 });
-            
+
             let teammatePlayer;
 
-            if(match.players.length > 2) {
+            if (match.players.length > 2) {
                 teammatePlayer = match.players.find(player => player.team === matchPlayer.team && player.userId !== matchPlayer.userId);
             }
 
@@ -51,6 +51,6 @@ export function updateUsersWithMatch(match) {
                 wins: wins,
             });
         });
-        
+
     });
 }

@@ -11,9 +11,8 @@ const getInitialState = () => ({
     losses: null,
 });
 
-export default function user(state = getInitialState(), action = {}) {
-    switch(action.type) {
-        // TODO: add case statements to respond to actions
+export default function user(state = getInitialState(), action) {
+    switch (action.type) {
         case userActionTypes.LOG_OUT_USER:
             return getInitialState();
         case userActionTypes.SET_USER:

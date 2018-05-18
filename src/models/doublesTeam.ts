@@ -11,9 +11,9 @@ export default class DoublesTeam {
 
     constructor(doublesTeamOptions) {
         if (doublesTeamOptions) {
-            if(!doublesTeamOptions.teamId) throw new Error('Cannot create new doubles team without teamId');
-            if(!(doublesTeamOptions.members.length === 2)) throw new Error('You must have 2 players for a doubles team');
-            if(!doublesTeamOptions.matches) throw new Error('Doubles team must contain a match history collection, even if empty');
+            if (!doublesTeamOptions.teamId) throw new Error('Cannot create new doubles team without teamId');
+            if (!(doublesTeamOptions.members.length === 2)) throw new Error('You must have 2 players for a doubles team');
+            if (!doublesTeamOptions.matches) throw new Error('Doubles team must contain a match history collection, even if empty');
 
             this.teamId = doublesTeamOptions.teamId;
             this.members = doublesTeamOptions.members;

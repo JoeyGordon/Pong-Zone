@@ -13,14 +13,14 @@ export default class UserMatch {
 
     constructor(userMatchOptions) {
         if (userMatchOptions) {
-            if(!userMatchOptions.userId) throw new Error('Bad user id');
-            if(!userMatchOptions.matchId) throw new Error('Bad match id');
-            if(!userMatchOptions.matchDate) throw new Error('Bad match date');
-            if(userMatchOptions.opponents.length < 1 || userMatchOptions.opponents.length > 2) throw new Error('Bad opponents array');
-            if(!userMatchOptions.team) throw new Error('Bad team prop');
-            if(!(userMatchOptions.rating >= 0))  throw new Error('Bad rating');
-            if(!Number.isInteger(userMatchOptions.ratingShift)) throw new Error('Bad rating shift');
-                
+            if (!userMatchOptions.userId) throw new Error('Bad user id');
+            if (!userMatchOptions.matchId) throw new Error('Bad match id');
+            if (!userMatchOptions.matchDate) throw new Error('Bad match date');
+            if (userMatchOptions.opponents.length < 1 || userMatchOptions.opponents.length > 2) throw new Error('Bad opponents array');
+            if (!userMatchOptions.team) throw new Error('Bad team prop');
+            if (!(userMatchOptions.rating >= 0)) throw new Error('Bad rating');
+            if (!Number.isInteger(userMatchOptions.ratingShift)) throw new Error('Bad rating shift');
+
             this.userId = userMatchOptions.userId;
             this.matchId = userMatchOptions.matchId;
             this.matchDate = userMatchOptions.matchDate;
