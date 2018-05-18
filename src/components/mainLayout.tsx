@@ -13,11 +13,11 @@ import MainMenu from './mainMenu';
 import User from '../models/user';
 import { RootState } from '../rootReducer';
 
-export interface Props {
+export interface MainLayoutProps {
     loggedInUser: User
 }
 
-class MainLayout extends React.Component<Props & RouteComponentProps<{}>> {
+class MainLayout extends React.Component<MainLayoutProps & RouteComponentProps<{}>> {
     render() {
         return (
             <MainLayoutWrapper>
@@ -34,7 +34,7 @@ class MainLayout extends React.Component<Props & RouteComponentProps<{}>> {
     }
 };
 
-const mapStateToProps = (state: RootState): Props => ({
+const mapStateToProps = (state: RootState): MainLayoutProps => ({
     loggedInUser: state.user
 });
 
