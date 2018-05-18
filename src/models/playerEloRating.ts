@@ -1,35 +1,32 @@
 const k = 16;
 const q = (x) => Math.pow(10, (x / 400));
 const eA = (x, y) => q(x) / (q(x) + q(y));
-const privateData = new WeakMap();
 
 export default class PlayerEloRating {
-    constructor(eloRating) {
-        privateData.set(this, {
-            eloRating,
-            shift: 0,
-        });
+    private eloRating: number;
+    private shift: number;
+
+    constructor(eloRating: number) {
+        this.eloRating = eloRating;
+        this.shift = 0;
     }
 
-    ratingShift(winLoss, oppPairPlayerAEloRating, oppPairPlayerBEloRating) {
+    ratingShift(winLoss: boolean, oppPairPlayerAEloRating: PlayerEloRating, oppPairPlayerBEloRating: PlayerEloRating) {
         const otherTeamRating = oppPairPlayerBEloRating ?
             (oppPairPlayerAEloRating.getEloRating() + oppPairPlayerBEloRating.getEloRating()) / 2 :
             oppPairPlayerAEloRating.getEloRating();
-        const eloRating = privateData.get(this).eloRating;
+        const eloRating = this.eloRating;
         const shift = Math.round(k * (Number(winLoss) - eA(eloRating, otherTeamRating)));
 
-        privateData.set(this, {
-            ...privateData.get(this),
-            shift
-        });
+        this.shift = shift;
     }
 
     getEloRating() {
-        const newEloRating = privateData.get(this).eloRating + privateData.get(this).shift;
+        const newEloRating = this.eloRating + this.shift;
         return newEloRating < 0 ? 0 : newEloRating;
     };
 
     getShift() {
-        return privateData.get(this).shift;
+        return this.shift;
     };
 }

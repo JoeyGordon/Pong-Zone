@@ -1,4 +1,16 @@
+import User from "./user";
+
 export default class UserMatch {
+    userId: string;
+    matchId: string;
+    matchDate: Date;
+    win: boolean;
+    teammate: User;
+    team: string;
+    rating: number;
+    ratingShift: number;
+    opponents: Array<User>;
+
     constructor(userMatchOptions) {
         if (userMatchOptions) {
             if(!userMatchOptions.userId) throw new Error('Bad user id');

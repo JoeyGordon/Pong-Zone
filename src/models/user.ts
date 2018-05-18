@@ -1,5 +1,17 @@
 import * as utils from '../utils/utils';
+import Match from './match';
+
 export default class User {
+    userId: string;
+    name: string;
+    email: string;
+    createdDate: Date;
+    matches: Array<Match>;
+    rating: number;
+    wins: number;
+    losses: number;
+    photoURL: URL;
+
     constructor(userOptions) {
         if (userOptions) {
             if(!userOptions.displayName && !userOptions.name) throw new Error('Cannot create new user without displayName');

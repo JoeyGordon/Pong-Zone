@@ -1,6 +1,12 @@
 import { isNumber } from "util";
 
 export default class MatchPlayer {
+    userId: string;
+    win: boolean;
+    team: string;
+    rating: number;
+    ratingShift: number;
+
     constructor(matchPlayerOptions) {
         if (matchPlayerOptions) {
             if(!matchPlayerOptions.userId) throw new Error('Cannot create new match player without a userId');

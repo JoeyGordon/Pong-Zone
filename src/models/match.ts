@@ -1,5 +1,15 @@
 import * as utils from '../utils/utils';
+import User from './user';
+
 export default class Match {
+    createdBy: string;
+    players: Array<User>;
+    matchId: string;
+    createdDate: Date;
+    matchDate: Date;
+    accepted: boolean;
+    isDoublesMatch: boolean;
+
     constructor(matchOptions) {
         if (matchOptions) {
             if(!matchOptions.createdBy) throw new Error('Cannot create new match without a createdBy userId');

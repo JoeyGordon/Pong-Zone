@@ -5,17 +5,17 @@ import * as loadingActions from "./actions/loading";
 import User from "./models/user";
 import * as utils from "./utils/utils";
 
-export interface Props {
-  dispatch?: ({}) => void;
-  loading: boolean;
-}
-
-export interface State {
-  authUser: object;
-  user: object;
-}
-
 export const withUserAuthedAndLoaded = (Component: React.ComponentType) => {
+  type Props = {
+    dispatch?: ({}) => void;
+    loading: boolean;
+  }
+  
+  type State = {
+    authUser: object;
+    user: object;
+  }
+
   return class WithUserAuthedAndLoaded extends React.Component<Props, State> {
     constructor(props) {
       super(props);

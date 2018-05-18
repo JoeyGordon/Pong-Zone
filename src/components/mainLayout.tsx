@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import * as React from 'react';
+import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,8 @@ import SignIn from './signIn';
 import SubmitMatch from './submitMatch';
 import MainMenu from './mainMenu';
 
-const MainLayout = (props) => {
+class MainLayout extends React.Component<any> {
+    render(){
     return (
         <MainLayoutWrapper>
             <MainMenu />
@@ -24,17 +25,15 @@ const MainLayout = (props) => {
             </div>
         </MainLayoutWrapper>
     )
-};
-
-MainLayout.propTypes = {
+}
 };
 
 const mapStateToProps = state => ({
-  loggedInUser: state.user
+    loggedInUser: state.user
 });
 
 const MainLayoutWrapper = styled.div`
   min-height: 100%;
 `;
 
-export default withRouter(connect(mapStateToProps)(MainLayout));
+export default withRouter<RouteComponentProps<{}>>(connect(mapStateToProps)(MainLayout) as any);

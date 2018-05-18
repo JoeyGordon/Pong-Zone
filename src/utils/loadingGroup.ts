@@ -1,5 +1,7 @@
 export default class LoadingGroup {
-    constructor(fetchesInProgress = 0) {
+    fetchesInProgress: number;
+    isLoading: boolean;
+    constructor(fetchesInProgress: number = 0) {
         this.fetchesInProgress = fetchesInProgress;
         this.isLoading = fetchesInProgress > 0;
     }
