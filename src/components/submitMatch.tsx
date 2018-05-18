@@ -20,7 +20,7 @@ import PageHeader from "./pageHeader";
 
 type Props = {
   user: User,
-  users: Array<User>,
+  users: User[],
   teams: any,
   dispatch?: ({ }) => void;
 }
@@ -296,7 +296,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
     if (oppPlayerB) selectedPlayerIds.add(oppPlayerB.userId);
 
     const oppPlayers = [
-      {},
+      {} as User,
       ...users.filter(x => !selectedPlayerIds.has(x.userId))
     ];
     let submitCard = <div />;
