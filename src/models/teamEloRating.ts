@@ -8,11 +8,15 @@ export default class TeamEloRating {
     private eloRating: number;
     private shift: number;
 
-    constructor(eloRatingA: PlayerEloRating, eloRatingB: PlayerEloRating = null) {
-        let combinedEloRating = eloRatingB ? (eloRatingA.getEloRating() + eloRatingB.getEloRating()) / 2 : eloRatingA.getEloRating();
+    constructor(eloRatingA: PlayerEloRating, eloRatingB: PlayerEloRating) {
+        let combinedEloRating = Math.round((eloRatingA.getEloRating() + eloRatingB.getEloRating()) / 2);
 
         this.eloRating = combinedEloRating;
         this.shift = 0;
+    }
+
+    static createTeamEloRatingFromNumber(eloRating: number){
+        return new TeamEloRating(new PlayerEloRating(eloRating), new PlayerEloRating(eloRating));
     }
 
     ratingShift(winLoss: boolean, otherTeamRating: TeamEloRating) {

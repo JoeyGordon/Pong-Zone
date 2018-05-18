@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import * as React from "react";
 import { connect } from "react-redux";
 import SubmitCard from "./submitCard";
@@ -20,20 +19,20 @@ import * as Utils from "../utils/utils";
 import PageHeader from "./pageHeader";
 
 type Props = {
-  user: any,
-  users: any,
+  user: User,
+  users: Array<User>,
   teams: any,
-  dispatch: any
+  dispatch?: ({ }) => void;
 }
 
 type SubmitMatchState = {
-  teammate: any,
-  oppPlayerA: any,
-  oppPlayerB: any,
-  activeUserEloRating: any,
-  teammateEloRating: any,
-  oppPlayerAEloRating: any,
-  oppPlayerBEloRating: any,
+  teammate?: User,
+  oppPlayerA: User,
+  oppPlayerB: User,
+  activeUserEloRating: PlayerEloRating,
+  teammateEloRating: PlayerEloRating,
+  oppPlayerAEloRating: PlayerEloRating,
+  oppPlayerBEloRating: PlayerEloRating,
   submitValid: boolean,
   submitted: boolean,
   newMatch: any
@@ -226,11 +225,11 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       const teamEloRating =
         team.rating === -1
           ? new TeamEloRating(activeUserEloRating, teammateEloRating)
-          : new TeamEloRating(team.rating);
+          : TeamEloRating.createTeamEloRatingFromNumber(team.rating);
       const oppTeamEloRating =
         oppTeam.rating === -1
           ? new TeamEloRating(oppPlayerAEloRating, oppPlayerBEloRating)
-          : new TeamEloRating(oppTeam.rating);
+          : TeamEloRating.createTeamEloRatingFromNumber(oppTeam.rating);
       teamEloRating.ratingShift(winningTeam, oppTeamEloRating);
       oppTeamEloRating.ratingShift(!winningTeam, teamEloRating);
       team.rating = teamEloRating.getEloRating();
@@ -291,12 +290,11 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       newMatch
     } = this.state;
     const activePlayer = users.find(x => x.userId === user.userId);
-    const selectedPlayerIds = new Set([
-      user.userId,
-      _.get(teammate, "userId"),
-      _.get(oppPlayerA, "userId"),
-      _.get(oppPlayerB, "userId")
-    ]);
+    const selectedPlayerIds = new Set([user.userId]);
+    if (teammate) selectedPlayerIds.add(teammate.userId);
+    if (oppPlayerA) selectedPlayerIds.add(oppPlayerA.userId);
+    if (oppPlayerB) selectedPlayerIds.add(oppPlayerB.userId);
+
     const oppPlayers = [
       {},
       ...users.filter(x => !selectedPlayerIds.has(x.userId))

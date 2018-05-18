@@ -3,10 +3,9 @@ const q = (x) => Math.pow(10, (x / 400));
 const eA = (x, y) => q(x) / (q(x) + q(y));
 
 export default class PlayerEloRating {
-    private eloRating: number;
     private shift: number;
 
-    constructor(eloRating: number) {
+    constructor(private eloRating: number) {
         this.eloRating = eloRating;
         this.shift = 0;
     }

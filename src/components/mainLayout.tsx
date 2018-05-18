@@ -10,25 +10,31 @@ import History from './history';
 import SignIn from './signIn';
 import SubmitMatch from './submitMatch';
 import MainMenu from './mainMenu';
+import User from '../models/user';
+import { RootState } from '../rootReducer';
 
-class MainLayout extends React.Component<any> {
-    render(){
-    return (
-        <MainLayoutWrapper>
-            <MainMenu />
-
-            <div className="main-content">
-                <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
-                <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
-                <Route exact path={routes.HISTORY} component={() => <History />} />
-                <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
-            </div>
-        </MainLayoutWrapper>
-    )
+export interface Props {
+    loggedInUser: User
 }
+
+class MainLayout extends React.Component<Props & RouteComponentProps<{}>> {
+    render() {
+        return (
+            <MainLayoutWrapper>
+                <MainMenu />
+
+                <div className="main-content">
+                    <Route exact path={routes.LEADERBOARD} component={() => <Leaderboard />} />
+                    <Route exact path={routes.SUBMIT_MATCH} component={() => <SubmitMatch />} />
+                    <Route exact path={routes.HISTORY} component={() => <History />} />
+                    <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
+                </div>
+            </MainLayoutWrapper>
+        )
+    }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: RootState): Props => ({
     loggedInUser: state.user
 });
 
@@ -36,4 +42,4 @@ const MainLayoutWrapper = styled.div`
   min-height: 100%;
 `;
 
-export default withRouter<RouteComponentProps<{}>>(connect(mapStateToProps)(MainLayout) as any);
+export default withRouter(connect(mapStateToProps)(MainLayout));

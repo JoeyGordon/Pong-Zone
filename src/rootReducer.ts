@@ -5,6 +5,11 @@ import users from './reducers/users';
 import matches from './reducers/matches';
 import teams from './reducers/teams';
 import loading from './reducers/loading';
+import User from './models/user';
+
+export interface RootState {
+    user: User
+}
 
 const pongZone = combineReducers({
     user,
