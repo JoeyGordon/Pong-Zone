@@ -35,7 +35,7 @@ type SubmitMatchState = {
   oppPlayerBEloRating: PlayerEloRating,
   submitValid: boolean,
   submitted: boolean,
-  newMatch: any
+  newMatch: Match
 }
 
 class SubmitMatch extends React.Component<Props, SubmitMatchState> {

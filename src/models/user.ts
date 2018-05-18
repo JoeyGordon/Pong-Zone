@@ -1,12 +1,13 @@
 import * as utils from '../utils/utils';
 import Match from './match';
+import UserMatch from './userMatch';
 
 export default class User {
     userId: string;
     name: string;
     email: string;
     createdDate: Date;
-    matches: Array<Match>;
+    matches: Match[];
     rating: number;
     wins: number;
     losses: number;

@@ -1,9 +1,9 @@
 import * as utils from '../utils/utils';
-import User from './user';
+import UserMatch from './userMatch';
 
 export default class Match {
     createdBy: string;
-    players: Array<User>;
+    players: UserMatch[];
     matchId: string;
     createdDate: Date;
     matchDate: Date;
