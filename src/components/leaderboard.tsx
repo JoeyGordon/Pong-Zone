@@ -1,14 +1,30 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as _ from 'lodash';
+import * as React from 'react';
+import * as  PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import * as leaderboard from '../constants/leaderboard';
 
 import PageHeader from './pageHeader';
+import User from '../models/user';
+import DoublesTeam from '../models/doublesTeam';
+import { MainLayoutProps } from './mainLayout';
 
-class Leaderboard extends Component {
+
+type Props = {
+  users: User[],
+  teams: any,
+  dispatch?: ({ }) => void;
+}
+
+type LeaderboardState = {
+  selectedUser: User,
+  selectedTeam: DoublesTeam,
+  filter: string
+}
+
+class Leaderboard extends React.Component<Props & MainLayoutProps, LeaderboardState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,12 +150,6 @@ class Leaderboard extends Component {
     )
   }
 }
-
-Leaderboard.propTypes = {
-  users: PropTypes.array,
-  teams: PropTypes.array,
-  loggedInUser: PropTypes.object,
-};
 
 const mapStateToProps = state => ({
   users: state.users,

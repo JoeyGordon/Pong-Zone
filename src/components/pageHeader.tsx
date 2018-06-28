@@ -1,11 +1,22 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import * as auth from '../auth';
 import { provider } from '../firebase';
+import User from '../models/user';
 
-class PageHeader extends Component {
+import { MainLayoutProps } from "./mainLayout";
+
+type Props = {
+    title: string;
+}
+
+type PageHeaderState = {
+    dropdownOpen: boolean
+}
+
+class PageHeader extends React.Component<Props & MainLayoutProps, PageHeaderState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -135,4 +146,4 @@ const PageHeaderWrapper = styled.div`
   }
 `;
 
-export default connect(mapStateToProps)(PageHeader);
+export default connect(mapStateToProps)<Props & MainLayoutProps>(PageHeader);

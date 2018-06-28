@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 
-const LoadingScreen = (props) => {
+const LoadingScreen = () => {
     return (
         <LoadingScreenWrapper>
             Loading...
