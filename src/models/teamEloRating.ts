@@ -15,7 +15,7 @@ export default class TeamEloRating {
         this.shift = 0;
     }
 
-    static createTeamEloRatingFromNumber(eloRating: number){
+    static createTeamEloRatingFromNumber(eloRating: number) {
         return new TeamEloRating(new PlayerEloRating(eloRating), new PlayerEloRating(eloRating));
     }
 
