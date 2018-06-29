@@ -38,7 +38,7 @@ class Leaderboard extends React.Component<Props & MainLayoutProps, LeaderboardSt
   }
 
   componentDidMount() {
-    if (this.props.loggedInUser.userId) {
+    if (this.props.loggedInUser.id) {
       this.setState({ selectedUser: this.props.loggedInUser });
     }
   }
@@ -60,14 +60,14 @@ class Leaderboard extends React.Component<Props & MainLayoutProps, LeaderboardSt
 
     const sortedUsersByRating = _.orderBy(users, 'rating', 'desc');
     const usersList = sortedUsersByRating.map((user, index) => {
-      const selectedUserClass = (selectedUser && user.userId === selectedUser.userId) ?
+      const selectedUserClass = (selectedUser && user.id === selectedUser.id) ?
         "selected-user" :
         null;
 
       return (
         <a className="leaderboard-user"
-          key={user.userId}
-          href={`/user/${user.userId}`}
+          key={user.id}
+          href={`/user/${user.id}`}
           onClick={(e) => {this.handleUserSelect(e, user)}}
         >
           <li className={selectedUserClass}>
@@ -89,7 +89,7 @@ class Leaderboard extends React.Component<Props & MainLayoutProps, LeaderboardSt
       team.names = [];
       team.images = [];
       team.members.forEach(member => {
-        const user = _.find(users, user => user.userId === member);
+        const user = _.find(users, user => user.id === member);
         team.names.push(user.name);
         team.images.push(user.photoURL);
       });
@@ -144,7 +144,7 @@ class Leaderboard extends React.Component<Props & MainLayoutProps, LeaderboardSt
             {this.state.filter === leaderboard.FILTER_SINGLES && usersList}
             {this.state.filter === leaderboard.FILTER_DOUBLES && teamsList}
           </ol>
-          {/* {(selectedUser && selectedUser.userId) && <UserProfile user={selectedUser} />} */}
+          {/* {(selectedUser && selectedUser.id) && <UserProfile user={selectedUser} />} */}
         </div>
       </LeaderboardWrapper>
     )

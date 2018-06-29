@@ -30,7 +30,6 @@ class App extends React.Component<Props> {
         const usersArray = [];
         users.forEach(user => {
           const userDetails = user.data();
-          userDetails.userId = user.id;
           usersArray.push(userDetails);
         });
         this.props.dispatch(usersActions.setAllUsers(usersArray));

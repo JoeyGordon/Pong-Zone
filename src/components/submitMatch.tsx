@@ -74,7 +74,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
   }
 
   handlePlayerChange(event) {
-    const user = this.props.users.find(x => x.userId === event.target.value);
+    const user = this.props.users.find(x => x.id === event.target.value);
     this.setUserState(user, { ...this.state }, event);
   }
 
@@ -105,7 +105,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
 
   handleWinnerClick(event) {
     const { user, users, teams, dispatch } = this.props;
-    const activePlayer = users.find(x => x.userId === user.userId);
+    const activePlayer = users.find(x => x.id === user.id);
     const activeUserEloRating = new PlayerEloRating(activePlayer.rating);
     const {
       teammate,
@@ -126,7 +126,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
     );
     matchPlayers.push(
       new MatchPlayer({
-        userId: activePlayer.userId,
+        id: activePlayer.id,
         win: winningTeam,
         team: "A",
         rating: activeUserEloRating.getEloRating(),
@@ -141,7 +141,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       );
       matchPlayers.push(
         new MatchPlayer({
-          userId: teammate.userId,
+          id: teammate.id,
           win: winningTeam,
           team: "A",
           rating: teammateEloRating.getEloRating(),
@@ -156,7 +156,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
     );
     matchPlayers.push(
       new MatchPlayer({
-        userId: oppPlayerA.userId,
+        id: oppPlayerA.id,
         win: !winningTeam,
         team: "B",
         rating: oppPlayerAEloRating.getEloRating(),
@@ -171,7 +171,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       );
       matchPlayers.push(
         new MatchPlayer({
-          userId: oppPlayerB.userId,
+          id: oppPlayerB.id,
           win: !winningTeam,
           team: "B",
           rating: oppPlayerBEloRating.getEloRating(),
@@ -185,25 +185,25 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       isDoubles = true;
       // create teamIds
       const teamId = Utils.getTeamIdFromUserIds(
-        activePlayer.userId,
-        teammate.userId
+        activePlayer.id,
+        teammate.id
       );
       const oppTeamId = Utils.getTeamIdFromUserIds(
-        oppPlayerA.userId,
-        oppPlayerB.userId
+        oppPlayerA.id,
+        oppPlayerB.id
       );
       // find teams or else create new ones we will persist later
       const team =
         teams.find(t => t.teamId === teamId) ||
         new DoublesTeam({
           teamId,
-          members: [activePlayer.userId, teammate.userId],
+          members: [activePlayer.id, teammate.id],
           matches: [],
           rating: -1,
           wins: 0,
           losses: 0
         });
-      const oppTeamMembers = [oppPlayerA.userId, oppPlayerB.userId];
+      const oppTeamMembers = [oppPlayerA.id, oppPlayerB.id];
       const oppTeam =
         teams.find(t => t.teamId === oppTeamId) ||
         new DoublesTeam({
@@ -242,7 +242,7 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       players: matchPlayers,
       isDoubles,
       matchDate: new Date(),
-      createdBy: activePlayer.userId
+      createdBy: activePlayer.id
     };
 
     const newMatch = new Match(options);
@@ -289,21 +289,20 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       submitted,
       newMatch
     } = this.state;
-    const activePlayer = users.find(x => x.userId === user.userId);
-    const selectedPlayerIds = new Set([user.userId]);
-    if (teammate) selectedPlayerIds.add(teammate.userId);
-    if (oppPlayerA) selectedPlayerIds.add(oppPlayerA.userId);
-    if (oppPlayerB) selectedPlayerIds.add(oppPlayerB.userId);
+    const selectedPlayerIds = new Set([user.id]);
+    if (teammate) selectedPlayerIds.add(teammate.id);
+    if (oppPlayerA) selectedPlayerIds.add(oppPlayerA.id);
+    if (oppPlayerB) selectedPlayerIds.add(oppPlayerB.id);
 
     const oppPlayers = [
       {} as User,
-      ...users.filter(x => !selectedPlayerIds.has(x.userId))
+      ...users.filter(x => !selectedPlayerIds.has(x.id))
     ];
     let submitCard = <div />;
     if (submitted) {
       const teamA = [
         {
-          ...activePlayer,
+          ...user,
           rating: activeUserEloRating.getEloRating()
         }
       ];
@@ -335,10 +334,10 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       submitCard = (
         <SubmitCard
           oppPlayers={oppPlayers}
-          activePlayer={new User(activePlayer)}
-          teammate={new User(teammate)}
-          oppPlayerA={new User(oppPlayerA)}
-          oppPlayerB={new User(oppPlayerB)}
+          activePlayer={user}
+          teammate={teammate}
+          oppPlayerA={oppPlayerA}
+          oppPlayerB={oppPlayerB}
           handlePlayerChange={this.handlePlayerChange}
           handlePlayerReset={this.handlePlayerReset}
           handleWinnerClick={this.handleWinnerClick}

@@ -1,7 +1,7 @@
 import * as userActionTypes from '../actionTypes/user';
 
 const getInitialState = () => ({
-    userId: null,
+    id: null,
     email: null,
     createdDate: null,
     matches: [],
@@ -18,7 +18,7 @@ export default function user(state = getInitialState(), action) {
         case userActionTypes.SET_USER:
             return {
                 ...state,
-                userId: action.data.id,
+                id: action.data.id,
                 email: action.data.email,
                 createdDate: action.data.createdDate,
                 matches: action.data.matches,

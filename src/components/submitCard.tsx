@@ -27,11 +27,11 @@ const SubmitCard: React.SFC<SubmitCardProps> = props => {
     submitIsValid
   } = props;
   const playerOptions = oppPlayers.map(x => (
-    <option key={x.userId || ""} value={x.userId}>
+    <option key={x.id || ""} value={x.id}>
       {x.name}
     </option>
   ));
-  const teammateValue = teammate.name ? (
+  const teammateValue = teammate ? (
     <a data-id="teammate" onClick={handlePlayerReset}>{`${teammate.name} (${
       teammate.rating
       })`}</a>
@@ -40,7 +40,7 @@ const SubmitCard: React.SFC<SubmitCardProps> = props => {
         {playerOptions}
       </select>
     );
-  const oppPlayerAValue = oppPlayerA.name ? (
+  const oppPlayerAValue = oppPlayerA ? (
     <a data-id="oppPlayerA" onClick={handlePlayerReset}>{`${oppPlayerA.name} (${
       oppPlayerA.rating
       })`}</a>
@@ -49,7 +49,7 @@ const SubmitCard: React.SFC<SubmitCardProps> = props => {
         {playerOptions}
       </select>
     );
-  const oppPlayerBValue = oppPlayerB.name ? (
+  const oppPlayerBValue = oppPlayerB ? (
     <a data-id="oppPlayerB" onClick={handlePlayerReset}>{`${oppPlayerB.name} (${
       oppPlayerB.rating
       })`}</a>
@@ -64,7 +64,7 @@ const SubmitCard: React.SFC<SubmitCardProps> = props => {
         <div className="team team-a">
           <div className="team-photos">
             <img src={activePlayer.photoURL} alt="" />
-            <img src={teammate.photoURL} alt="" />
+            <img src={teammate ? teammate.photoURL: ''} alt="" />
           </div>
           <div className="team-meta">
             <span>{`${activePlayer.name} (${activePlayer.rating})`}</span>
@@ -78,8 +78,8 @@ const SubmitCard: React.SFC<SubmitCardProps> = props => {
         </div>
         <div className="team team-b">
           <div className="team-photos">
-            <img src={oppPlayerA.photoURL} alt="" />
-            <img src={oppPlayerB.photoURL} alt="" />
+            <img src={oppPlayerA ? oppPlayerA.photoURL: ''} alt="" />
+            <img src={oppPlayerB ? oppPlayerB.photoURL: ''} alt="" />
           </div>
           <div className="team-meta">
             <span>{oppPlayerAValue}</span>

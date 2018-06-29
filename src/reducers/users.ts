@@ -9,7 +9,7 @@ export default function users(state = getInitialState(), action) {
     case usersActionTypes.UPDATE_USER_MATCHES:
       const newMatch = action.data;
       newMatch.players.forEach(player => {
-        const user = state.find((user) => user.userId === player.userId);
+        const user = state.find((user) => user.id === player.id);
         user.matches.push(newMatch);
       });
       return state;

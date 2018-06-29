@@ -41,7 +41,7 @@ class PageHeader extends React.Component<Props & MainLayoutProps, PageHeaderStat
 
     render() {
         const { loggedInUser, title, children } = this.props;
-        const isLoggedIn = Boolean(loggedInUser.userId);
+        const isLoggedIn = Boolean(loggedInUser.id);
         const photoBlock = isLoggedIn ?
             <button onClick={this.handleUserDropdown}>
                 <img className="logged-in-user-photo" src={loggedInUser.photoURL} alt="" />

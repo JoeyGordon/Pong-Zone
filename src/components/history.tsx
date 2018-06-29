@@ -19,11 +19,11 @@ const History: React.SFC<HistoryProps> = props => {
         const teamB = _.filter(match.players, ['team', 'B']);
 
         const teamAUsers = teamA.map(player => {
-            return _.find(props.users, ['userId', player.userId])
+            return _.find(props.users, ['id', player.id])
         })
 
         const teamBUsers = teamB.map(player => {
-            return _.find(props.users, ['userId', player.userId])
+            return _.find(props.users, ['id', player.id])
         })
 
         return (

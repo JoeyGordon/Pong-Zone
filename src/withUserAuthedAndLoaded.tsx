@@ -7,10 +7,10 @@ import * as utils from "./utils/utils";
 
 export const withUserAuthedAndLoaded = (Component: React.ComponentType) => {
   type Props = {
-    dispatch?: ({}) => void;
+    dispatch?: ({ }) => void;
     loading: boolean;
   }
-  
+
   type State = {
     authUser: object;
     user: object;
@@ -24,45 +24,36 @@ export const withUserAuthedAndLoaded = (Component: React.ComponentType) => {
         user: null
       };
     }
-    getChildContext() {
-      return {
-        authUser: this.state.authUser,
-        user: this.state.user
-      };
-    }
-    createUserRecord(user) {
-      // dispatch to set user in redux state
-      // now persist the user
-      const newUserRecord = utils.createFirebaseGeneric(user);
-      db
-        .collection("users")
-        .add(newUserRecord)
-        .then(function (docRef) {
-          console.log("New User document written with ID: ", docRef.id);
-        })
+    async createUserRecord(user: User) {
+      // Persist the user
+      return db.collection('users').doc(user.id).set(utils.createFirebaseGeneric(user))
         .catch(function (error) {
           console.error("Error adding user document: ", error);
         });
     }
-    getUserRecordByEmail(email) {
-      const fetchUserQuery = db.collection("users").where("email", "==", email);
-      return fetchUserQuery.get().then(response => {
+    getUserRecordByEmail(authUser) {
+      const fetchUserQuery = db.collection("users").where("email", "==", authUser.email);
+      return fetchUserQuery.get().then(async response => {
         if (response.docs.length > 1) {
           throw new Error("More than one user returned for email");
         }
-        const user = response.docs[0].data();
-        user.id = response.docs[0].id;
-        return user;
+        if (response.empty) {
+          const user = new User(authUser)
+          await this.createUserRecord(user);
+          return user;
+        }
+        return new User(response.docs[0].data());
       });
     }
     componentDidMount() {
       const { dispatch } = this.props;
       dispatch(loadingActions.startLoading());
-      auth
-        .getRedirectResult()
-        .then(result => {
+      auth.getRedirectResult()
+        .then(async result => {
           if (result.credential && result.additionalUserInfo.isNewUser) {
-            this.createUserRecord(new User(result.user));
+            const user = new User(result.user)
+            await this.createUserRecord(user);
+            dispatch(userActions.setUser(user));
           }
         })
         .catch(function (error) {
@@ -72,7 +63,7 @@ export const withUserAuthedAndLoaded = (Component: React.ComponentType) => {
         if (authUser) {
           console.log("User is authed and signed in: ", authUser);
           // go fetch the user data from firebase and set the user
-          this.getUserRecordByEmail(authUser.email).then(user => {
+          this.getUserRecordByEmail(authUser).then(user => {
             dispatch(userActions.setUser(user));
           });
         } else {
@@ -82,7 +73,7 @@ export const withUserAuthedAndLoaded = (Component: React.ComponentType) => {
       dispatch(loadingActions.stopLoading());
     }
     render() {
-      return (<Component {...this.props}/>);
+      return (<Component {...this.props} />);
     }
   }
 };

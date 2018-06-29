@@ -1,40 +1,36 @@
 import { db } from '../firebase';
 import * as utils from '../utils/utils';
 import UserMatch from '../models/userMatch';
+import Match from '../models/match';
 
-export function updateUsersWithMatch(match) {
+export function updateUsersWithMatch(match: Match) {
     match.players.forEach(player => {
         // get the user by id
-        const userRef = db.collection('users').doc(player.userId);
+        const userRef = db.collection('users').doc(player.id);
         userRef.get().then(response => {
-
             const user = response.data();
 
-            // until we reboot the user db, we will lack userIds on the users
-            if (!user.userId) {
-                user.userId = response.id;
-            }
             // now pull the matches collection
             const playerMatches = user.matches;
-            const matchPlayer = match.players.find(player => player.userId === user.userId);
+            const matchPlayer = match.players.find(player => player.id === user.id);
             const opponents = match.players.filter(player =>
                 player.team !== matchPlayer.team).map(player => {
-                    return player.userId
+                    return player.id
                 });
 
             let teammatePlayer;
 
             if (match.players.length > 2) {
-                teammatePlayer = match.players.find(player => player.team === matchPlayer.team && player.userId !== matchPlayer.userId);
+                teammatePlayer = match.players.find(player => player.team === matchPlayer.team && player.id !== matchPlayer.id);
             }
 
             // create the new user match
             const userMatchOptions = {
-                userId: user.userId,
+                id: user.id,
                 matchId: match.matchId,
                 matchDate: match.matchDate,
                 win: matchPlayer.win,
-                teammate: teammatePlayer ? teammatePlayer.userId : null,
+                teammate: teammatePlayer ? teammatePlayer.id : null,
                 opponents: opponents,
                 team: matchPlayer.team,
                 rating: matchPlayer.rating,

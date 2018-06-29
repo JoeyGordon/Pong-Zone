@@ -6,7 +6,7 @@ import { MainLayoutProps } from "./mainLayout";
 import { RootState } from "../rootReducer";
 
 const MainMenu: React.SFC<MainLayoutProps & RouteComponentProps<{}>> = props => {
-  const isLoggedIn = Boolean(props.loggedInUser.userId);
+  const isLoggedIn = Boolean(props.loggedInUser.id);
   const submitMatchLink = isLoggedIn ? (
     <li>
       <NavLink to="/SubmitMatch" exact activeClassName="active">

@@ -18,22 +18,22 @@ const MatchCard: React.SFC<MatchCardProps> = props => {
   let teamBNames = [];
   teamA.forEach(player => {
     const matchPlayer = match.players.find(
-      matchPlayer => matchPlayer.userId === player.userId
+      matchPlayer => matchPlayer.id === player.id
     );
-    teamAImages.push(<img src={player.photoURL} alt="" key={player.userId} />);
+    teamAImages.push(<img src={player.photoURL} alt="" key={player.id} />);
     teamANames.push(
-      <span key={player.userId}>{`${player.name} ${matchPlayer.rating} (${
+      <span key={player.id}>{`${player.name} ${matchPlayer.rating} (${
         matchPlayer.ratingShift > 0 ? "+" : ""
       }${matchPlayer.ratingShift})`}</span>
     );
   });
   teamB.forEach(player => {
     const matchPlayer = match.players.find(
-      matchPlayer => matchPlayer.userId === player.userId
+      matchPlayer => matchPlayer.id === player.id
     );
-    teamBImages.push(<img src={player.photoURL} alt="" key={player.userId} />);
+    teamBImages.push(<img src={player.photoURL} alt="" key={player.id} />);
     teamBNames.push(
-      <span key={player.userId}>{`${player.name} ${matchPlayer.rating} (${
+      <span key={player.id}>{`${player.name} ${matchPlayer.rating} (${
         matchPlayer.ratingShift > 0 ? "+" : ""
       }${matchPlayer.ratingShift})`}</span>
     );

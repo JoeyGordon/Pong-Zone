@@ -22,9 +22,9 @@ export const formatDate = (date: Date) => {
     return `${dateMonth} ${dateDay}, ${dateYear}`;
 }
 
-export const getTeamIdFromUserIds = (userIdA: string, userIdB: string) => {
-    if(userIdA === userIdB) throw new Error('Teammates cannot be the same person');
-    return userIdA > userIdB ? userIdB + userIdA : userIdA + userIdB;
+export const getTeamIdFromUserIds = (idA: string, idB: string) => {
+    if(idA === idB) throw new Error('Teammates cannot be the same person');
+    return idA > idB ? idB + idA : idA + idB;
 }
 
 export const getId = () => {
