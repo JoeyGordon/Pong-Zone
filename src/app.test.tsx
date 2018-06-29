@@ -4,6 +4,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './app';
 import pongZone from './rootReducer';
+import 'mocha';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
