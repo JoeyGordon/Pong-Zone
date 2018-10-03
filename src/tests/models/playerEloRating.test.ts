@@ -7,7 +7,7 @@ it('rating shift', () => {
     const playerEloRating = new PlayerEloRating(0);
 
     // Act
-    playerEloRating.ratingShift(true, playerEloRating, null);
+    playerEloRating.ratingShift(true, playerEloRating);
 
     // Assert
     expect(playerEloRating.getEloRating()).to.equal(8);

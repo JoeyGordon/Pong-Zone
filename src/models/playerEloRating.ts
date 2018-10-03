@@ -10,12 +10,9 @@ export default class PlayerEloRating {
         this.shift = 0;
     }
 
-    ratingShift(winLoss: boolean, oppPairPlayerAEloRating: PlayerEloRating, oppPairPlayerBEloRating: PlayerEloRating) {
-        const otherTeamRating = oppPairPlayerBEloRating ?
-            (oppPairPlayerAEloRating.getEloRating() + oppPairPlayerBEloRating.getEloRating()) / 2 :
-            oppPairPlayerAEloRating.getEloRating();
+    ratingShift(winLoss: boolean, oppPlayerEloRating: PlayerEloRating) {
         const eloRating = this.eloRating;
-        const shift = Math.round(k * (Number(winLoss) - eA(eloRating, otherTeamRating)));
+        const shift = Math.round(k * (Number(winLoss) - eA(eloRating, oppPlayerEloRating.getEloRating())));
 
         this.shift = shift;
     }

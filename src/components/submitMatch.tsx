@@ -119,11 +119,13 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
     const matchPlayers = [];
     const doublesTeams = [];
     let isDoubles = false;
-    activeUserEloRating.ratingShift(
-      winningTeam,
-      oppPlayerAEloRating,
-      oppPlayerBEloRating
-    );
+
+    if (!oppPlayerBEloRating) {
+      activeUserEloRating.ratingShift(
+        winningTeam,
+        oppPlayerAEloRating
+      );
+    }
     matchPlayers.push(
       new MatchPlayer({
         id: activePlayer.id,
@@ -134,11 +136,6 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       })
     );
     if (teammateEloRating) {
-      teammateEloRating.ratingShift(
-        winningTeam,
-        oppPlayerAEloRating,
-        oppPlayerBEloRating
-      );
       matchPlayers.push(
         new MatchPlayer({
           id: teammate.id,
@@ -149,11 +146,13 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
         })
       );
     }
-    oppPlayerAEloRating.ratingShift(
-      !winningTeam,
-      activeUserEloRating,
-      teammateEloRating
-    );
+
+    if (!teammateEloRating) {
+      oppPlayerAEloRating.ratingShift(
+        !winningTeam,
+        activeUserEloRating
+      );
+    }
     matchPlayers.push(
       new MatchPlayer({
         id: oppPlayerA.id,
@@ -164,11 +163,6 @@ class SubmitMatch extends React.Component<Props, SubmitMatchState> {
       })
     );
     if (oppPlayerBEloRating) {
-      oppPlayerBEloRating.ratingShift(
-        !winningTeam,
-        activeUserEloRating,
-        teammateEloRating
-      );
       matchPlayers.push(
         new MatchPlayer({
           id: oppPlayerB.id,
